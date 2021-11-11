@@ -196,7 +196,6 @@ t_RCURLY = r'}'
 
 def t_COMMENT(t):
     r'\#.*'
-    t.lexer.lineno += 1
     return t
 
 

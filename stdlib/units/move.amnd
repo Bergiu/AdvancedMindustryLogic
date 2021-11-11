@@ -3,7 +3,7 @@
 # params:
 # - move_to_x: x coordinate
 # - move_to_y: y coordinate
-function fn_move2 {
+function fn_move {
     set move_tolerance 2 # radius where it is near enough
     ucontrol move move_to_x move_to_y 0 0 0
     # loop: until unit is in the tolerance radius

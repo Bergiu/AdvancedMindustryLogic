@@ -23,6 +23,7 @@ hi def link amndOperator Operator
 hi def link amndIO PreProc
 hi def link amndKeyword Keyword
 " hi def link amndSubcommands vimCommand
+" hi def link amndSubcommands vimSynType
 hi def link amndStructure Macro
 hi def link amndNumber Number
 hi def link amndString String

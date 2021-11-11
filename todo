@@ -1,0 +1,3 @@
+# define MAX_SIZE 100
+# define exec_move op add retptr @counter 1\nset @counter fn_move
+
