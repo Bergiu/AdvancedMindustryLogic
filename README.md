@@ -3,6 +3,14 @@
 ## Additions
 - function: defines a function
 - exec: executes a function
+- easy operations:
+  - `op add x 1 2`: `x = 1 + 2`
+  - `op sub x 1 2`: `x = 1 - 2`
+  - `op mul x 1 2`: `x = 1 * 2`
+  - `op div x 1 2`: `x = 1 / 2`
+  - `op equal x 1 2`: `x = 1 == 2`
+- easy set:
+  - `set x 1`: `x = 1`
 
 
 # NeoVim

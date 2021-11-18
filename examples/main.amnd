@@ -10,3 +10,10 @@ print "C"
 printflush stdout
 
 # TODO bla
+
+a = b + c
+x = 8 * 7
+x = 8 - 7
+x = 8 / 7
+x = 5
+x = 9 == 9
