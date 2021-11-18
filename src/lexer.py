@@ -1,5 +1,4 @@
 from .preprocessor import CodePos
-from .utils import load_code
 import ply.lex as lex
 
 instruction_names = [
@@ -179,6 +178,12 @@ tokens = [
     'COMMENT',
     'LCURLY',
     'RCURLY',
+    'OP_ASSIGN',
+    'OP_ADD',
+    'OP_SUB',
+    'OP_MUL',
+    'OP_DIV',
+    'OP_EQ',
 ] + list(reserved.values())
 
 
@@ -193,6 +198,12 @@ t_STRING = r'".*?"'
 t_BOOL = r'"(true|false)"'
 t_LCURLY = r'{'
 t_RCURLY = r'}'
+t_OP_EQ = r'=='
+t_OP_ASSIGN = r'='
+t_OP_ADD = r'\+'
+t_OP_SUB = r'-'
+t_OP_MUL = r'\*'
+t_OP_DIV = r'/'
 
 
 def t_COMMENT(t):

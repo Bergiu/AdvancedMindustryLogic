@@ -147,6 +147,41 @@ def p_op(p):
     p[0] = OperationNode(p[1], p[2:])
 
 
+def p_op_add(p):
+    '''cmd_op_add : fakeid OP_ASSIGN value OP_ADD value'''
+    params = "add {var} {lv} {rv}".format(var=p[1], lv=p[3], rv=p[5])
+    p[0] = OperationNode("op", params.split(" "))
+
+
+def p_op_sub(p):
+    '''cmd_op_sub : fakeid OP_ASSIGN value OP_SUB value'''
+    params = "sub {var} {lv} {rv}".format(var=p[1], lv=p[3], rv=p[5])
+    p[0] = OperationNode("op", params.split(" "))
+
+
+def p_op_mul(p):
+    '''cmd_op_mul : fakeid OP_ASSIGN value OP_MUL value'''
+    params = "mul {var} {lv} {rv}".format(var=p[1], lv=p[3], rv=p[5])
+    p[0] = OperationNode("op", params.split(" "))
+
+
+def p_op_div(p):
+    '''cmd_op_div : fakeid OP_ASSIGN value OP_DIV value'''
+    params = "div {var} {lv} {rv}".format(var=p[1], lv=p[3], rv=p[5])
+    p[0] = OperationNode("op", params.split(" "))
+
+
+def p_op_eq(p):
+    '''cmd_op_eq : fakeid OP_ASSIGN value OP_EQ value'''
+    params = "equal {var} {lv} {rv}".format(var=p[1], lv=p[3], rv=p[5])
+    p[0] = OperationNode("op", params.split(" "))
+
+
+def p_op_set(p):
+    '''cmd_op_set : fakeid OP_ASSIGN value'''
+    p[0] = OperationNode("set", [p[1], p[3]])
+
+
 def p_op_instruction(p):
     '''op_instruction : ADD
                       | SUB
@@ -309,6 +344,12 @@ def p_operation(p):
                  | cmd_noop
                  | cmd_function
                  | cmd_exec
+                 | cmd_op_add
+                 | cmd_op_sub
+                 | cmd_op_mul
+                 | cmd_op_div
+                 | cmd_op_eq
+                 | cmd_op_set
     '''
     p[0] = p[1]
 
