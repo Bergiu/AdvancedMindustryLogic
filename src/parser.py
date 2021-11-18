@@ -143,7 +143,7 @@ def p_set(p):
 
 
 def p_op(p):
-    '''cmd_op : OP op_instruction fakeid var_number var_number'''
+    '''cmd_op : OP op_instruction fakeid value value'''
     p[0] = OperationNode(p[1], p[2:])
 
 
