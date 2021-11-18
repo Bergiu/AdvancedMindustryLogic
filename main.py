@@ -1,5 +1,5 @@
 #!/bin/python3
-from src.preprocessor import preprocess
+from src.preprocessor import preprocess, CodePos
 from src.utils import load_code, write_code
 from src.parser import setup as setupp, do_parsing
 from src.lexer import setup as setupl, do_lexing
@@ -17,16 +17,16 @@ def load_args():
     return parser.parse_args()
 
 
-def setup(filename, lint):
-    setupl(filename, lint)
-    setupp(filename, lint)
+def setup(lint: bool, code_pos: CodePos):
+    setupl(lint, code_pos)
+    setupp(lint, code_pos)
 
 
-if __name__ == '__main__':
+def main():
     args = load_args()
     text = load_code(args.filename)
-    text = preprocess(text, args.filename)
-    setup(args.filename, args.linter)
+    text, code_pos = preprocess(text, args.filename)
+    setup(args.linter, code_pos)
     # print(do_lexing(text))
     out = do_parsing(text)
     if not args.linter:
@@ -34,3 +34,7 @@ if __name__ == '__main__':
             write_code(args.outfile, out)
         else:
             print(out)
+
+
+if __name__ == '__main__':
+    main()

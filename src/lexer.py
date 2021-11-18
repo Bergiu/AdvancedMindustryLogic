@@ -1,3 +1,4 @@
+from .preprocessor import CodePos
 from .utils import load_code
 import ply.lex as lex
 
@@ -222,14 +223,14 @@ def t_NEWLINE(t):
     return t
 
 
-FILENAME = "<undefined>"
 LINT = False
+CODE_POS = []
 
 
-def setup(filename, lint):
-    global FILENAME, LINT
-    FILENAME = filename
+def setup(lint: bool, code_pos: CodePos):
+    global LINT, CODE_POS
     LINT = lint
+    CODE_POS = code_pos
 
 
 def find_column(input, token):
@@ -239,11 +240,12 @@ def find_column(input, token):
 
 # Error handling rule
 def t_error(t):
-    global FILENAME
+    global CODE_POS
     column = find_column(t.lexer.lexdata, t)
     msg = f"Illegal character: {repr(t.value[0])}"
     form = "{path}:{line}:{column}: ({symbol}) {msg}"
-    formatted = form.format(path=FILENAME, line=t.lineno, column=column, symbol=t.type, msg=msg)
+    lineno, filename = CODE_POS[t.lineno]
+    formatted = form.format(path=filename, line=lineno, column=column, symbol=t.type, msg=msg)
     if LINT:
         print(formatted)
         t.lexer.skip(1)

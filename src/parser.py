@@ -1,6 +1,7 @@
 import ply.yacc as yacc
 from .lexer import tokens, reserved
 from .nodes import *
+from .preprocessor import CodePos
 
 
 def p_program1(p):
@@ -366,13 +367,14 @@ def p_keyword(p):
 p_keyword.__doc__ = "keyword : " + "\n      | ".join([res for res in reserved.values()])
 
 
-FILENAME = "<undefined>"
 LINT = False
+CODE_POS = []
 
-def setup(filename, lint):
-    global FILENAME, LINT
-    FILENAME = filename
+
+def setup(lint: bool, code_pos: CodePos):
+    global LINT, CODE_POS
     LINT = lint
+    CODE_POS = code_pos
 
 
 def find_column(input, token):
@@ -381,12 +383,14 @@ def find_column(input, token):
 
 
 def p_error(p):
-    global FILENAME
+    global CODE_POS
     if p is not None:
         column = find_column(p.lexer.lexdata, p)
         msg = f"Syntax error! Error on token: {repr(p.value)}"
         form = "{path}:{line}:{column}: ({symbol}) {msg}"
-        formatted = form.format(path=FILENAME, line=p.lineno, column=column, symbol=p.type, msg=msg)
+        # TODO symbol sollte eigentlich "warning" oder "error" sein
+        lineno, filename = CODE_POS[p.lineno]
+        formatted = form.format(path=filename, line=lineno, column=column, symbol=p.type, msg=msg)
         if LINT:
             print(formatted)
             p.lexer.skip(1)
