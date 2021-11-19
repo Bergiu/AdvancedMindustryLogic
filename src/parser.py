@@ -424,7 +424,7 @@ def find_column(input, token):
 
 
 def p_error(p):
-    global CODE_POS
+    global CODE_POS, LINT
     if p is not None:
         column = find_column(p.lexer.lexdata, p)
         msg = f"Syntax error! Error on token: {repr(p.value)}"
