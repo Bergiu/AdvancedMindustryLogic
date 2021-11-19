@@ -5,38 +5,18 @@ from .preprocessor import CodePos
 
 
 def p_program1(p):
-    '''codeblock : line'''
+    '''codeblock : operation'''
     p[0] = CodeBlockNode(p[1])
 
 
 def p_program2(p):
-    '''codeblock : codeblock line'''
+    '''codeblock : codeblock operation'''
     p[0] = CodeBlockNode(p[2], p[1])
 
 
 def p_curly(p):
     '''cmd_function : FUNCTION ID LCURLY NEWLINE codeblock RCURLY'''
     p[0] = FunctionNode(p[2], p[5])
-
-
-def p_line1(p):
-    '''line : operation NEWLINE'''
-    p[0] = p[1]
-
-
-def p_line2(p):
-    '''line : operation comment NEWLINE'''
-    p[0] = OneLineNode(p[1], p[2])
-
-
-def p_line3(p):
-    '''line : comment NEWLINE'''
-    p[0] = p[1]
-
-
-def p_comment(p):
-    '''comment : COMMENT'''
-    p[0] = CommentNode(p[1])
 
 
 def p_write(p):
@@ -322,36 +302,65 @@ def p_exec(p):
     p[0] = ExecNode(p[2])
 
 
+def p_lineend1(p):
+    '''lineend : NEWLINE'''
+    p[0] = None
+
+
+def p_lineend2(p):
+    '''lineend : COMMENT NEWLINE'''
+    p[0] = CommentNode(p[1])
+
+
 def p_operation(p):
-    '''operation : cmd_write
-                 | cmd_read
-                 | cmd_draw
-                 | cmd_drawflush
-                 | cmd_print
-                 | cmd_printflush
-                 | cmd_getlink
-                 | cmd_control
-                 | cmd_radar
-                 | cmd_sensor
-                 | cmd_set
-                 | cmd_op
-                 | cmd_end
-                 | cmd_jump
-                 | cmd_ubind
-                 | cmd_ucontrol
-                 | cmd_uradar
-                 | cmd_ulocate
-                 | cmd_noop
-                 | cmd_function
-                 | cmd_exec
-                 | cmd_op_add
-                 | cmd_op_sub
-                 | cmd_op_mul
-                 | cmd_op_div
-                 | cmd_op_eq
-                 | cmd_op_set
+    '''operation : cmd_write lineend
+                 | cmd_read lineend
+                 | cmd_draw lineend
+                 | cmd_drawflush lineend
+                 | cmd_print lineend
+                 | cmd_printflush lineend
+                 | cmd_getlink lineend
+                 | cmd_control lineend
+                 | cmd_radar lineend
+                 | cmd_sensor lineend
+                 | cmd_set lineend
+                 | cmd_op lineend
+                 | cmd_end lineend
+                 | cmd_jump lineend
+                 | cmd_ubind lineend
+                 | cmd_ucontrol lineend
+                 | cmd_uradar lineend
+                 | cmd_ulocate lineend
+                 | cmd_noop lineend
+                 | cmd_function lineend
+                 | cmd_exec lineend
+                 | cmd_op_add lineend
+                 | cmd_op_sub lineend
+                 | cmd_op_mul lineend
+                 | cmd_op_div lineend
+                 | cmd_op_eq lineend
+                 | cmd_op_set lineend
     '''
-    p[0] = p[1]
+    if p[2] is None:
+        # no comment in line
+        p[0] = p[1]
+    else:
+        # comment in line
+        p[0] = OneLineNode(p[1], p[2])
+
+
+def p_operation2(p):
+    '''operation : COMMENT NEWLINE
+    '''
+    p[0] = CommentNode(p[1])
+
+
+def p_operation_error(p):
+    '''operation : error NEWLINE
+    '''
+    msg = f"Syntax error! Error on token: {repr(p[1].value)} ({p[1].type})"
+    symbol = "error"
+    make_error(p[1], symbol, msg)
 
 
 def p_var_int(p):
@@ -424,21 +433,21 @@ def find_column(input, token):
 
 
 def p_error(p):
-    global CODE_POS, LINT
-    if p is not None:
-        column = find_column(p.lexer.lexdata, p)
-        msg = f"Syntax error! Error on token: {repr(p.value)}"
-        form = "{path}:{line}:{column}: ({symbol}) {msg}"
-        # TODO symbol sollte eigentlich "warning" oder "error" sein
-        lineno, filename = CODE_POS[p.lineno]
-        formatted = form.format(path=filename, line=lineno, column=column, symbol=p.type, msg=msg)
-        if LINT:
-            print(formatted)
-            p.lexer.skip(1)
-        else:
-            raise Exception(formatted)
-    else:
+    if p is None:
         raise Exception("Error was raised, but p was none.")
+
+
+def make_error(p, type, message):
+    global CODE_POS, LINT
+    column = find_column(p.lexer.lexdata, p)
+    form = "{path}:{line}:{column}: {type}: {msg}"
+    lineno, filename = CODE_POS[p.lineno]
+    formatted = form.format(path=filename, line=lineno, column=column, type=type, msg=message)
+    if LINT:
+        print(formatted)
+        p.lexer.skip(1)
+    else:
+        raise Exception(formatted)
 
 
 parser = yacc.yacc()

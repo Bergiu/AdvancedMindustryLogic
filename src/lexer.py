@@ -251,7 +251,7 @@ def find_column(input, token):
 
 # Error handling rule
 def t_error(t):
-    global CODE_POS
+    global CODE_POS, LINT
     column = find_column(t.lexer.lexdata, t)
     msg = f"Illegal character: {repr(t.value[0])}"
     form = "{path}:{line}:{column}: ({symbol}) {msg}"
