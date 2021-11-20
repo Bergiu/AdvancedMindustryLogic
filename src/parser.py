@@ -14,9 +14,26 @@ def p_program2(p):
     p[0] = CodeBlockNode(p[2], p[1])
 
 
+def p_func_param(p):
+    '''func_param : LPAREN ids RPAREN'''
+    ids = p[2]
+    p[0] = p[2]
+
+
+def p_ids1(p):
+    '''ids : value'''
+    p[0] = [p[1]]
+
+
+def p_ids2(p):
+    '''ids : ids COMMA value'''
+    p[1].append(p[3])
+    p[0] = p[1]
+
+
 def p_curly(p):
-    '''cmd_function : FUNCTION ID LCURLY NEWLINE codeblock RCURLY'''
-    p[0] = FunctionNode(p[2], p[5])
+    '''cmd_function : FUNCTION fakeid func_param LCURLY NEWLINE codeblock RCURLY'''
+    p[0] = FunctionNode(p[2], p[3], p[6])
 
 
 def p_write(p):
@@ -298,8 +315,8 @@ def p_noop(p):
 
 
 def p_exec(p):
-    '''cmd_exec : EXEC ID'''
-    p[0] = ExecNode(p[2])
+    '''cmd_exec : EXEC fakeid func_param'''
+    p[0] = ExecNode(p[2], p[3])
 
 
 def p_lineend1(p):
