@@ -31,9 +31,11 @@ def main():
     out = do_parsing(text)
     if not args.linter:
         if args.outfile is not None:
-            write_code(args.outfile, out)
+            write_code(args.outfile, out.to_code(out))
         else:
-            print(out)
+            print(out.to_code(out))
+    else:
+        out.to_code(out)
 
 
 if __name__ == '__main__':
