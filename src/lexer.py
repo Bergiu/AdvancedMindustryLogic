@@ -178,6 +178,9 @@ tokens = [
     'COMMENT',
     'LCURLY',
     'RCURLY',
+    'LPAREN',
+    'RPAREN',
+    'COMMA',
     'OP_ASSIGN',
     'OP_ADD',
     'OP_SUB',
@@ -198,6 +201,9 @@ t_STRING = r'".*?"'
 t_BOOL = r'"(true|false)"'
 t_LCURLY = r'{'
 t_RCURLY = r'}'
+t_LPAREN = r'\('
+t_RPAREN = r'\)'
+t_COMMA = r','
 t_OP_EQ = r'=='
 t_OP_ASSIGN = r'='
 t_OP_ADD = r'\+'
