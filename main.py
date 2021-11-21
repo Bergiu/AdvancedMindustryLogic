@@ -1,5 +1,5 @@
 #!/bin/python3
-from src.preprocessor import preprocess, CodePos
+from src.preprocessor import preprocess, CodePosResolver
 from src.utils import load_code, write_code
 from src.parser import setup as setupp, do_parsing
 from src.lexer import setup as setupl, do_lexing
@@ -17,7 +17,7 @@ def load_args():
     return parser.parse_args()
 
 
-def setup(lint: bool, code_pos: CodePos):
+def setup(lint: bool, code_pos: CodePosResolver):
     setupl(lint, code_pos)
     setupp(lint, code_pos)
 

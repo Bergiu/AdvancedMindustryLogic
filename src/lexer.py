@@ -1,5 +1,7 @@
-from .preprocessor import CodePos
+from .preprocessor import CodePosResolver
 import ply.lex as lex
+
+from .utils import find_column
 
 instruction_names = [
     'write',
@@ -244,15 +246,10 @@ LINT = False
 CODE_POS = []
 
 
-def setup(lint: bool, code_pos: CodePos):
+def setup(lint: bool, code_pos: CodePosResolver):
     global LINT, CODE_POS
     LINT = lint
     CODE_POS = code_pos
-
-
-def find_column(input, token):
-    line_start = input.rfind('\n', 0, token.lexpos) + 1
-    return (token.lexpos - line_start) + 1
 
 
 # Error handling rule

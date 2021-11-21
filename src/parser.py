@@ -1,7 +1,8 @@
 import ply.yacc as yacc
 from .lexer import tokens, reserved
 from .nodes import *
-from .preprocessor import CodePos
+from .preprocessor import CodePosResolver
+from .utils import find_column
 
 
 def p_program1(p):
@@ -16,7 +17,6 @@ def p_program2(p):
 
 def p_func_param(p):
     '''func_param : LPAREN ids RPAREN'''
-    ids = p[2]
     p[0] = p[2]
 
 
@@ -438,15 +438,10 @@ LINT = False
 CODE_POS = []
 
 
-def setup(lint: bool, code_pos: CodePos):
+def setup(lint: bool, code_pos: CodePosResolver):
     global LINT, CODE_POS
     LINT = lint
     CODE_POS = code_pos
-
-
-def find_column(input, token):
-    line_start = input.rfind('\n', 0, token.lexpos) + 1
-    return (token.lexpos - line_start) + 1
 
 
 def p_error(p):

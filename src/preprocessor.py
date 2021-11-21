@@ -9,7 +9,7 @@ LinesOfCode = List[str]
 LineNumber = int
 Filename = str
 CodeLine = Tuple[LineNumber, Filename]
-CodePos = List[CodeLine]
+CodePosResolver = List[CodeLine]
 
 
 
@@ -19,14 +19,14 @@ class File:
         self.lines_of_code = lines_of_code
 
 
-def preprocess(text: str, filename: str) -> Tuple[str, CodePos]:
+def preprocess(text: str, filename: str) -> Tuple[str, CodePosResolver]:
     lines, code_pos = _preprocess_intern(text, filename)
     text = "\n".join(lines)
     text = repair_eof(text)
     return text, code_pos
 
 
-def _preprocess_intern(text: str, filename: Union[str, pathlib.Path]) -> Tuple[LinesOfCode, CodePos]:
+def _preprocess_intern(text: str, filename: Union[str, pathlib.Path]) -> Tuple[LinesOfCode, CodePosResolver]:
     return replace_includes(text, filename)
 
 
@@ -36,10 +36,10 @@ def repair_eof(text) -> str:
     return text
 
 
-def replace_includes(text: str, filename: Union[str, pathlib.Path]) -> Tuple[LinesOfCode, CodePos]:
+def replace_includes(text: str, filename: Union[str, pathlib.Path]) -> Tuple[LinesOfCode, CodePosResolver]:
     lines = text.split("\n")
     new_lines = []
-    code_pos: CodePos = []
+    code_pos: CodePosResolver = []
     for index, line in enumerate(lines):
         line = line.strip()
         res = re.match("^import ([a-zA-Z/_.]+)[ ]?", line)
