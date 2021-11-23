@@ -4,14 +4,16 @@ from .nodes import *
 from .preprocessor import CodePosResolver
 from .utils import find_column
 
+start = 'codeblock'
+
 
 def p_program1(p):
-    '''codeblock : operation'''
+    '''codeblock : line'''
     p[0] = CodeBlockNode(p[1])
 
 
 def p_program2(p):
-    '''codeblock : codeblock operation'''
+    '''codeblock : codeblock line'''
     p[0] = CodeBlockNode(p[2], p[1])
 
 
@@ -321,7 +323,7 @@ def p_exec(p):
 
 def p_lineend1(p):
     '''lineend : NEWLINE'''
-    p[0] = None
+    p[0] = CommentNode("")
 
 
 def p_lineend2(p):
@@ -329,55 +331,52 @@ def p_lineend2(p):
     p[0] = CommentNode(p[1])
 
 
+def p_line(p):
+    '''line : operation lineend'''
+    p[0] = OneLineNode(p[1], p[2])
+
+
+def p_line1(p):
+    '''line : lineend'''
+    p[0] = p[1]
+
+
+def p_line_error(p):
+    '''line : error lineend'''
+    p[0] = ErrorNode()
+    p.parser.errok()
+
+
 def p_operation(p):
-    '''operation : cmd_write lineend
-                 | cmd_read lineend
-                 | cmd_draw lineend
-                 | cmd_drawflush lineend
-                 | cmd_print lineend
-                 | cmd_printflush lineend
-                 | cmd_getlink lineend
-                 | cmd_control lineend
-                 | cmd_radar lineend
-                 | cmd_sensor lineend
-                 | cmd_set lineend
-                 | cmd_op lineend
-                 | cmd_end lineend
-                 | cmd_jump lineend
-                 | cmd_ubind lineend
-                 | cmd_ucontrol lineend
-                 | cmd_uradar lineend
-                 | cmd_ulocate lineend
-                 | cmd_noop lineend
-                 | cmd_function lineend
-                 | cmd_exec lineend
-                 | cmd_op_add lineend
-                 | cmd_op_sub lineend
-                 | cmd_op_mul lineend
-                 | cmd_op_div lineend
-                 | cmd_op_eq lineend
-                 | cmd_op_set lineend
+    '''operation : cmd_write
+                 | cmd_read
+                 | cmd_draw
+                 | cmd_drawflush
+                 | cmd_print
+                 | cmd_printflush
+                 | cmd_getlink
+                 | cmd_control
+                 | cmd_radar
+                 | cmd_sensor
+                 | cmd_set
+                 | cmd_op
+                 | cmd_end
+                 | cmd_jump
+                 | cmd_ubind
+                 | cmd_ucontrol
+                 | cmd_uradar
+                 | cmd_ulocate
+                 | cmd_noop
+                 | cmd_function
+                 | cmd_exec
+                 | cmd_op_add
+                 | cmd_op_sub
+                 | cmd_op_mul
+                 | cmd_op_div
+                 | cmd_op_eq
+                 | cmd_op_set
     '''
-    if p[2] is None:
-        # no comment in line
-        p[0] = p[1]
-    else:
-        # comment in line
-        p[0] = OneLineNode(p[1], p[2])
-
-
-def p_operation2(p):
-    '''operation : COMMENT NEWLINE
-    '''
-    p[0] = CommentNode(p[1])
-
-
-def p_operation_error(p):
-    '''operation : error NEWLINE
-    '''
-    msg = f"Syntax error! Error on token: {repr(p[1].value)} ({p[1].type})"
-    symbol = "error"
-    make_error(p[1], symbol, msg)
+    p[0] = p[1]
 
 
 def p_var_int(p):
@@ -446,18 +445,19 @@ def setup(lint: bool, code_pos: CodePosResolver):
 
 def p_error(p):
     if p is None:
-        raise Exception("Error was raised, but p was none.")
+        raise Exception("Unexpected end of file.")
+    msg = f"Syntax error! Error on token: {repr(p.value)} ({p.type})"
+    make_error(p, "error", msg)
 
 
 def make_error(p, type, message):
     global CODE_POS, LINT
     column = find_column(p.lexer.lexdata, p)
     form = "{path}:{line}:{column}: {type}: {msg}"
-    lineno, filename = CODE_POS[p.lineno]
-    formatted = form.format(path=filename, line=lineno, column=column, type=type, msg=message)
+    lineno, filename = CODE_POS[p.lineno - 1]
+    formatted = form.format(path=filename, line=lineno + 1, column=column, type=type, msg=message)
     if LINT:
         print(formatted)
-        p.lexer.skip(1)
     else:
         raise Exception(formatted)
 

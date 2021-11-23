@@ -188,3 +188,12 @@ class ExecNode(Node):
         out += "op add retptr @counter 1\n"
         out += f"set @counter {self.fnptr}"
         return out
+
+
+class ErrorNode(Node):
+    def loc(self):
+        return 0
+
+    def to_code(self, tree: Node):
+        out = "ERROR"
+        return out
