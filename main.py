@@ -5,6 +5,7 @@ from src.preprocessor import preprocess, CodePosResolver
 from src.utils import load_code, write_code
 from src.parser import setup as setupp, do_parsing
 from src.lexer import setup as setupl, do_lexing
+from src.nodes import setup as setupn
 
 import argparse
 
@@ -22,6 +23,7 @@ def load_args():
 def setup(lint: bool, code_pos: CodePosResolver):
     setupl(lint, code_pos)
     setupp(lint, code_pos)
+    setupn(lint, code_pos)
 
 
 def main():

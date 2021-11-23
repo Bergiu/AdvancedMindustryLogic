@@ -9,12 +9,12 @@ start = 'codeblock'
 
 def p_program1(p):
     '''codeblock : line'''
-    p[0] = CodeBlockNode(p[1])
+    p[0] = CodeBlockNode(p, p[1])
 
 
 def p_program2(p):
     '''codeblock : codeblock line'''
-    p[0] = CodeBlockNode(p[2], p[1])
+    p[0] = CodeBlockNode(p, p[2], p[1])
 
 
 def p_func_param(p):
@@ -40,22 +40,22 @@ def p_ids3(p):
 
 def p_function(p):
     '''cmd_function : FUNCTION fakeid func_param LCURLY lineend codeblock RCURLY'''
-    p[0] = FunctionNode(p[2], p[3], p[6])
+    p[0] = FunctionNode(p, p[2], p[3], p[6])
 
 
 def p_write(p):
     '''cmd_write : WRITE value fakeid var_int'''
-    p[0] = OperationNode(p[1], p[2:])
+    p[0] = OperationNode(p, p[1], p[2:])
 
 
 def p_read(p):
     '''cmd_read : READ fakeid fakeid var_int'''
-    p[0] = OperationNode(p[1], p[2:])
+    p[0] = OperationNode(p, p[1], p[2:])
 
 
 def p_draw(p):
     '''cmd_draw : DRAW draw_instruction'''
-    p[0] = OperationNode(p[1], p[2])
+    p[0] = OperationNode(p, p[1], p[2])
 
 
 def p_draw_instruction(p):
@@ -75,27 +75,27 @@ def p_draw_instruction(p):
 
 def p_drawflush(p):
     '''cmd_drawflush : DRAWFLUSH fakeid'''
-    p[0] = OperationNode(p[1], p[2:])
+    p[0] = OperationNode(p, p[1], p[2:])
 
 
 def p_print(p):
     '''cmd_print : PRINT value'''
-    p[0] = OperationNode(p[1], p[2:])
+    p[0] = OperationNode(p, p[1], p[2:])
 
 
 def p_printflush(p):
     '''cmd_printflush : PRINTFLUSH fakeid'''
-    p[0] = OperationNode(p[1], p[2:])
+    p[0] = OperationNode(p, p[1], p[2:])
 
 
 def p_getlink(p):
     '''cmd_getlink : GETLINK fakeid var_int'''
-    p[0] = OperationNode(p[1], p[2:])
+    p[0] = OperationNode(p, p[1], p[2:])
 
 
 def p_control(p):
     '''cmd_control : CONTROL control_instruction'''
-    p[0] = OperationNode(p[1], p[2])
+    p[0] = OperationNode(p, p[1], p[2])
 
 
 def p_control_instruction(p):
@@ -110,7 +110,7 @@ def p_control_instruction(p):
 
 def p_radar(p):
     '''cmd_radar : RADAR radar_target radar_target radar_target radar_sort fakeid var_int fakeid'''
-    p[0] = OperationNode(p[1], p[2:])
+    p[0] = OperationNode(p, p[1], p[2:])
 
 
 def p_radar_target(p):
@@ -138,52 +138,52 @@ def p_radar_sort(p):
 
 def p_sensor(p):
     '''cmd_sensor : SENSOR fakeid fakeid fakeid'''
-    p[0] = OperationNode(p[1], p[2:])
+    p[0] = OperationNode(p, p[1], p[2:])
 
 
 def p_set(p):
     '''cmd_set : SET fakeid value'''
-    p[0] = OperationNode(p[1], p[2:])
+    p[0] = OperationNode(p, p[1], p[2:])
 
 
 def p_op(p):
     '''cmd_op : OP op_instruction fakeid value value'''
-    p[0] = OperationNode(p[1], p[2:])
+    p[0] = OperationNode(p, p[1], p[2:])
 
 
 def p_op_add(p):
     '''cmd_op_add : fakeid OP_ASSIGN value OP_ADD value'''
     params = "add {var} {lv} {rv}".format(var=p[1], lv=p[3], rv=p[5])
-    p[0] = OperationNode("op", params.split(" "))
+    p[0] = OperationNode(p, "op", params.split(" "))
 
 
 def p_op_sub(p):
     '''cmd_op_sub : fakeid OP_ASSIGN value OP_SUB value'''
     params = "sub {var} {lv} {rv}".format(var=p[1], lv=p[3], rv=p[5])
-    p[0] = OperationNode("op", params.split(" "))
+    p[0] = OperationNode(p, "op", params.split(" "))
 
 
 def p_op_mul(p):
     '''cmd_op_mul : fakeid OP_ASSIGN value OP_MUL value'''
     params = "mul {var} {lv} {rv}".format(var=p[1], lv=p[3], rv=p[5])
-    p[0] = OperationNode("op", params.split(" "))
+    p[0] = OperationNode(p, "op", params.split(" "))
 
 
 def p_op_div(p):
     '''cmd_op_div : fakeid OP_ASSIGN value OP_DIV value'''
     params = "div {var} {lv} {rv}".format(var=p[1], lv=p[3], rv=p[5])
-    p[0] = OperationNode("op", params.split(" "))
+    p[0] = OperationNode(p, "op", params.split(" "))
 
 
 def p_op_eq(p):
     '''cmd_op_eq : fakeid OP_ASSIGN value OP_EQ value'''
     params = "equal {var} {lv} {rv}".format(var=p[1], lv=p[3], rv=p[5])
-    p[0] = OperationNode("op", params.split(" "))
+    p[0] = OperationNode(p, "op", params.split(" "))
 
 
 def p_op_set(p):
     '''cmd_op_set : fakeid OP_ASSIGN value'''
-    p[0] = OperationNode("set", [p[1], p[3]])
+    p[0] = OperationNode(p, "set", [p[1], p[3]])
 
 
 def p_op_instruction(p):
@@ -229,12 +229,12 @@ def p_op_instruction(p):
 
 def p_end(p):
     '''cmd_end : END'''
-    p[0] = OperationNode(p[1])
+    p[0] = OperationNode(p, p[1])
 
 
 def p_jump(p):
     '''cmd_jump : JUMP INT jump_comparison value value'''
-    p[0] = OperationNode(p[1], p[2:])
+    p[0] = OperationNode(p, p[1], p[2:])
 
 
 def p_jump_comparison(p):
@@ -252,12 +252,12 @@ def p_jump_comparison(p):
 
 def p_ubind(p):
     '''cmd_ubind : UBIND fakeid'''
-    p[0] = OperationNode(p[1], p[2:])
+    p[0] = OperationNode(p, p[1], p[2:])
 
 
 def p_ucontrol(p):
     '''cmd_ucontrol : UCONTROL ucontrol_instruction'''
-    p[0] = OperationNode(p[1], p[2])
+    p[0] = OperationNode(p, p[1], p[2])
 
 
 def p_ucontrol_instruction(p):
@@ -284,12 +284,12 @@ def p_ucontrol_instruction(p):
 
 def p_uradar(p):
     '''cmd_uradar : URADAR radar_target radar_target radar_target radar_sort null var_bool fakeid'''
-    p[0] = OperationNode(p[1], p[2:])
+    p[0] = OperationNode(p, p[1], p[2:])
 
 
 def p_ulocate(p):
     '''cmd_ulocate : ULOCATE ulocate_find ulocate_group var_bool fakeid var_number var_number var_bool fakeid'''
-    p[0] = OperationNode(p[1], p[2:])
+    p[0] = OperationNode(p, p[1], p[2:])
 
 
 def p_ulocate_find(p):
@@ -318,27 +318,27 @@ def p_ulocate_group(p):
 
 def p_noop(p):
     '''cmd_noop : NOOP'''
-    p[0] = OperationNode(p[1])
+    p[0] = OperationNode(p, p[1])
 
 
 def p_exec(p):
     '''cmd_exec : EXEC fakeid func_param'''
-    p[0] = ExecNode(p[2], p[3])
+    p[0] = ExecNode(p, p[2], p[3])
 
 
 def p_lineend1(p):
     '''lineend : NEWLINE'''
-    p[0] = CommentNode("")
+    p[0] = CommentNode(p, "")
 
 
 def p_lineend2(p):
     '''lineend : COMMENT NEWLINE'''
-    p[0] = CommentNode(p[1])
+    p[0] = CommentNode(p, p[1])
 
 
 def p_line(p):
     '''line : operation lineend'''
-    p[0] = OneLineNode(p[1], p[2])
+    p[0] = OneLineNode(p, p[1], p[2])
 
 
 def p_line1(p):
@@ -348,7 +348,7 @@ def p_line1(p):
 
 def p_line_error(p):
     '''line : error NEWLINE'''
-    p[0] = ErrorNode()
+    p[0] = ErrorNode(p)
     p.parser.errok()
 
 

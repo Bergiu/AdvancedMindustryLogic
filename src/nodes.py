@@ -1,26 +1,55 @@
 from __future__ import annotations
 
-from typing import Any, Optional, List, Generator
+from typing import Any, Optional, List, Generator, Union
+
+from src.preprocessor import CodePosResolver
+
+LINT = False
+CODE_POS = []
 
 
-LINT = True
+def setup(lint: bool, code_pos: CodePosResolver):
+    global LINT, CODE_POS
+    LINT = lint
+    CODE_POS = code_pos
 
 
 class NodeException:
     def __init__(self, symbol, message):
         self.symbol = symbol
         self.message = message
+        self.filename = "todo"
+        self.line = "todo"
+        self.column = "todo"
+
+
+class TokenException:
+    def __init__(self, symbol, message, token, parser):
+        global CODE_POS
+        self.symbol = symbol
+        self.message = message
+        line_start = parser.lexer.lexdata.rfind('\n', 0, token.lexpos) + 1
+        self.column = (token.lexpos - line_start) + 1
+        self.lineno, self.filename = CODE_POS[token.lineno - 1]
 
 
 class Node:
+    def __init__(self, p):
+        self.p = p
+
     def __iter__(self):
         yield self
 
-    def call_exception(self, exception: NodeException):
+    def call_exception(self, exception: Union[NodeException, TokenException]):
         global LINT
         if LINT:
             form = "{path}:{line}:{column}: ({symbol}) {msg}"
-            out = form.format(path="todo", line="todo", column="todo", symbol=exception.symbol, msg=exception.message)
+            out = form.format(
+                path=exception.filename,
+                line=exception.lineno,
+                column=exception.column,
+                symbol=exception.symbol,
+                msg=exception.message)
             print(out)
         else:
             raise exception
@@ -64,8 +93,8 @@ class OneLineNode(Node):
         yield from self.left
         yield from self.right
 
-    def __init__(self, left: Node, right: Node):
-        super().__init__()
+    def __init__(self, p, left: Node, right: Node):
+        super().__init__(p)
         self.left = left
         self.right = right
 
@@ -83,8 +112,8 @@ class CodeBlockNode(Node):
             yield from self.prev_node
         yield from self.line
 
-    def __init__(self, line: Node, prev_node: CodeBlockNode = None):
-        super().__init__()
+    def __init__(self, p, line: Node, prev_node: CodeBlockNode = None):
+        super().__init__(p)
         self.line = line
         self.prev_node = prev_node
 
@@ -111,8 +140,8 @@ class CodeBlockNode(Node):
 
 
 class OperationNode(Node):
-    def __init__(self, command: str, parameters: Optional[List[Any]] = None):
-        super().__init__()
+    def __init__(self, p, command: str, parameters: Optional[List[Any]] = None):
+        super().__init__(p)
         self.command = command
         self.parameters = parameters
 
@@ -131,8 +160,8 @@ class FunctionNode(Node):
         yield self
         yield from self.code_block
 
-    def __init__(self, function_name: str, params: List[Any], code_block: CodeBlockNode):
-        super().__init__()
+    def __init__(self, p, function_name: str, params: List[Any], code_block: CodeBlockNode):
+        super().__init__(p)
         self.function_name = function_name
         self.params = params
         self.code_block = code_block
@@ -145,9 +174,6 @@ class FunctionNode(Node):
         lines = self.code_block.loc() + 2
         out += f"op add {self.function_name} @counter 1\n"
         out += f"op add @counter @counter {lines}\n"
-        #out += f"set _{self.function_name}_retptr @counter\n"
-        #out += str(self.code_block.to_code(tree))
-        #out += f"set @counter retptr"
         out += f"set _{self.function_name}_retptr retptr\n"
         out += str(self.code_block.to_code(tree))
         out += f"set @counter _{self.function_name}_retptr"
@@ -155,8 +181,8 @@ class FunctionNode(Node):
 
 
 class CommentNode(Node):
-    def __init__(self, comment: str):
-        super().__init__()
+    def __init__(self, p, comment: str):
+        super().__init__(p)
         self.comment = comment
 
     def to_code(self, tree: Node):
@@ -167,8 +193,9 @@ class CommentNode(Node):
 
 
 class ExecNode(Node):
-    def __init__(self, fnptr: str, params: List[Any]):
-        super().__init__()
+    def __init__(self, p, fnptr: str, params: List[Any]):
+        super().__init__(p)
+        #function_name = p.slice[2].value.lexpos
         self.fnptr = fnptr
         self.params = params
 
@@ -212,6 +239,9 @@ class ExecNode(Node):
 
 
 class ErrorNode(Node):
+    def __init__(self, p):
+        super().__init__(p)
+
     def loc(self):
         return 0
 
