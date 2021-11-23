@@ -34,14 +34,8 @@ def p_ids2(p):
 
 
 def p_function(p):
-    '''cmd_function : FUNCTION fakeid func_param LCURLY lineend codeblock RCURLY lineend'''
+    '''cmd_function : FUNCTION fakeid func_param LCURLY lineend codeblock RCURLY'''
     p[0] = FunctionNode(p[2], p[3], p[6])
-
-
-def p_function_error(p):
-    '''cmd_function : error lineend'''
-    p[0] = ErrorNode()
-    p.parser.errok()
 
 
 def p_write(p):
@@ -355,6 +349,7 @@ def p_line_error(p):
 
 def p_operation(p):
     '''operation : cmd_write
+                 | cmd_function
                  | cmd_read
                  | cmd_draw
                  | cmd_drawflush
@@ -373,7 +368,6 @@ def p_operation(p):
                  | cmd_uradar
                  | cmd_ulocate
                  | cmd_noop
-                 | cmd_function
                  | cmd_exec
                  | cmd_op_add
                  | cmd_op_sub
