@@ -19,7 +19,7 @@ class NodeException:
         self.symbol = symbol
         self.message = message
         self.filename = "todo"
-        self.line = "todo"
+        self.lineno = "todo"
         self.column = "todo"
 
 
