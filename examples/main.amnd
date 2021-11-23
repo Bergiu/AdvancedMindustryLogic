@@ -1,19 +1,15 @@
 import ../stdlib/debug.amnd
 
-function hello_world {
-    print "B"
+function hello_world()  {
+    print "Hello jojo"
 }
 
-print "A"
-exec hello_world
-print "C"
+function hello_boy(a)  {
+    print "Hello "
+    print a
+}
+
+
+exec hello_world()
+exec hello_boy("marco")
 printflush stdout
-
-# TODO bla
-
-a = b + c
-x = 8 * 7
-x = 8 - 7
-x = 8 / 7
-x = 5
-x = 9 == 9

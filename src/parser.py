@@ -33,6 +33,11 @@ def p_ids2(p):
     p[0] = p[1]
 
 
+def p_ids3(p):
+    '''ids : '''
+    p[0] = []
+
+
 def p_function(p):
     '''cmd_function : FUNCTION fakeid func_param LCURLY lineend codeblock RCURLY'''
     p[0] = FunctionNode(p[2], p[3], p[6])
