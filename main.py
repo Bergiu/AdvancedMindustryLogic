@@ -29,13 +29,12 @@ def main():
     setup(args.linter, code_pos)
     # print(do_lexing(text))
     out = do_parsing(text)
+    code = out.to_code(out)
     if not args.linter:
         if args.outfile is not None:
-            write_code(args.outfile, out.to_code(out))
+            write_code(args.outfile, code)
         else:
-            print(out.to_code(out))
-    else:
-        out.to_code(out)
+            print(code)
 
 
 if __name__ == '__main__':
