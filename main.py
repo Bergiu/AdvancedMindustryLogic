@@ -1,4 +1,6 @@
 #!/bin/python3
+import sys
+
 from src.preprocessor import preprocess, CodePosResolver
 from src.utils import load_code, write_code
 from src.parser import setup as setupp, do_parsing
@@ -23,12 +25,16 @@ def setup(lint: bool, code_pos: CodePosResolver):
 
 
 def main():
+    # needed because python linked lists can only have ~1000 elements
+    sys.setrecursionlimit(2000)
     args = load_args()
     text = load_code(args.filename)
     text, code_pos = preprocess(text, args.filename)
     setup(args.linter, code_pos)
     # print(do_lexing(text))
     out = do_parsing(text)
+    if out.loc() > 1000:
+        raise Exception("PANIC: Maximum lines of code exceeded (max: 1000).")
     code = out.to_code(out)
     if not args.linter:
         if args.outfile is not None:
