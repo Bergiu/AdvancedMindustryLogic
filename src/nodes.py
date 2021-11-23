@@ -161,27 +161,34 @@ class ExecNode(Node):
     def loc(self):
         return 2 + len(self.params)
 
-    def get_related_function(self, tree: Node) -> FunctionNode:
+    def get_related_function(self, tree: Node) -> Optional[FunctionNode]:
         functions = list(self.find_function(tree, self.fnptr))
         if len(functions) > 2:
             self.call_exception(NodeException("error", f"Multiple definitions of function  {self.fnptr}."))
+            return
         if len(functions) < 1:
             self.call_exception(NodeException("error", f"Missing definition of function {self.fnptr}."))
+            return
         function = functions[0]
         x = len(function.params) - len(self.params)
         if x > 0:
             param_names = " and ".join([f"'{param}'" for param in function.params[len(function.params) - x:]])
             if len(function.params) > 1:
                 self.call_exception(NodeException("error", f"TypeError: {self.fnptr} missing {x} positional arguments: {param_names}"))
+                return
             else:
                 self.call_exception(NodeException("error", f"TypeError: {self.fnptr} missing {x} positional argument: {param_names}"))
+                return
         if x < 0:
             self.call_exception(NodeException("error", f"TypeError: {self.fnptr} takes {len(function.params)} but {len(self.params)} were given"))
+            return
         return functions[0]
 
     def to_code(self, tree: Node):
         out = ""
         function = self.get_related_function(tree)
+        if function is None:
+            return "ERROR"
         for i, param_value in enumerate(self.params):
             param_name = function.params[i]
             out += f"set {param_name} {param_value}\n"
@@ -195,5 +202,4 @@ class ErrorNode(Node):
         return 0
 
     def to_code(self, tree: Node):
-        out = "ERROR"
-        return out
+        return "ERROR"
