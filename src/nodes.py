@@ -55,6 +55,10 @@ class Node:
 
 
 class OneLineNode(Node):
+    """
+    One Line Nodes are nodes that have one line (that can result in many lines) and optionally a comment.
+    So the loc of this is the amount of lines from the left node.
+    """
     def __iter__(self):
         yield self
         yield from self.left
@@ -66,7 +70,7 @@ class OneLineNode(Node):
         self.right = right
 
     def loc(self):
-        return 1
+        return self.left.loc()
 
     def to_code(self, tree: Node) -> str:
         return f"{self.left.to_code(tree)} {self.right.to_code(tree)}"
@@ -85,11 +89,18 @@ class CodeBlockNode(Node):
         self.prev_node = prev_node
 
     def loc(self):
-        if self.prev_node is not None and isinstance(self.prev_node, Node):
-            if isinstance(self.line, Node):
-                return self.prev_node.loc() + self.line.loc()
-            return self.prev_node.loc() + 1
-        return 1
+        loc = 0
+        if self.prev_node is not None:
+            if isinstance(self.prev_node, Node):
+                loc += self.prev_node.loc()
+            else:
+                loc += 1
+        if isinstance(self.line, Node):
+            a = self.line.loc()
+            loc += a
+        else:
+            loc += 1
+        return loc
 
     def to_code(self, tree: Node):
         out = ""
@@ -134,9 +145,12 @@ class FunctionNode(Node):
         lines = self.code_block.loc() + 2
         out += f"op add {self.function_name} @counter 1\n"
         out += f"op add @counter @counter {lines}\n"
-        out += f"set _{self.function_name}_retptr @counter\n"
+        #out += f"set _{self.function_name}_retptr @counter\n"
+        #out += str(self.code_block.to_code(tree))
+        #out += f"set @counter retptr"
+        out += f"set _{self.function_name}_retptr retptr\n"
         out += str(self.code_block.to_code(tree))
-        out += "set @counter retptr"
+        out += f"set @counter _{self.function_name}_retptr"
         return out
 
 

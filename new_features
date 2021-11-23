@@ -1,44 +1,3 @@
-## Function with parameter
-params:
-- move_to_x: x coordinate
-- move_to_y: y coordinate
-
-Current way:
-
-```
-function fn_move {
-    set move_tolerance 2 # radius where it is near enough
-    ucontrol move move_to_x move_to_y 0 0 0
-    # loop: until unit is in the tolerance radius
-    ucontrol within move_to_x move_to_y move_tolerance move_is_within 0
-    op sub move_is_not_within 1 move_is_within
-    op mul move_counter_steps 4 move_is_not_within
-    op sub @counter @counter move_counter_steps
-    # end: loop
-}
-
-set move_to_x bla
-set move_to_y blub
-exec fn_move
-```
-
-New way:
-
-```
-function fn_move(move_to_x, move_to_y) {
-    set move_tolerance 2 # radius where it is near enough
-    ucontrol move move_to_x move_to_y 0 0 0
-    # loop: until unit is in the tolerance radius
-    ucontrol within move_to_x move_to_y move_tolerance move_is_within 0
-    op sub move_is_not_within 1 move_is_within
-    op mul move_counter_steps 4 move_is_not_within
-    op sub @counter @counter move_counter_steps
-    # end: loop
-}
-
-exec fn_move(bla, blub)
-```
-
 ## Inline operations
 
 Current way:
@@ -68,3 +27,13 @@ Notice:
 ```
 x = 8 * (9 + 2)
 ```
+
+# Rekursion
+This needs a stack for return pointers
+
+# Schleifen
+# If
+
+# Bugs
+- Fehler im Tree ohne lining aktiviert schmeißen keine exception
+- Fehler im Tree haben keine zeilennummer

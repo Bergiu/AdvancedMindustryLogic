@@ -1,15 +1,16 @@
 import ../stdlib/debug.amnd
 
+print "A"
 function hello_world()  {
     print "Hello jojo"
 }
-
+print "B"
 function hello_boy(a)  {
-    print "Hello "
-    print a
+    exec hello_world()
 }
+print "C"
 
 
-exec hello_world()
+#exec hello_world()
 exec hello_boy("marco")
 printflush stdout
