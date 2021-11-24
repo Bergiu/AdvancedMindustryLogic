@@ -218,25 +218,28 @@ class ExecNode(Node):
         return 2 + len(self.params)
 
     def get_related_function(self, tree: Node) -> Optional[FunctionNode]:
-        functions = list(self.find_function(tree, self.fnptr))
-        if len(functions) > 2:
-            self.call_exception(NodeException("error", f"Multiple definitions of function  {self.fnptr}."))
+        function_name = self.fnptr.token.value
+        functions = list(self.find_function(tree, function_name))
+        if len(functions) >= 2:
+            self.call_exception(TokenException("error", f"Multiple definitions of function  {function_name}.", self.fnptr.token, self.p))
+            self.call_exception(TokenException("error", f"Multiple definitions of function  {function_name}.", self.fnptr.token, self.p))
             return
         if len(functions) < 1:
-            self.call_exception(NodeException("error", f"Missing definition of function {self.fnptr}."))
+            self.call_exception(TokenException("error", f"Missing definition of function {function_name}.", self.fnptr.token, self.p))
             return
         function = functions[0]
         x = len(function.params) - len(self.params)
         if x > 0:
             param_names = " and ".join([f"'{param}'" for param in function.params[len(function.params) - x:]])
             if len(function.params) > 1:
-                self.call_exception(NodeException("error", f"TypeError: {self.fnptr} missing {x} positional arguments: {param_names}"))
+                self.call_exception(TokenException("error", f"TypeError: {function_name} missing {x} positional arguments: {param_names}", self.fnptr.token, self.p))
                 return
             else:
-                self.call_exception(NodeException("error", f"TypeError: {self.fnptr} missing {x} positional argument: {param_names}"))
+                self.call_exception(TokenException("error", f"TypeError: {function_name} missing {x} positional argument: {param_names}", self.fnptr.token, self.p))
                 return
         if x < 0:
-            self.call_exception(NodeException("error", f"TypeError: {self.fnptr} takes {len(function.params)} but {len(self.params)} were given"))
+            param = self.params[len(self.params) + x].token
+            self.call_exception(TokenException("error", f"TypeError: {function_name} takes {len(function.params)} but {len(self.params)} were given", param, self.p))
             return
         return functions[0]
 
