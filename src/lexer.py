@@ -151,7 +151,7 @@ reserved_keys = [
     # 'if': 'IF',
     # 'then': 'THEN',
     # 'else': 'ELSE',
-    # 'while': 'WHILE',
+    'while',
     # 'define',
     'function',
     'exec',

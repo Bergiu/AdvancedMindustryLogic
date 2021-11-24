@@ -273,3 +273,26 @@ class Token:
 
     def __str__(self):
         return str(self.token.value)
+
+
+class WhileNode(Node):
+    def __init__(self, p, while_o: Token, condition: Token, codeblock: CodeBlockNode):
+        super().__init__(p)
+        self.while_o = while_o
+        self.condition = condition
+        self.codeblock = codeblock
+
+    def loc(self):
+        return self.codeblock.loc() + 5
+
+    def to_code(self, tree: Node):
+        ident = self.__hash__()
+        start_ptr = f"while_start_{ident}"
+        skip = f"skip_{ident}"
+        out = f"set {start_ptr} @counter\n"
+        out += f"op notEqual {skip} {self.condition} 1\n"
+        out += f"op mul {skip} {skip} {self.codeblock.loc() + 1}\n"
+        out += f"op add @counter @counter {skip}\n"
+        out += self.codeblock.to_code(tree)
+        out += f"set @counter {start_ptr}\n"
+        return out

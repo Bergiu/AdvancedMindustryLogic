@@ -80,6 +80,14 @@ def p_ids3(p):
     p[0] = []
 
 
+def p_while(p):
+    '''cmd_while : WHILE var_bool LCURLY lineend codeblock RCURLY'''
+    while_o: Token = Token(p.slice[1])
+    condition: var_bool_t = p[2]
+    codeblock: codeblock_t = p[5]
+    p[0] = WhileNode(p, while_o, condition, codeblock)
+
+
 def p_function(p):
     '''cmd_function : FUNCTION fakeid func_param LCURLY lineend codeblock RCURLY'''
     fakeid: fakeid_t = p[2]
@@ -392,7 +400,7 @@ def p_op_instruction(p):
                       | RAND
     '''
     subcommand_s: Token = Token(p.slice[1])
-    p[0] = Token(subcommand_s)
+    p[0] = subcommand_s
 
 
 def p_end(p):
@@ -562,6 +570,7 @@ def p_line_error(p):
 def p_operation(p):
     '''operation : cmd_write
                  | cmd_function
+                 | cmd_while
                  | cmd_read
                  | cmd_draw
                  | cmd_drawflush

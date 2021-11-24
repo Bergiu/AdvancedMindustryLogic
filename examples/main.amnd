@@ -1,8 +1,21 @@
-x = 1
-x = x + 1
-x += 1
-x++
-x--
+x = 0
+z = 0
+condition = true
 
-print x
+while condition {
+    x++
+    y = 0
+    condition2 = true
+    while condition2 {
+        z++
+        y++
+        print z
+        # y <= 10
+        printflush message1
+        op lessThan condition2 y 10
+    }
+    op lessThan condition x 10
+}
+
+print "Fertig"
 printflush message1
