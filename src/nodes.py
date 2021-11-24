@@ -30,7 +30,8 @@ class TokenException(BaseException):
         self.message = message
         line_start = parser.lexer.lexdata.rfind('\n', 0, token.lexpos) + 1
         self.column = (token.lexpos - line_start) + 1
-        self.lineno, self.filename = CODE_POS[token.lineno - 1]
+        lineno, self.filename = CODE_POS[token.lineno - 1]
+        self.lineno = lineno + 1
 
 
 class Node:
