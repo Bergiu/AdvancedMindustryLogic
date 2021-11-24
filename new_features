@@ -36,4 +36,3 @@ This needs a stack for return pointers
 
 # Bugs
 - Fehler im Tree ohne lining aktiviert schmeißen keine exception
-- Fehler im Tree haben keine zeilennummer
