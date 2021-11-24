@@ -180,6 +180,18 @@ class FunctionNode(Node):
         return out
 
 
+class NewLineNode(Node):
+    def __init__(self, p, token):
+        super().__init__(p)
+        self.token = token
+
+    def to_code(self, tree: Node):
+        return ""
+
+    def loc(self):
+        return 0
+
+
 class CommentNode(Node):
     def __init__(self, p, comment: str):
         super().__init__(p)
@@ -247,3 +259,11 @@ class ErrorNode(Node):
 
     def to_code(self, tree: Node):
         return "ERROR"
+
+
+class Token:
+    def __init__(self, token):
+        self.token = token
+
+    def __str__(self):
+        return str(self.token.value)
