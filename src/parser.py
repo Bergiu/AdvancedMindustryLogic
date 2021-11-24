@@ -250,6 +250,24 @@ def p_op_add(p):
     p[0] = OperationNode(p, op, params.split(" "))
 
 
+def p_op_add_reduced(p):
+    '''cmd_op_add : fakeid OP_ADD OP_ASSIGN value'''
+    op: str = "op"
+    fakeid: fakeid_t = p[1]
+    value1: value_t = p[4]
+    params = "add {var} {lv} {rv}".format(var=fakeid, lv=fakeid, rv=value1)
+    p[0] = OperationNode(p, op, params.split(" "))
+
+
+def p_op_add_reduced_much(p):
+    '''cmd_op_add : fakeid OP_ADD OP_ADD'''
+    op: str = "op"
+    fakeid: fakeid_t = p[1]
+    rv = "1"
+    params = "add {var} {lv} {rv}".format(var=fakeid, lv=fakeid, rv=rv)
+    p[0] = OperationNode(p, op, params.split(" "))
+
+
 def p_op_sub(p):
     '''cmd_op_sub : fakeid OP_ASSIGN value OP_SUB value'''
     op: str = "op"
@@ -257,6 +275,24 @@ def p_op_sub(p):
     value1: value_t = p[3]
     value2: value_t = p[5]
     params = "sub {var} {lv} {rv}".format(var=fakeid, lv=value1, rv=value2)
+    p[0] = OperationNode(p, op, params.split(" "))
+
+
+def p_op_sub_reduced(p):
+    '''cmd_op_sub : fakeid OP_SUB OP_ASSIGN value'''
+    op: str = "op"
+    fakeid: fakeid_t = p[1]
+    value1: value_t = p[4]
+    params = "sub {var} {lv} {rv}".format(var=fakeid, lv=fakeid, rv=value1)
+    p[0] = OperationNode(p, op, params.split(" "))
+
+
+def p_op_sub_reduced_much(p):
+    '''cmd_op_sub : fakeid OP_SUB OP_SUB'''
+    op: str = "op"
+    fakeid: fakeid_t = p[1]
+    rv = "1"
+    params = "sub {var} {lv} {rv}".format(var=fakeid, lv=fakeid, rv=rv)
     p[0] = OperationNode(p, op, params.split(" "))
 
 
@@ -270,6 +306,15 @@ def p_op_mul(p):
     p[0] = OperationNode(p, op, params.split(" "))
 
 
+def p_op_mul_reduced(p):
+    '''cmd_op_mul : fakeid OP_MUL OP_ASSIGN value'''
+    op: str = "op"
+    fakeid: fakeid_t = p[1]
+    value1: value_t = p[4]
+    params = "mul {var} {lv} {rv}".format(var=fakeid, lv=fakeid, rv=value1)
+    p[0] = OperationNode(p, op, params.split(" "))
+
+
 def p_op_div(p):
     '''cmd_op_div : fakeid OP_ASSIGN value OP_DIV value'''
     op: str = "op"
@@ -278,6 +323,16 @@ def p_op_div(p):
     value2: value_t = p[5]
     params = "div {var} {lv} {rv}".format(var=fakeid, lv=value1, rv=value2)
     p[0] = OperationNode(p, op, params.split(" "))
+
+
+def p_op_div_reduced(p):
+    '''cmd_op_div : fakeid OP_DIV OP_ASSIGN value'''
+    op: str = "op"
+    fakeid: fakeid_t = p[1]
+    value1: value_t = p[4]
+    params = "div {var} {lv} {rv}".format(var=fakeid, lv=fakeid, rv=value1)
+    p[0] = OperationNode(p, op, params.split(" "))
+
 
 
 def p_op_eq(p):

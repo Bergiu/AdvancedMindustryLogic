@@ -12,7 +12,6 @@ CodeLine = Tuple[LineNumber, Filename]
 CodePosResolver = List[CodeLine]
 
 
-
 class File:
     def __init__(self, filename, lines_of_code):
         self.filename = filename

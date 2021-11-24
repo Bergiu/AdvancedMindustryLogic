@@ -1,16 +1,8 @@
-import ../stdlib/debug.amnd
+x = 1
+x = x + 1
+x += 1
+x++
+x--
 
-print "A"
-function hello_world()  {
-    print "Hello jojo"
-}
-print "B"
-function hello_boy(a)  {
-    exec hello_world()
-}
-print "C"
-
-
-#exec hello_world()
-exec hello_boy("marco")
-printflush stdout
+print x
+printflush message1
