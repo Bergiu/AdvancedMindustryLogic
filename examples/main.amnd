@@ -2,5 +2,14 @@ x = 0
 op lessThan condition x 1
 if condition {
     print "A"
+} else {
+    print "B"
+}
+x++
+op lessThan condition x 1
+if condition {
+    print "A"
+} else {
+    print "B"
 }
 printflush message1

@@ -149,8 +149,7 @@ sub_instructions_ulocate = [
 
 reserved_keys = [
     'if',
-    # 'then': 'THEN',
-    # 'else': 'ELSE',
+    'else',
     'while',
     # 'define',
     'function',

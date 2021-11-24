@@ -88,6 +88,15 @@ def p_if(p):
     p[0] = IfNode(p, if_o, condition, codeblock)
 
 
+def p_if_else(p):
+    '''cmd_if_else : IF var_bool LCURLY lineend codeblock RCURLY ELSE LCURLY lineend codeblock RCURLY'''
+    if_o: Token = Token(p.slice[1])
+    condition: var_bool_t = p[2]
+    codeblock1: codeblock_t = p[5]
+    codeblock2: codeblock_t = p[10]
+    p[0] = IfElseNode(p, if_o, condition, codeblock1, codeblock2)
+
+
 def p_while(p):
     '''cmd_while : WHILE var_bool LCURLY lineend codeblock RCURLY'''
     while_o: Token = Token(p.slice[1])
@@ -580,6 +589,7 @@ def p_operation(p):
                  | cmd_function
                  | cmd_while
                  | cmd_if
+                 | cmd_if_else
                  | cmd_read
                  | cmd_draw
                  | cmd_drawflush

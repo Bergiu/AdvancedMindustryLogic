@@ -135,7 +135,7 @@ class CodeBlockNode(Node):
     def to_code(self, tree: Node):
         out = ""
         if self.prev_node is not None:
-            out += f"{self.prev_node.to_code(tree)}"
+            out += f"{self.prev_node.to_code(tree)}\n"
         out += f"{self.line.to_code(tree)}"
         return out
 
@@ -310,7 +310,28 @@ class IfNode(Node):
 
     def to_code(self, tree: Node):
         out = f"op notEqual if_skip {self.condition} 1\n"
-        out += f"op mul tmp_skip if_skip {self.codeblock.loc() + 1}\n"
+        out += f"op mul if_skip if_skip {self.codeblock.loc()}\n"
         out += f"op add @counter @counter if_skip\n"
         out += self.codeblock.to_code(tree)
+        return out
+
+
+class IfElseNode(Node):
+    def __init__(self, p, if_o: Token, condition: Token, codeblock1: CodeBlockNode, codeblock2: CodeBlockNode):
+        super().__init__(p)
+        self.if_o = if_o
+        self.condition = condition
+        self.codeblock1 = codeblock1
+        self.codeblock2 = codeblock2
+
+    def loc(self):
+        return self.codeblock1.loc() + self.codeblock2.loc() + 3
+
+    def to_code(self, tree: Node):
+        out = f"op notEqual if_skip {self.condition} 1\n"
+        out += f"op mul if_skip if_skip {self.codeblock1.loc() + 1}\n"
+        out += f"op add @counter @counter if_skip\n"
+        out += f"{self.codeblock1.to_code(tree)}\n"
+        out += f"op add @counter @counter {self.codeblock2.loc()}\n"
+        out += self.codeblock2.to_code(tree)
         return out
