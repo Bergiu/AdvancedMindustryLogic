@@ -14,7 +14,7 @@ def setup(lint: bool, code_pos: CodePosResolver):
     CODE_POS = code_pos
 
 
-class NodeException:
+class NodeException(BaseException):
     def __init__(self, symbol, message):
         self.symbol = symbol
         self.message = message
@@ -23,7 +23,7 @@ class NodeException:
         self.column = "todo"
 
 
-class TokenException:
+class TokenException(BaseException):
     def __init__(self, symbol, message, token, parser):
         global CODE_POS
         self.symbol = symbol
