@@ -80,6 +80,14 @@ def p_ids3(p):
     p[0] = []
 
 
+def p_if(p):
+    '''cmd_if : IF var_bool LCURLY lineend codeblock RCURLY'''
+    if_o: Token = Token(p.slice[1])
+    condition: var_bool_t = p[2]
+    codeblock: codeblock_t = p[5]
+    p[0] = IfNode(p, if_o, condition, codeblock)
+
+
 def p_while(p):
     '''cmd_while : WHILE var_bool LCURLY lineend codeblock RCURLY'''
     while_o: Token = Token(p.slice[1])
@@ -571,6 +579,7 @@ def p_operation(p):
     '''operation : cmd_write
                  | cmd_function
                  | cmd_while
+                 | cmd_if
                  | cmd_read
                  | cmd_draw
                  | cmd_drawflush

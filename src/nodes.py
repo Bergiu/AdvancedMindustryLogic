@@ -136,7 +136,7 @@ class CodeBlockNode(Node):
         out = ""
         if self.prev_node is not None:
             out += f"{self.prev_node.to_code(tree)}"
-        out += f"{self.line.to_code(tree)}\n"
+        out += f"{self.line.to_code(tree)}"
         return out
 
 
@@ -295,4 +295,22 @@ class WhileNode(Node):
         out += f"op add @counter @counter {skip}\n"
         out += self.codeblock.to_code(tree)
         out += f"set @counter {start_ptr}\n"
+        return out
+
+
+class IfNode(Node):
+    def __init__(self, p, if_o: Token, condition: Token, codeblock: CodeBlockNode):
+        super().__init__(p)
+        self.if_o = if_o
+        self.condition = condition
+        self.codeblock = codeblock
+
+    def loc(self):
+        return self.codeblock.loc() + 3
+
+    def to_code(self, tree: Node):
+        out = f"op notEqual if_skip {self.condition} 1\n"
+        out += f"op mul tmp_skip if_skip {self.codeblock.loc() + 1}\n"
+        out += f"op add @counter @counter if_skip\n"
+        out += self.codeblock.to_code(tree)
         return out
