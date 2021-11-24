@@ -141,7 +141,7 @@ class CodeBlockNode(Node):
 
 
 class OperationNode(Node):
-    def __init__(self, p, command: str, parameters: Optional[List[Any]] = None):
+    def __init__(self, p, command: Union[Token, str], parameters: Optional[List[Any]] = None):
         super().__init__(p)
         self.command = command
         self.parameters = parameters
@@ -161,11 +161,13 @@ class FunctionNode(Node):
         yield self
         yield from self.code_block
 
-    def __init__(self, p, function_name: str, params: List[Any], code_block: CodeBlockNode):
+    def __init__(self, p, function_name: Token, params: List[Any], code_block: CodeBlockNode, lcurly: Token, rcurly: Token):
         super().__init__(p)
-        self.function_name = function_name
+        self.function_name = function_name.token.value
         self.params = params
         self.code_block = code_block
+        self.lcurly = lcurly
+        self.rcurly = rcurly
 
     def loc(self):
         return self.code_block.loc() + 4
@@ -194,7 +196,7 @@ class NewLineNode(Node):
 
 
 class CommentNode(Node):
-    def __init__(self, p, comment: str):
+    def __init__(self, p, comment: Union[Token, str]):
         super().__init__(p)
         self.comment = comment
 
@@ -206,7 +208,7 @@ class CommentNode(Node):
 
 
 class ExecNode(Node):
-    def __init__(self, p, fnptr: str, params: List[Any]):
+    def __init__(self, p, fnptr: Token, params: List[Any]):
         super().__init__(p)
         #function_name = p.slice[2].value.lexpos
         self.fnptr = fnptr
@@ -247,7 +249,7 @@ class ExecNode(Node):
             param_name = function.params[i]
             out += f"set {param_name} {param_value}\n"
         out += "op add retptr @counter 1\n"
-        out += f"set @counter {self.fnptr}"
+        out += f"set @counter {self.fnptr.token.value}"
         return out
 
 
