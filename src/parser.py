@@ -98,11 +98,11 @@ def p_if_else(p):
 
 
 def p_while(p):
-    '''cmd_while : WHILE var_bool LCURLY lineend codeblock RCURLY'''
+    '''cmd_while : WHILE statement LCURLY lineend codeblock RCURLY'''
     while_o: Token = Token(p.slice[1])
-    condition: var_bool_t = p[2]
+    statement: statement_t = p[2]
     codeblock: codeblock_t = p[5]
-    p[0] = WhileNode(p, while_o, condition, codeblock)
+    p[0] = WhileNode(p, while_o, statement, codeblock)
 
 
 def p_function(p):

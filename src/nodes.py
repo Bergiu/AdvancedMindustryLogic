@@ -178,7 +178,7 @@ class FunctionNode(Node):
         out += f"op add {self.function_name} @counter 1\n"
         out += f"op add @counter @counter {lines}\n"
         out += f"set _{self.function_name}_retptr retptr\n"
-        out += str(self.code_block.to_code(tree))
+        out += f"{self.code_block.to_code(tree)}\n"
         out += f"set @counter _{self.function_name}_retptr"
         return out
 
@@ -283,17 +283,24 @@ class WhileNode(Node):
         self.codeblock = codeblock
 
     def loc(self):
-        return self.codeblock.loc() + 5
+        out = self.codeblock.loc() + 5
+        if isinstance(self.condition, StatementNode):
+            out += self.condition.loc()
+        return out
 
     def to_code(self, tree: Node):
         ident = self.__hash__()
         start_ptr = f"while_start_{ident}"
         skip = f"skip_{ident}"
         out = f"set {start_ptr} @counter\n"
-        out += f"op notEqual {skip} {self.condition} 1\n"
+        if isinstance(self.condition, StatementNode):
+            out += f"{self.condition.to_code(tree)}\n"
+            out += f"op notEqual {skip} {self.condition.varname} 1\n"
+        else:
+            out += f"op notEqual {skip} {self.condition} 1\n"
         out += f"op mul {skip} {skip} {self.codeblock.loc() + 1}\n"
         out += f"op add @counter @counter {skip}\n"
-        out += self.codeblock.to_code(tree)
+        out += f"{self.codeblock.to_code(tree)}\n"
         out += f"set @counter {start_ptr}\n"
         return out
 
