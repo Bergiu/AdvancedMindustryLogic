@@ -299,17 +299,25 @@ class WhileNode(Node):
 
 
 class IfNode(Node):
-    def __init__(self, p, if_o: Token, condition: Token, codeblock: CodeBlockNode):
+    def __init__(self, p, if_o: Token, condition: Union[Token, StatementNode], codeblock: CodeBlockNode):
         super().__init__(p)
         self.if_o = if_o
         self.condition = condition
         self.codeblock = codeblock
 
     def loc(self):
-        return self.codeblock.loc() + 3
+        out = self.codeblock.loc() + 3
+        if isinstance(self.condition, StatementNode):
+            out += self.condition.loc()
+        return out
 
     def to_code(self, tree: Node):
-        out = f"op notEqual if_skip {self.condition} 1\n"
+        out = ""
+        if isinstance(self.condition, StatementNode):
+            out += f"{self.condition.to_code(tree)}\n"
+            out += f"op notEqual if_skip {self.condition.varname} 1\n"
+        else:
+            out += f"op notEqual if_skip {self.condition} 1\n"
         out += f"op mul if_skip if_skip {self.codeblock.loc()}\n"
         out += f"op add @counter @counter if_skip\n"
         out += self.codeblock.to_code(tree)
@@ -317,7 +325,7 @@ class IfNode(Node):
 
 
 class IfElseNode(Node):
-    def __init__(self, p, if_o: Token, condition: Token, codeblock1: CodeBlockNode, codeblock2: CodeBlockNode):
+    def __init__(self, p, if_o: Token, condition: Union[Token, StatementNode], codeblock1: CodeBlockNode, codeblock2: CodeBlockNode):
         super().__init__(p)
         self.if_o = if_o
         self.condition = condition
@@ -325,13 +333,53 @@ class IfElseNode(Node):
         self.codeblock2 = codeblock2
 
     def loc(self):
-        return self.codeblock1.loc() + self.codeblock2.loc() + 3
+        out = self.codeblock1.loc() + self.codeblock2.loc() + 3
+        if isinstance(self.condition, StatementNode):
+            out += self.condition.loc()
+        return out
 
     def to_code(self, tree: Node):
-        out = f"op notEqual if_skip {self.condition} 1\n"
+        out = ""
+        if isinstance(self.condition, StatementNode):
+            out += f"{self.condition.to_code(tree)}\n"
+            out += f"op notEqual if_skip {self.condition.varname} 1\n"
+        else:
+            out += f"op notEqual if_skip {self.condition} 1\n"
         out += f"op mul if_skip if_skip {self.codeblock1.loc() + 1}\n"
         out += f"op add @counter @counter if_skip\n"
         out += f"{self.codeblock1.to_code(tree)}\n"
         out += f"op add @counter @counter {self.codeblock2.loc()}\n"
         out += self.codeblock2.to_code(tree)
+        return out
+
+
+class StatementNode(Node):
+    def __init__(self, p, operation: str, value1: Union[str, Token, StatementNode], value2: Union[str, Token, StatementNode]):
+        super().__init__(p)
+        self.operation = operation
+        self.value1 = value1
+        self.value2 = value2
+        self.varname = f"var_{self.__hash__()}"
+
+    def loc(self):
+        out = 1
+        if isinstance(self.value1, StatementNode):
+            out += self.value1.loc()
+        if isinstance(self.value2, StatementNode):
+            out += self.value2.loc()
+        return out
+
+    def to_code(self, tree: Node):
+        out = ""
+        if isinstance(self.value1, StatementNode):
+            out += f"{self.value1.to_code(tree)}\n"
+            val1 = self.value1.varname
+        else:
+            val1 = self.value1
+        if isinstance(self.value2, StatementNode):
+            out += f"{self.value2.to_code(tree)}\n"
+            val2 = self.value2.varname
+        else:
+            val2 = self.value2
+        out += f"op {self.operation} {self.varname} {val1} {val2}"
         return out
