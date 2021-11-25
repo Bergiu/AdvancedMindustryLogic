@@ -188,6 +188,18 @@ tokens = [
     'OP_MUL',
     'OP_DIV',
     'OP_EQ',
+    'OP_LT',
+    'OP_LTE',
+    'OP_GT',
+    'OP_GTE',
+    'OP_NOTEQ',
+    'OP_STRICTEQ',
+    'OP_IDIV',
+    'OP_MOD',
+    'OP_POW',
+    'OP_SHL',
+    'OP_SHR',
+    'OP_INV',
 ] + list(reserved.values())
 
 
@@ -211,6 +223,18 @@ t_OP_ADD = r'\+'
 t_OP_SUB = r'-'
 t_OP_MUL = r'\*'
 t_OP_DIV = r'/'
+t_OP_LT = r'<'
+t_OP_LTE = r'<='
+t_OP_GT = r'>'
+t_OP_GTE = r'>='
+t_OP_NOTEQ = r'!='
+t_OP_STRICTEQ = r'==='
+t_OP_IDIV = r'//'
+t_OP_MOD = r'%'
+t_OP_POW = r'\^'
+t_OP_SHL = r'<<'
+t_OP_SHR = r'>>'
+t_OP_INV = r'!'
 
 
 def t_COMMENT(t):
