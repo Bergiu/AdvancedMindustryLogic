@@ -335,16 +335,19 @@ def p_statement_inverse(p):
 
 
 precedence = (
-    ('left', 'OP_IDIV', 'OP_POW'),  # Change order
     #('left', 'LOR'), # logical or
     #('left', 'LAND'), # logical and
+    # logical or
+    # logical and
+    # logical not
+    ('left', 'OP_EQ', 'OP_NOTEQ', 'OP_STRICTEQ'),
+    ('left', 'OP_LT', 'OP_LTE', 'OP_GT', 'OP_GTE'),
     ('left', 'OR'),   # bitwise or
     ('left', 'XOR'),  # bitwise xor
     ('left', 'AND'),  # bitwise and
-    ('left', 'OP_EQ', 'OP_NOTEQ', 'OP_STRICTEQ'),
-    ('left', 'OP_LT', 'OP_LTE', 'OP_GT', 'OP_GTE'),
     ('left', 'OP_SHL', 'OP_SHR'),
     ('left', 'OP_ADD', 'OP_SUB'),
-    ('left', 'OP_MUL', 'OP_DIV', 'OP_MOD'),
-    ('left', 'OP_INV'),  # TODO bitwise not
+    ('left', 'OP_MUL', 'OP_DIV', 'OP_IDIV', 'OP_MOD'),
+    ('right', 'OP_INV'),  # BITWISE NOT
+    ('left', 'OP_POW'),  # Change order
 )

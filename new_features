@@ -1,38 +1,14 @@
-## Inline operations
-
-Current way:
+## Inline operations for operation assignments
 
 ```
-op add tmp 8 9
-op add x tmp 10
-# or
-op add tmp @thisx 10
-move tmp @thisy
-```
-
-New way:
-
-```
-x = 8 + 9 + 10
-# or
-move @thisx + 10 @thisy
-move @thisx + 10 @thisy
-```
-
-Notice:
-- */ before +-: `x = 8 + 9 * 2`
-
-## Operations with braces
-
-```
-x = 8 * (9 + 2)
+x += 8 + 9 + 10
+x -= 8 + 9 + 10
 ```
 
 # Rekursion
 This needs a stack for return pointers
 
-# Schleifen
-# If
+# for Schleifen
 
 # Bugs
 - Fehler im Tree ohne lining aktiviert schmeißen keine exception
