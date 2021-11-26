@@ -2,7 +2,10 @@ if exists('b:current_syntax')
     finish
 endif
 
-syn keyword amndConditional jump end
+syn keyword amndConditional jump end if else
+syn keyword amndRepeat while
+syn keyword amndStatement exec function
+syn keyword amndImport import
 syn keyword amndIO read write draw print drawflush printflush
 syn keyword amndKeyword getlink control radar sensor ubind ucontrol uradar ulocate noop
 " syn match amndSubcommands 
@@ -19,11 +22,13 @@ syntax region amndInterpolatedWrapper start="\v\\\(\s*" end="\v\s*\)" contained 
 syntax match amndInterpolatedString "\v\w+(\(\))?" contained containedin=amndInterpolatedWrapper
 
 hi def link amndConditional Conditional
+hi def link amndRepeat Repeat
+hi def link amndStatement Statement
+hi def link amndImport Include
 hi def link amndOperator Operator
 hi def link amndIO PreProc
 hi def link amndKeyword Keyword
 " hi def link amndSubcommands vimCommand
-" hi def link amndSubcommands vimSynType
 hi def link amndStructure Macro
 hi def link amndNumber Number
 hi def link amndString String
