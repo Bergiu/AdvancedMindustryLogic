@@ -154,6 +154,9 @@ reserved_keys = [
     # 'define',
     'function',
     'exec',
+    'compl',
+    'bitand',
+    'bitor',
 ]
 
 reserved_keys.extend(instruction_names)
@@ -203,6 +206,9 @@ tokens = [
     'OP_AND',
     'OP_XOR',
     'OP_OR',
+    'OP_LAND',
+    'OP_LOR',
+    'OP_NOT',
 ] + list(reserved.values())
 
 
@@ -237,10 +243,13 @@ t_OP_MOD = r'%'
 t_OP_POW = r'\*\*'
 t_OP_SHL = r'<<'
 t_OP_SHR = r'>>'
+t_OP_LAND = r'&&'   # logical and
+t_OP_LOR = r'\|\|'  # logical or
 t_OP_INV = r'~'     # bitwise not
 t_OP_AND = r'&'     # bitwise and
 t_OP_XOR = r'\^'    # bitwise xor
-t_OP_OR = r'\|'      # bitwise or
+t_OP_OR = r'\|'     # bitwise or
+t_OP_NOT = r'!'     # logical not
 
 
 def t_COMMENT(t):

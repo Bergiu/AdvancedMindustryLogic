@@ -31,31 +31,38 @@ Comparison operators/relational operators:
 
 Logical operators:
 (not a)      # Logical negation (NOT)
+(! a)        # Logical negation (NOT)
 (a and b)    # Logical AND.
+(a && b)     # Logical AND.
 (a or b)     # Logical OR. This compiles to 4 lines of code: not ((not a) and (not b))
+(a || b)     # Logical OR. This compiles to 4 lines of code: not ((not a) and (not b))
 
 Bitwise operators:
-(a & b)    # Bitwise AND
-(a | b)    # Bitwise OR
-(a ^ b)    # Bitwise XOR
-(a << b)   # Bitwise left shift
-(a >> b)   # Bitwise right shift
-(~a)                  # Bitwise not
+(a & b)       # Bitwise AND
+(a bitand b)  # Bitwise AND
+(a | b)       # Bitwise OR
+(a bitor b)   # Bitwise OR
+(a ^ b)       # Bitwise XOR
+(a xor b)     # Bitwise XOR
+(a << b)      # Bitwise left shift
+(a >> b)      # Bitwise right shift
+(~a)          # Bitwise not
+(compl a)     # Bitwise not
 
 Precedence:
 1.  | `a ** b`                             | Power                                                              | left  |
-2.  | `~a`                                 | Bitwise NOT                                                        | right |
+2.  | `~a`, `compl a`                      | Bitwise NOT                                                        | right |
 3.  | `a * b`, `a / b`, `a // b`, `a % b`  | Multiplication, Division, Integer division, Modulo                 | left  |
 4.  | `a + b`, `a - b`                     | Addition, Subtraction                                              | left  |
 5.  | `a << b`, `a >> b`                   | Left Shift, Right Shift                                            | left  |
-6.  | `a & b`                              | Bitwise AND                                                        | left  |
-7.  | `a ^ b`                              | Bitwise XOR                                                        | left  |
-8.  | `a | b`                              | Bitwise OR                                                         | left  |
+6.  | `a & b`, `a bitand b`                | Bitwise AND                                                        | left  |
+7.  | `a ^ b`, `a xor b`                   | Bitwise XOR                                                        | left  |
+8.  | `a | b`, `a bitor b`                 | Bitwise OR                                                         | left  |
 9.  | `a < b`, `a <= b`, `a > b`, `a >= b` | Less Than, Less Than or Equal, Greater Than, Greater Than or Equal | left  |
 10. | `a == b`, `a != b`, `a === b`        | Equal, Not Equal, Strict Equal                                     | left  |
-11. | `not a`                              | Logical NOT                                                        | right |
-12. | `a and b`                            | Logical AND                                                        | left  |
-13. | `a or b`                             | Logical OR                                                         | left  |
+11. | `! a`, `not a`                       | Logical NOT                                                        | right |
+12. | `a && b`, `a and b`                  | Logical AND                                                        | left  |
+13. | `a || b`, `a or b`                   | Logical OR                                                         | left  |
 """
 
 from src.nodes import Token, StatementNode
@@ -294,7 +301,9 @@ def p_statement_shr(p):
 
 def p_statement_and(p):
     '''statement : LPAREN statement OP_AND statement RPAREN
+                 | LPAREN statement BITAND statement RPAREN
                  | statement OP_AND statement
+                 | statement BITAND statement
     '''
     # bitwise AND
     if len(p) > 4:
@@ -309,7 +318,9 @@ def p_statement_and(p):
 
 def p_statement_or(p):
     '''statement : LPAREN statement OP_OR statement RPAREN
+                 | LPAREN statement BITOR statement RPAREN
                  | statement OP_OR statement
+                 | statement BITOR statement
     '''
     # bitwise OR
     if len(p) > 4:
@@ -324,7 +335,9 @@ def p_statement_or(p):
 
 def p_statement_xor(p):
     '''statement : LPAREN statement OP_XOR statement RPAREN
+                 | LPAREN statement XOR statement RPAREN
                  | statement OP_XOR statement
+                 | statement XOR statement
     '''
     # bitwise XOR
     if len(p) > 4:
@@ -339,7 +352,9 @@ def p_statement_xor(p):
 
 def p_statement_inverse(p):
     '''statement : LPAREN OP_INV statement RPAREN
+                 | LPAREN COMPL statement RPAREN
                  | OP_INV statement
+                 | COMPL statement
     '''
     # bitwise inverse
     if len(p) > 4:
@@ -353,7 +368,9 @@ def p_statement_inverse(p):
 
 def p_statement_land(p):
     '''statement : LPAREN statement AND statement RPAREN
+                 | LPAREN statement OP_LAND statement RPAREN
                  | statement AND statement
+                 | statement OP_LAND statement
     '''
     # logical AND
     if len(p) > 4:
@@ -368,7 +385,9 @@ def p_statement_land(p):
 
 def p_statement_lor(p):
     '''statement : LPAREN statement OR statement RPAREN
+                 | LPAREN statement OP_LOR statement RPAREN
                  | statement OR statement
+                 | statement OP_LOR statement
     '''
     # logical OR
     # not ((not a) and (not b)) = c
@@ -386,7 +405,9 @@ def p_statement_lor(p):
 
 def p_statement_not(p):
     '''statement : LPAREN NOT statement RPAREN
+                 | LPAREN OP_NOT statement RPAREN
                  | NOT statement
+                 | OP_NOT statement
     '''
     # logical inverse
     if len(p) > 4:
@@ -399,17 +420,17 @@ def p_statement_not(p):
 
 
 precedence = (
-    ('left', 'OR'),    # logical OR
-    ('left', 'AND'),   # logical AND
-    ('right', 'NOT'),  # logical NOT
+    ('left', 'OR', 'OP_LOR'),      # logical OR
+    ('left', 'AND', 'OP_LAND'),    # logical AND
+    ('right', 'NOT', 'OP_NOT'),    # logical NOT
     ('left', 'OP_EQ', 'OP_NOTEQ', 'OP_STRICTEQ'),
     ('left', 'OP_LT', 'OP_LTE', 'OP_GT', 'OP_GTE'),
-    ('left', 'OP_OR'),   # bitwise OR
-    ('left', 'OP_XOR'),  # bitwise XOR
-    ('left', 'OP_AND'),  # bitwise AND
+    ('left', 'OP_OR', 'BITOR'),    # bitwise OR
+    ('left', 'OP_XOR', 'XOR'),     # bitwise XOR
+    ('left', 'OP_AND', 'BITAND'),  # bitwise AND
     ('left', 'OP_SHL', 'OP_SHR'),
     ('left', 'OP_ADD', 'OP_SUB'),
     ('left', 'OP_MUL', 'OP_DIV', 'OP_IDIV', 'OP_MOD'),
-    ('right', 'OP_INV'),  # bitwise NOT
+    ('right', 'OP_INV', 'COMPL'),  # bitwise NOT
     ('left', 'OP_POW'),
 )

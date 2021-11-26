@@ -1,3 +1,16 @@
-x = 1 and 1 or 0 and 0
-print x  # 1
+x = true && true
+x = true and true
+x = true || true
+x = true or true
+x = true & true
+x = true bitand true
+x = true | true
+x = true bitor true
+x = true ^ true
+x = true xor true
+x = not (a or b)
+x = ! true
+x = ~true
+x = compl a or b
+print x  # 0
 printflush message1
