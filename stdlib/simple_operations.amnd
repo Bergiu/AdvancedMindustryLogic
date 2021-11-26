@@ -1,0 +1,7 @@
+function move(x, y) {
+    ucontrol move x y 0 0 0
+}
+
+function locate_core(enemy) {
+    ulocate building core enemy null locate_core_out_x locate_core_out_y locate_core_out_found locate_core_out_building
+}
