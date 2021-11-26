@@ -59,9 +59,8 @@ Future Ideas:
 a ? b : c               # Ternary operator
 a <=> b                 # Three-way comparison
 """
-from src.parser.types import value_t, fakeid_t
-from src.nodes import OperationNode
-
+from src.parser.types import value_t, fakeid_t, statement_t
+from src.nodes import OperationNode, OperationStatementNode
 
 
 def p_op_add(p):
@@ -320,8 +319,8 @@ def p_op_inverse(p):
 
 
 def p_op_set(p):
-    '''cmd_op_short : fakeid OP_ASSIGN value'''
-    op: str = "set"
+    '''cmd_op_short : fakeid OP_ASSIGN statement'''
     fakeid: fakeid_t = p[1]
-    value: value_t = p[3]
-    p[0] = OperationNode(p, op, [fakeid, value])
+    op: str = f"set {fakeid}"
+    statement: statement_t = p[3]
+    p[0] = OperationStatementNode(p, op, statement)

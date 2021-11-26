@@ -1,11 +1,7 @@
-function print_numbers(amount) {
-    y = 0
-    while (y <= amount) {
-        print y
-        y++
-    }
-    print "|"
+function a() {
+    x = (10 + 9)
+    x = (x - (3 * 3))
+    print x
 }
-exec print_numbers(9)
-exec print_numbers(4)
+exec a()
 printflush message1

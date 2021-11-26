@@ -156,6 +156,28 @@ class OperationNode(Node):
         return out
 
 
+class OperationStatementNode(Node):
+    def __init__(self, p, command: Union[Token, str], statement: Union[Token, str, StatementNode]):
+        super().__init__(p)
+        self.command = command
+        self.statement = statement
+
+    def loc(self):
+        out = 1
+        if isinstance(self.statement, StatementNode):
+            out +=  self.statement.loc()
+        return out
+
+    def to_code(self, tree: Node):
+        out = ""
+        if isinstance(self.statement, StatementNode):
+            out += f"{self.statement.to_code(tree)}\n"
+            out += f"{self.command} {self.statement.varname}"
+        else:
+            out += f"{self.command} {self.statement}"
+        return out
+
+
 class FunctionNode(Node):
     def __iter__(self):
         yield self
