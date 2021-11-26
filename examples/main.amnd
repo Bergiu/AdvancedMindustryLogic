@@ -1,7 +1,16 @@
 function a() {
-    x = (10 + 9)
-    x = (x - (3 * 3))
-    print x
+    x = 0
+    if (x < 10) and (x > 5) {
+        print "A"
+    }
+    x = 6
+    if (x < 10) and (x > 5) {
+        print "B"
+    }
+    x = 0
+    if (x < 10) or (x > 5) {
+        print "C"
+    }
 }
 exec a()
 printflush message1
