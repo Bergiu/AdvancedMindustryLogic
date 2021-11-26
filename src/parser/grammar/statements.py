@@ -1,5 +1,52 @@
-from src.nodes import *
-from src.parser.types import *
+"""
+This module contains statements.
+
+The variables a and b can either be values or other statements. So it's possible to wrap multiple statements into one.
+Example:
+    if ( (a >= 0) and (a <= (b + 10)) ) {}
+
+Arithmetic operators:
+(a + b)  # Addition
+(a - b)  # Subtraction
+(a * b)  # Multiplication
+(a / b)  # Division
+
+Comparison operators/relational operators:
+(a == b)  # Equal to
+(a != b)  # Not equal to
+(a > b)   # Greater than
+(a < b)   # Less than
+(a >= b)  # Greater than or equal to
+(a <= b)  # Less than or equal to
+
+Logical operators:
+(! a)      # Logical negation (NOT)
+TODO:
+(not a)      # Logical negation (NOT)
+(a && b)
+(a and b)
+(a || b)
+(a or b)
+
+Bitwise operators:
+(a and b)  # Bitwise AND
+(a or b)   # Bitwise OR
+(a xor b)  # Bitwise XOR
+(a << b)   # Bitwise left shift
+(a >> b)   # Bitwise right shift
+TODO:
+(~a)                  # Bitwise not
+(compl a)             # Bitwise not
+rename and to &
+rename and to bitand
+rename or to |
+rename or to bitor
+rename xor to ^
+rename xor to xor
+"""
+
+from src.nodes import Token, StatementNode
+from src.parser.types import statement_t
 
 
 def p_statement(p):
@@ -166,5 +213,3 @@ def p_statement_inverse(p):
     value2: str = "true"
     operation: str = "xor"
     p[0] = StatementNode(p, operation, value1, value2)
-
-
