@@ -243,13 +243,13 @@ t_OP_MOD = r'%'
 t_OP_POW = r'\*\*'
 t_OP_SHL = r'<<'
 t_OP_SHR = r'>>'
+t_OP_NOT = r'!'     # logical not
 t_OP_LAND = r'&&'   # logical and
 t_OP_LOR = r'\|\|'  # logical or
 t_OP_INV = r'~'     # bitwise not
 t_OP_AND = r'&'     # bitwise and
 t_OP_XOR = r'\^'    # bitwise xor
 t_OP_OR = r'\|'     # bitwise or
-t_OP_NOT = r'!'     # logical not
 
 
 def t_COMMENT(t):

@@ -1,0 +1,21 @@
+function bind_unit(unittype) {
+    # try to bind a unit
+    if @unit == null {
+        print "Binding a unit: "
+        print unittype
+        print "\n"
+        ubind unittype
+    } else {
+        print "Already bound to a unit: "
+        print @unit
+    }
+    # if no unit is found, show error and wait until you found one
+    while @unit == null {
+        if @unit == null {
+            printflush stddbg
+            print "Can't find a unit."
+            printflush stderr
+            ubind unittype
+        }
+    }
+}
