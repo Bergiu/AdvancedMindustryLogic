@@ -1,6 +1,12 @@
 """
 This module contains statements.
 
+WARNING:
+    In mindustry code, the `op` subcommands `and`, `or` and `not` are bitwise, but here they are used as logical
+    operators. When you want to use bitwise operators you can use `&`, `|` and `~`.
+    The `^` operator is displayed in mindustry as power operator, but here this command is used as bitwise XOR. When
+    you want to use power operator you can use `**`.
+
 The variables a and b can either be values or other statements. So it's possible to wrap multiple statements into one.
 Example:
     if ( (a >= 0) and (a <= (b + 10)) ) {}
@@ -10,9 +16,13 @@ Arithmetic operators:
 (a - b)  # Subtraction
 (a * b)  # Multiplication
 (a / b)  # Division
+(a // b) # Integer Division
+(a % b)  # Modulo
+(a ** b) # Power
 
 Comparison operators/relational operators:
 (a == b)  # Equal to
+(a === b) # Equal to and same type
 (a != b)  # Not equal to
 (a > b)   # Greater than
 (a < b)   # Less than
@@ -20,29 +30,32 @@ Comparison operators/relational operators:
 (a <= b)  # Less than or equal to
 
 Logical operators:
-(! a)      # Logical negation (NOT)
-TODO:
 (not a)      # Logical negation (NOT)
-(a && b)
-(a and b)
-(a || b)
-(a or b)
+(a and b)    # Logical AND.
+(a or b)     # Logical OR. This compiles to 4 lines of code: not ((not a) and (not b))
 
 Bitwise operators:
-(a and b)  # Bitwise AND
-(a or b)   # Bitwise OR
-(a xor b)  # Bitwise XOR
+(a & b)    # Bitwise AND
+(a | b)    # Bitwise OR
+(a ^ b)    # Bitwise XOR
 (a << b)   # Bitwise left shift
 (a >> b)   # Bitwise right shift
-TODO:
 (~a)                  # Bitwise not
-(compl a)             # Bitwise not
-rename and to &
-rename and to bitand
-rename or to |
-rename or to bitor
-rename xor to ^
-rename xor to xor
+
+Precedence:
+1.  | `a ** b`                             | Power                                                              | left  |
+2.  | `~a`                                 | Bitwise NOT                                                        | right |
+3.  | `a * b`, `a / b`, `a // b`, `a % b`  | Multiplication, Division, Integer division, Modulo                 | left  |
+4.  | `a + b`, `a - b`                     | Addition, Subtraction                                              | left  |
+5.  | `a << b`, `a >> b`                   | Left Shift, Right Shift                                            | left  |
+6.  | `a & b`                              | Bitwise AND                                                        | left  |
+7.  | `a ^ b`                              | Bitwise XOR                                                        | left  |
+8.  | `a | b`                              | Bitwise OR                                                         | left  |
+9.  | `a < b`, `a <= b`, `a > b`, `a >= b` | Less Than, Less Than or Equal, Greater Than, Greater Than or Equal | left  |
+10. | `a == b`, `a != b`, `a === b`        | Equal, Not Equal, Strict Equal                                     | left  |
+11. | `not a`                              | Logical NOT                                                        | right |
+12. | `a and b`                            | Logical AND                                                        | left  |
+13. | `a or b`                             | Logical OR                                                         | left  |
 """
 
 from src.nodes import Token, StatementNode
