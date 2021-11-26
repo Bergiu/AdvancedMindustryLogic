@@ -294,6 +294,8 @@ class Token:
         self.token = token
 
     def __str__(self):
+        if isinstance(self.token, Token):
+            return str(self.token)
         return str(self.token.value)
 
 
@@ -362,7 +364,7 @@ class IfElseNode(Node):
         self.codeblock2 = codeblock2
 
     def loc(self):
-        out = self.codeblock1.loc() + self.codeblock2.loc() + 3
+        out = self.codeblock1.loc() + self.codeblock2.loc() + 4
         if isinstance(self.condition, StatementNode):
             out += self.condition.loc()
         return out
