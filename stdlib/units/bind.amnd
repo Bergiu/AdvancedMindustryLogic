@@ -10,9 +10,12 @@ function bind_unit(unittype) {
         print @unit
     }
     # if no unit is found, show error and wait until you found one
+    if @unit == null {
+        # clean print pipeline
+        printflush stddbg
+    }
     while @unit == null {
         if @unit == null {
-            printflush stddbg
             print "Can't find a unit."
             printflush stderr
             ubind unittype

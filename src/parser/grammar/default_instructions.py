@@ -301,12 +301,12 @@ def p_ulocate(p):
     ulocate_find: ulocate_find_t = p[2]
     ulocate_group: ulocate_group_t = p[3]
     var_bool1: var_bool_t = p[4]
-    fakeid: fakeid_t = p[5]
+    fakeid1: fakeid_t = p[5]
     var_number1: var_number_t = p[6]
     var_number2: var_number_t = p[7]
     var_bool2: var_bool_t = p[8]
-    fakeid: fakeid_t = p[9]
-    p[0] = OperationNode(p, ulocate, [ulocate_find, ulocate_group, var_bool1, fakeid, var_number1, var_number2, var_bool2])
+    fakeid2: fakeid_t = p[9]
+    p[0] = OperationNode(p, ulocate, [ulocate_find, ulocate_group, var_bool1, fakeid1, var_number1, var_number2, var_bool2, fakeid2])
 
 
 def p_ulocate_find(p):

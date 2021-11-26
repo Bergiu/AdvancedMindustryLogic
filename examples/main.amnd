@@ -1,37 +1,7 @@
-container = container1 # the container where the items are put into
-unloader = unloader1   # the unloader that configures the itemtype
 unittype = @flare
-
-import ../stdlib/debug.amnd
-import ../stdlib/units/all.amnd
-
-sensor itemtype unloader @config
-sensor container_x unloader @x
-sensor container_y unloader @y
-
-if itemtype == null {
-    print "Please select an item type."
-    printflush stderr
-    while itemtype == null {
-        sensor itemtype unloader @config
-    }
-} else {
-    print "Selected "
-    print itemtype
-}
-printflush stddbg
-
-exec bind_unit(unittype)
-
-print "Moving to core"
-printflush stdout
-
-exec move_to_core_until(false, 5)
-
-print "Moving to storage"
-printflush stdout
-
-exec move_until(container_x, container_y, 5)
-
-print "Finished"
-printflush stdout
+ubind unittype
+ulocate building core false true x y found a_building
+print @unit
+print "\n"
+print a_building
+printflush message1

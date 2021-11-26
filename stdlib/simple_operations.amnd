@@ -16,3 +16,11 @@ function within(x, y, range) {
 function locate_core(enemy) {
     ulocate building core enemy null locate_core_out_x locate_core_out_y locate_core_out_found locate_core_out_building
 }
+
+function take_items(building, item, amount) {
+    ucontrol itemTake building item amount 0 0
+}
+
+function drop_items(building, amount) {
+    ucontrol itemDrop building amount 0 0 0
+}
