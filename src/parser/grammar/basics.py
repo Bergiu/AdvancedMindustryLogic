@@ -1,6 +1,34 @@
+"""
+Primitive Types:
+int             # int. any number (even negative ones) without a dot.
+double          # double. any number (even negative ones) with a dot.
+bool            # bool. true or false.
+string          # string. wrapped between two "
+
+Combined Types:
+number          # int or double
+keywords        # language keywords that can be used as variable names, for example: print, set, ...
+
+Variable Types:
+id              # variable names.
+fakeid          # Any valid identifier for a variable name. (ids + keywords)
+value           # string, int, double, bool or fakeid
+var_int         # int or fakeid
+var_double      # double or fakeid
+var_number      # int or double or fakeid
+var_bool        # bool or fakeid
+var_string      # string or fakeid
+null            # value that is ignored (while programming this should have the value 0)
+
+List Types:
+ids             # list of values
+"""
+
+
 from src.lexer import reserved
 from src.nodes import Token
-from src.parser.types import value_t, ids_t, var_int_t, var_number_t, var_bool_t, null_t, number_t, fakeid_t
+from src.parser.types import value_t, ids_t, var_int_t, var_number_t, var_bool_t, null_t, number_t, fakeid_t, \
+    var_string_t
 
 
 def p_ids1(p):
@@ -40,9 +68,24 @@ def p_var_number(p):
 
 def p_var_bool(p):
     '''var_bool : value'''
-    # TODO: müsste hier nicht auch fakeid sein???
     out: var_bool_t = p[1]
     p[0] = out
+
+
+#def p_var_double(p):
+#    '''var_double : fakeid
+#                  | double
+#    '''
+#    out: var_string_t = p[1]
+#    p[0] = out
+
+
+#def p_var_string(p):
+#    '''var_string : fakeid
+#                  | string
+#    '''
+#    out: var_string_t = p[1]
+#    p[0] = out
 
 
 def p_null(p):

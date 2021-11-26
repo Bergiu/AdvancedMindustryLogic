@@ -1,5 +1,35 @@
-from src.parser.types import *
-from src.nodes import *
+"""
+Contains all default instructions from mindustry assembly code.
+
+Instructions:
+write
+read
+draw
+drawflush
+print
+printflush
+getlink
+control
+radar
+sensor
+set
+end
+jump            # Because of the compiler this may not work as expected. Better use functions and control structures.
+ubind
+ucontrol
+uradar
+ulocate
+noop            # an empty command that does nothing
+op
+
+Documentation about the function can be found in the Fabulous Manual: https://github.com/DeltaNedas/rtfm
+"""
+from typing import List, Union
+
+from src.parser.types import value_t, fakeid_t, var_int_t, draw_instruction_t, var_number_t, null_t, \
+    control_instruction_t, var_bool_t, radar_target_t, radar_sort_t, int_t, jump_comparison_t, ucontrol_instruction_t, \
+    ulocate_find_t, ulocate_group_t, op_instruction_t
+from src.nodes import Token, OperationNode
 
 
 def p_write(p):
@@ -317,5 +347,3 @@ def p_op(p):
     value1: value_t = p[4]
     value2: value_t = p[5]
     p[0] = OperationNode(p, op, [op_instruction, fakeid, value1, value2])
-
-

@@ -1,3 +1,14 @@
+"""
+This module contains some specific grammar rules, that are needed for mindustry code.
+
+This contains:
+codeblock       # list of lines (CodeBlockNode).
+lineend         # newline or a comment.
+line            # an instruction or a lineend
+instruction     # a collection of all instructions including default instructions, operators and new features.
+"""
+
+
 from src.parser.types import *
 from src.nodes import *
 
