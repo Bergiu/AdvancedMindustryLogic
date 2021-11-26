@@ -75,7 +75,7 @@ sub_instructions_op = [
     'pow',
     'equal',
     'notEqual',
-    'land',
+    'land',     # logical and
     'lessThan',
     'lessThanEq',
     'greaterThan',
@@ -83,10 +83,10 @@ sub_instructions_op = [
     'strictEqual',
     'shl',
     'shr',
-    'or',
-    'and',
-    'xor',
-    'not',
+    'or',   # bitwise or
+    'and',  # bitwise and
+    'xor',  # bitwise xor
+    'not',  # bitwise not
     'max',
     'min',
     'angle',
@@ -200,6 +200,9 @@ tokens = [
     'OP_SHL',
     'OP_SHR',
     'OP_INV',
+    'OP_AND',
+    'OP_XOR',
+    'OP_OR',
 ] + list(reserved.values())
 
 
@@ -231,10 +234,13 @@ t_OP_NOTEQ = r'!='
 t_OP_STRICTEQ = r'==='
 t_OP_IDIV = r'//'
 t_OP_MOD = r'%'
-t_OP_POW = r'\^'
+t_OP_POW = r'\*\*'
 t_OP_SHL = r'<<'
 t_OP_SHR = r'>>'
-t_OP_INV = r'!'
+t_OP_INV = r'~'     # bitwise not
+t_OP_AND = r'&'     # bitwise and
+t_OP_XOR = r'\^'    # bitwise xor
+t_OP_OR = r'\|'      # bitwise or
 
 
 def t_COMMENT(t):

@@ -280,9 +280,10 @@ def p_statement_shr(p):
 
 
 def p_statement_and(p):
-    '''statement : LPAREN statement AND statement RPAREN
-                 | statement AND statement
+    '''statement : LPAREN statement OP_AND statement RPAREN
+                 | statement OP_AND statement
     '''
+    # bitwise AND
     if len(p) > 4:
         value1: statement_t = p[2]
         value2: statement_t = p[4]
@@ -294,9 +295,10 @@ def p_statement_and(p):
 
 
 def p_statement_or(p):
-    '''statement : LPAREN statement OR statement RPAREN
-                 | statement OR statement
+    '''statement : LPAREN statement OP_OR statement RPAREN
+                 | statement OP_OR statement
     '''
+    # bitwise OR
     if len(p) > 4:
         value1: statement_t = p[2]
         value2: statement_t = p[4]
@@ -308,9 +310,10 @@ def p_statement_or(p):
 
 
 def p_statement_xor(p):
-    '''statement : LPAREN statement XOR statement RPAREN
-                 | statement XOR statement
+    '''statement : LPAREN statement OP_XOR statement RPAREN
+                 | statement OP_XOR statement
     '''
+    # bitwise XOR
     if len(p) > 4:
         value1: statement_t = p[2]
         value2: statement_t = p[4]
@@ -325,6 +328,7 @@ def p_statement_inverse(p):
     '''statement : LPAREN OP_INV statement RPAREN
                  | OP_INV statement
     '''
+    # bitwise inverse
     if len(p) > 4:
         value1: statement_t = p[3]
     else:
@@ -334,20 +338,65 @@ def p_statement_inverse(p):
     p[0] = StatementNode(p, operation, value1, value2)
 
 
+def p_statement_land(p):
+    '''statement : LPAREN statement AND statement RPAREN
+                 | statement AND statement
+    '''
+    # logical AND
+    if len(p) > 4:
+        value1: statement_t = p[2]
+        value2: statement_t = p[4]
+    else:
+        value1: statement_t = p[1]
+        value2: statement_t = p[3]
+    operation: str = "land"
+    p[0] = StatementNode(p, operation, value1, value2)
+
+
+def p_statement_lor(p):
+    '''statement : LPAREN statement OR statement RPAREN
+                 | statement OR statement
+    '''
+    # logical OR
+    # not ((not a) and (not b)) = c
+    if len(p) > 4:
+        value1: statement_t = p[2]
+        value2: statement_t = p[4]
+    else:
+        value1: statement_t = p[1]
+        value2: statement_t = p[3]
+    not_a = StatementNode(p, "notEqual", value1, "true")
+    not_b = StatementNode(p, "notEqual", value2, "true")
+    not_c = StatementNode(p, "land", not_a, not_b)
+    p[0] = StatementNode(p, "notEqual", not_c, "true")
+
+
+def p_statement_not(p):
+    '''statement : LPAREN NOT statement RPAREN
+                 | NOT statement
+    '''
+    # logical inverse
+    if len(p) > 4:
+        value1: statement_t = p[3]
+    else:
+        value1: statement_t = p[2]
+    value2: str = "true"
+    operation: str = "notEqual"
+    p[0] = StatementNode(p, operation, value1, value2)
+
+
 precedence = (
-    #('left', 'LOR'), # logical or
-    #('left', 'LAND'), # logical and
-    # logical or
-    # logical and
-    # logical not
+    ('left', 'OR'),    # logical OR
+    ('left', 'AND'),   # logical AND
+    ('right', 'NOT'),  # logical NOT
     ('left', 'OP_EQ', 'OP_NOTEQ', 'OP_STRICTEQ'),
     ('left', 'OP_LT', 'OP_LTE', 'OP_GT', 'OP_GTE'),
-    ('left', 'OR'),   # bitwise or
-    ('left', 'XOR'),  # bitwise xor
-    ('left', 'AND'),  # bitwise and
+    ('left', 'OP_OR'),   # bitwise OR
+    ('left', 'OP_XOR'),  # bitwise XOR
+    ('left', 'OP_AND'),  # bitwise AND
     ('left', 'OP_SHL', 'OP_SHR'),
     ('left', 'OP_ADD', 'OP_SUB'),
     ('left', 'OP_MUL', 'OP_DIV', 'OP_IDIV', 'OP_MOD'),
-    ('right', 'OP_INV'),  # BITWISE NOT
-    ('left', 'OP_POW'),  # Change order
+    ('right', 'OP_INV'),  # bitwise NOT
+    ('left', 'OP_POW'),
 )
