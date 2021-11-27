@@ -8,7 +8,7 @@
 function move_until(x, y, range) {
     exec move(x, y)
     exec within(x, y, range)
-    while not within_out_move_is_within {
+    while not within::is_within {
         exec within(x, y, range)
     }
 }

@@ -1,20 +1,20 @@
 function get_items_from_core(container, item_type_sensor, unittype, amount_items_to_take, stdout, stderr, stddbg) {
 
     # load container coordinates
-    sensor container_x container @x
-    sensor container_y container @y
+    sensor get_items_from_core::__container_x container @x
+    sensor get_items_from_core::__container_y container @y
 
     # load item type
-    sensor itemtype item_type_sensor @config
-    if itemtype == null {
-        while itemtype == null {
+    sensor get_items_from_core::__itemtype item_type_sensor @config
+    if get_items_from_core::__itemtype == null {
+        while get_items_from_core::__itemtype == null {
             print "Please select an item type."
-            sensor itemtype item_type_sensor @config
+            sensor get_items_from_core::__itemtype item_type_sensor @config
             printflush stderr
         }
     } else {
         print "Selected "
-        print itemtype
+        print get_items_from_core::__itemtype
         print "\n"
     }
 
@@ -23,23 +23,23 @@ function get_items_from_core(container, item_type_sensor, unittype, amount_items
     print "\n"
 
     # transport items
-    sensor amount_needed_items @unit itemtype
-    if amount_needed_items > 0 {
+    sensor get_items_from_core::__amount_needed_items @unit get_items_from_core::__itemtype
+    if get_items_from_core::__amount_needed_items > 0 {
         # move to storage
         print "Moving to storage"
         printflush stdout
-        exec move_until(container_x, container_y, 5)
-        exec drop_items(container, amount_needed_items)
+        exec move_until(get_items_from_core::__container_x, get_items_from_core::__container_y, 5)
+        exec drop_items(container, get_items_from_core::__amount_needed_items)
     } else {
         # move to core
         print "Moving to core"
         printflush stdout
         exec move_to_core_until(false, 5)
-        sensor total_amount @unit @totalItems
+        sensor get_items_from_core::__total_amount @unit @totalItems
         # make empty if unit contains items
-        if total_amount > 0 {
-            exec drop_items(locate_core_out_building, total_amount)
+        if get_items_from_core::__total_amount > 0 {
+            exec drop_items(locate_core::building, get_items_from_core::__total_amount)
         }
-        exec take_items(locate_core_out_building, itemtype, amount_items_to_take)
+        exec take_items(locate_core::building, get_items_from_core::__itemtype, amount_items_to_take)
     }
 }

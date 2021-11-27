@@ -7,3 +7,11 @@ amount_items_to_take = 10
 import ../stdlib/units/all.amnd
 
 exec get_items_from_core(container, unloader, unittype, amount_items_to_take, stdout, stdout, stdout)
+
+# TODO
+# currently if i build two of those processors, they both connect to the same unit and the unit moves with undefined
+# behaviour. maybe units must be bound with a flag? flag may contain a random number with @time as seed.
+#
+# currently if i build one of the processors and then after some time another, the second one takes the unit from the
+# first one and the first one doesn't rebind the unit and stops working.
+# maybe the move unit loop is the wrong way or should check if the unit is bound.
