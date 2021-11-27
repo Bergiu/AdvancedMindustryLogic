@@ -12,3 +12,5 @@ This needs a stack for return pointers
 
 # Bugs
 - Fehler im Tree ohne lining aktiviert schmeißen keine exception
+- Preprocessor should optimize imports:
+    - Imports shouldn't be done twice

@@ -1,2 +1,9 @@
-import move.amnd
-import bind.amnd
+import ./locate/locate_core.amnd
+import ./locate/within.amnd
+import ./transport/drop_items.amnd
+import ./transport/take_items.amnd
+import ./bind/bind_unit.amnd
+import ./move/move.amnd
+import ./move/move_until.amnd
+import ./move/move_to_core_until.amnd
+import ./transport/get_items_from_core.amnd

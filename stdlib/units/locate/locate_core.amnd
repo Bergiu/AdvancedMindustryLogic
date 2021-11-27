@@ -1,0 +1,13 @@
+# Locates a core. If the boolean enemy is true, it locates the
+# core from the enemy and if it's false it locates the players
+# core.
+#
+# Output:
+#   locate_core_out_x: X coordinate of the building
+#   locate_core_out_y: Y coordinate of the building
+#   locate_core_out_found: True if the building was found
+#   locate_core_out_building: Contains the found building
+
+function locate_core(enemy) {
+    ulocate building core enemy null locate_core_out_x locate_core_out_y locate_core_out_found locate_core_out_building
+}

@@ -1,0 +1,5 @@
+# Moves the unit to the coordinates.
+
+function move(x, y) {
+    ucontrol move x y 0 0 0
+}

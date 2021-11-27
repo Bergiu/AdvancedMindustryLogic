@@ -1,0 +1,6 @@
+# Drops the given amount of the items from the unit
+# in @unit to the specified building.
+
+function drop_items(building, amount) {
+    ucontrol itemDrop building amount 0 0 0
+}

@@ -1,0 +1,14 @@
+# import ./move.amnd
+# import ../locate/within.amnd
+
+# This function moves the unit in @unit to the coordinates
+# and blocks the processor until the unit is within the
+# specified range.
+
+function move_until(x, y, range) {
+    exec move(x, y)
+    exec within(x, y, range)
+    while not within_out_move_is_within {
+        exec within(x, y, range)
+    }
+}

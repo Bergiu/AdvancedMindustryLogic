@@ -1,3 +1,13 @@
+# Binds one unit of the given unit type. If the processor
+# already has a bound unit this function does nothing.
+# This includes a processor that starts all commands from
+# the beginning. If there is no unit of the given unit
+# type this function will wait until a unit of this type
+# is created and can be bound.
+#
+# Output:
+#   @unit: The bound unit
+
 function bind_unit(unittype) {
     # try to bind a unit
     if @unit == null {

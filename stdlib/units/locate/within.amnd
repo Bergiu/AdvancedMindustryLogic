@@ -1,0 +1,8 @@
+# Checks if the unit in @unit is in the range of the coordinates.
+#
+# Output:
+#   within_out_move_is_within: True when @unit is within the range of the coordinates
+
+function within(x, y, range) {
+    ucontrol within x y range within_out_move_is_within 0
+}

@@ -1,0 +1,6 @@
+# The unit in @unit takes the amount of items from the
+# specified item type from the building.
+
+function take_items(building, item, amount) {
+    ucontrol itemTake building item amount 0 0
+}

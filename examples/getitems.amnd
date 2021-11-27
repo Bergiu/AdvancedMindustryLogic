@@ -1,57 +1,9 @@
 container = container1 # the container where the items are put into
 unloader = unloader1   # the unloader that configures the itemtype
+stdout = message1
 unittype = @flare
 amount_items_to_take = 10
 
-import ../stdlib/debug.amnd
 import ../stdlib/units/all.amnd
 
-sensor container_x unloader @x
-sensor container_y unloader @y
-stderr = stdout
-stddbg = stdout
-
-# output:
-#   itemtype: the item type that should be transported
-function get_itemtype() {
-    sensor itemtype unloader @config
-    if itemtype == null {
-        while itemtype == null {
-            print "Please select an item type."
-            sensor itemtype unloader @config
-            printflush stderr
-        }
-    } else {
-        print "Selected "
-        print itemtype
-        print "\n"
-    }
-}
-
-function main() {
-    # load config
-    exec get_itemtype()
-    # bind unit
-    exec bind_unit(unittype)
-    print "\n"
-    sensor amount_needed_items @unit itemtype
-    if amount_needed_items > 0 {
-        # move to storage
-        print "Moving to storage"
-        printflush stdout
-        exec move_until(container_x, container_y, 5)
-        exec drop_items(container, amount_needed_items)
-    } else {
-        # move to core
-        print "Moving to core"
-        printflush stdout
-        exec move_to_core_until(false, 5)
-        sensor total_amount @unit @totalItems
-        if total_amount > 0 {
-            exec drop_items(locate_core_out_building, total_amount)
-        }
-        exec take_items(locate_core_out_building, itemtype, amount_items_to_take)
-    }
-}
-
-exec main()
+exec get_items_from_core(container, unloader, unittype, amount_items_to_take, stdout, stdout, stdout)

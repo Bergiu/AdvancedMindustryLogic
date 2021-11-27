@@ -1,0 +1,18 @@
+# import ../locate/locate_core.amnd
+# import ./move_until.amnd
+
+# Moves the unit in @unit to the core and blocks the processor
+# until the unit is within the specified  range. enemy is a
+# boolean, if it is true, the unit will be moved to the enemies
+# core. If it is false the unit is moved to the players core.
+#
+# Output:
+#   locate_core_out_x: X coordinate of the building
+#   locate_core_out_y: Y coordinate of the building
+#   locate_core_out_found: True if the building was found
+#   locate_core_out_building: Contains the found building
+
+function move_to_core_until(enemy, range) {
+    exec locate_core(false)
+    exec move_until(locate_core_out_x, locate_core_out_y, range)
+}
