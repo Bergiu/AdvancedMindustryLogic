@@ -1,0 +1,29 @@
+unittype = @flare
+sleep = 20
+
+ubind unittype
+first = @unit
+all = false
+print "Flags from "
+print unittype
+x = 0
+while not all {
+    ubind unittype
+    if @unit == first {
+        all = true
+    }
+    print "\n"
+    sensor unit_flag @unit @flag
+    print unit_flag
+    if x > 200 {
+        end
+    }
+    x++
+}
+printflush message1
+x = 0
+while x < sleep {
+    x++
+}
+end
+

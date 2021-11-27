@@ -1,0 +1,47 @@
+unittype = @flare
+switch = switch1
+sleep = 10
+
+
+sensor enabled switch @enabled
+if enabled {
+    ubind unittype
+    ucontrol flag 0 0 0 0 0
+    end
+}
+
+
+ubind unittype
+first = @unit
+all = false
+print "Flags from "
+print unittype
+x = 0
+while not all {
+    sensor enabled switch @enabled
+    if enabled {
+        end
+    }
+    ubind unittype
+    if @unit == first {
+        all = true
+    }
+    print "\n"
+    sensor unit_flag @unit @flag
+    print unit_flag
+    if x > 200 {
+        end
+    }
+    x++
+}
+printflush message1
+x = 0
+while x < sleep {
+    x++
+    sensor enabled switch @enabled
+    if enabled {
+        end
+    }
+}
+end
+
