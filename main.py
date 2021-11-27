@@ -17,6 +17,8 @@ def load_args():
                         default=None, help='The output file.', type=str)
     parser.add_argument('--linter', dest='linter', action='store_true',
                         default=False, help='If only the linter should be run.')
+    parser.add_argument('--loc', dest='loc', action='store_true',
+                        default=False, help='Only show amount of lines of code.')
     return parser.parse_args()
 
 
@@ -38,6 +40,9 @@ def main():
     if out.loc() > 1000:
         raise Exception("PANIC: Maximum lines of code exceeded (max: 1000).")
     code = out.to_code(out)
+    if args.loc:
+        print(out.loc())
+        return
     if not args.linter:
         if args.outfile is not None:
             write_code(args.outfile, code)
