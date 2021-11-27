@@ -6,14 +6,10 @@ function bind_unit(unittype) {
         print "\n"
         ubind unittype
     } else {
-        print "Already bound to a unit: "
+        print "Bound unit: "
         print @unit
     }
     # if no unit is found, show error and wait until you found one
-    if @unit == null {
-        # clean print pipeline
-        printflush stddbg
-    }
     while @unit == null {
         if @unit == null {
             print "Can't find a unit."

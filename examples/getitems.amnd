@@ -8,20 +8,23 @@ import ../stdlib/units/all.amnd
 
 sensor container_x unloader @x
 sensor container_y unloader @y
+stderr = stdout
+stddbg = stdout
 
 # output:
 #   itemtype: the item type that should be transported
 function get_itemtype() {
     sensor itemtype unloader @config
     if itemtype == null {
-        print "Please select an item type."
-        printflush stderr
         while itemtype == null {
+            print "Please select an item type."
             sensor itemtype unloader @config
+            printflush stderr
         }
     } else {
         print "Selected "
         print itemtype
+        print "\n"
     }
 }
 
@@ -31,7 +34,6 @@ function main() {
     # bind unit
     exec bind_unit(unittype)
     print "\n"
-    printflush stddbg
     sensor amount_needed_items @unit itemtype
     if amount_needed_items > 0 {
         # move to storage
@@ -53,5 +55,3 @@ function main() {
 }
 
 exec main()
-print "Finished"
-printflush stderr
