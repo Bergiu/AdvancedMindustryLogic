@@ -1,10 +1,13 @@
 unittype = @flare
 switch = switch1
+message = message1
 sleep = 10
 
 
 sensor enabled switch @enabled
 if enabled {
+    print "Set all flags to 0."
+    printflush message
     ubind unittype
     ucontrol flag 0 0 0 0 0
     end
@@ -14,8 +17,10 @@ if enabled {
 ubind unittype
 first = @unit
 all = false
+print "Press switch to set all flags to 0.\n"
 print "Flags from "
 print unittype
+print ":"
 x = 0
 while not all {
     sensor enabled switch @enabled
@@ -34,7 +39,7 @@ while not all {
     }
     x++
 }
-printflush message1
+printflush message
 x = 0
 while x < sleep {
     x++

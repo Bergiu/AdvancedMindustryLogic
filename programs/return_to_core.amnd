@@ -1,0 +1,18 @@
+unittype = @flare
+switch = switch1
+message = message2
+
+
+sensor enabled switch @enabled
+if not enabled {
+    print "Press button to order all "
+    print unittype
+    print "s back to core."
+    printflush message
+    end
+}
+print "Units comming home."
+printflush message
+ubind unittype
+ulocate building core false @copper corex corey found core
+ucontrol approach corex corey 5 0 0
