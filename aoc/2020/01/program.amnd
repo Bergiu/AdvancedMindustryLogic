@@ -1,0 +1,48 @@
+input = bank1
+left = message1
+middle = message2
+right = message3
+
+left_cell = cell1
+right_cell = cell2
+
+print "Starting."
+printflush left
+
+read cell_len input 1
+
+print "Starting."
+print "\nInput length: "
+print cell_len
+printflush left
+
+# loops = n * (n-1) / 2
+# operations = loops * inner_while_operations
+# time = operations / 1500 / 60
+# 200 * 199 / 2 * 10 / 1500 / 60 = 2.2
+match = 0
+i = 2
+while i <= cell_len {
+    j = i + 1
+    read val_i input i
+    while j <= cell_len {
+        read val_j input j
+        if val_i + val_j == 2020 {
+            match = val_i * val_j
+        }
+        j++
+    }
+    print i
+    print "/"
+    print cell_len
+    printflush right
+    i++
+}
+
+print "Result: "
+print match
+printflush middle
+
+print "Finished."
+printflush left
+@counter = @counter - 1
