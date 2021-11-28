@@ -1,18 +1,30 @@
-# import ../locate/locate_core.amnd
-# import ./move_until.amnd
-
-# Moves the unit in @unit to the core and blocks the processor
-# until the unit is within the specified  range. enemy is a
-# boolean, if it is true, the unit will be moved to the enemies
-# core. If it is false the unit is moved to the players core.
-#
-# Output:
-#   locate_core::x: X coordinate of the building
-#   locate_core::y: Y coordinate of the building
-#   locate_core::found: True if the building was found
-#   locate_core::building: Contains the found building
-
-function move_to_core_until(enemy, range) {
-    exec locate_core(false)
-    exec move_until(locate_core::x, locate_core::y, range)
+function move_to_core(move_to_core::__stdout) {
+    printflush move_to_core::__stdout
+    print "Act on unit"
+    ulocate building core false @copper move_to_core::__corex move_to_core::__corey move_to_core::__found move_to_core::__core
+    sensor cap @unit @itemCapacity
+    printflush move_to_core::__stdout
+    print "Move to core"
+    sensor hisflag @unit @flag
+    if hisflag != myflag {
+        end
+    }
+    ucontrol approach move_to_core::__corex move_to_core::__corey 1 0 0
+    move_to_core::__looper = 0
+    move_to_core::__again = true
+    while move_to_core::__again {
+        ucontrol itemDrop move_to_core::__core 9999 0 0 0
+        sensor move_to_core::__have @unit @totalItems
+        printflush move_to_core::__stdout
+        print "Looping to empty (1st): "
+        print move_to_core::__have
+        print ","
+        print move_to_core::__looper
+        move_to_core::__looper += 1
+        if move_to_core::__looper >= 200 {
+            ucontrol flag 0 0 0 0 0
+            end
+        }
+        move_to_core::__again = move_to_core::__have > 0
+    }
 }

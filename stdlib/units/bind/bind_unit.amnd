@@ -1,30 +1,36 @@
-# Binds one unit of the given unit type. If the processor
-# already has a bound unit this function does nothing.
-# This includes a processor that starts all commands from
-# the beginning. If there is no unit of the given unit
-# type this function will wait until a unit of this type
-# is created and can be bound.
-#
 # Output:
 #   @unit: The bound unit
-
-function bind_unit(unittype) {
-    # try to bind a unit
-    if @unit == null {
-        print "Binding a unit: "
-        print unittype
-        print "\n"
-        ubind unittype
-    } else {
-        print "Bound unit: "
-        print @unit
-    }
-    # if no unit is found, show error and wait until you found one
-    while @unit == null {
+#   bind_unit::myflag: The flag of the unit
+function bind_unit(bind_unit::__unittype, bind_unit::__stdout) {
+    printflush bind_unit::__stdout
+    print "Try to bind to unit"
+    op rand bind_unit::myflag 1234567890 b
+    op floor bind_unit::myflag bind_unit::myflag b
+    bind_unit::__looper = 0
+    bind_unit::__again = true
+    while bind_unit::__again {
+        ubind bind_unit::__unittype
         if @unit == null {
-            print "Can't find a unit."
-            printflush stderr
-            ubind unittype
+            printflush bind_unit::__stdout
+            print "No units, aborting."
+            end
         }
+        sensor bind_unit::__hisflag @unit @flag
+        printflush bind_unit::__stdout
+        print "candidate unit has flag: "
+        print bind_unit::__hisflag
+        print ","
+        print bind_unit::__looper
+        bind_unit::__looper += 1
+        if bind_unit::__looper >= 50 {
+            end
+        }
+        bind_unit::__again = bind_unit::__hisflag != 0
     }
+    sensor bind_unit::__hisflag @unit @flag
+    if bind_unit::__hisflag != 0 {
+        end
+    }
+    ucontrol flag bind_unit::myflag 0 0 0 0
 }
+
