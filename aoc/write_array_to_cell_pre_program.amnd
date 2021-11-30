@@ -1,0 +1,12 @@
+cell           = bank1
+message        = message2
+control_switch = switch3
+finish_switch  = switch1
+sensor sw_on control_switch @enabled
+if not sw_on {
+    print "Disabled"
+    printflush message
+    end
+}
+print "Starting write..."
+printflush message

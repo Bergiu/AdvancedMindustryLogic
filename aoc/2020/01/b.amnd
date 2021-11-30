@@ -6,6 +6,10 @@ right = message3
 left_cell = cell1
 right_cell = cell2
 
+printflush right
+printflush middle
+printflush left
+
 print "Starting."
 printflush left
 
@@ -16,20 +20,32 @@ print "\nInput length: "
 print cell_len
 printflush left
 
-# loops = n * (n-1) / 2
+# loops = n * (n-1) * (n-2) / 2
 # operations = loops * inner_while_operations
 # time = operations / 1500 / 60 / 2.5
-# 200 * 199 / 2 * 10 / 1500 / 60 / 2.5 = 1.46min
+# 200 * 199 * 198 / 2 * 10 / 1500 / 60 / 2.5 = 200 min
 match = 0
 i = 2
 while i <= cell_len {
     j = i + 1
     read val_i input i
     while j <= cell_len {
+        k = j + 1
         read val_j input j
-        if val_i + val_j == 2020 {
-            match = val_i * val_j
+        while k <= cell_len {
+            if val_i + val_j + val_k == 2020 {
+                match = val_i * val_j * val_k
+                print "Finished: "
+                print match
+                printflush middle
+                @counter -= 1
+            }
+            k++
         }
+        print j
+        print "/"
+        print cell_len
+        printflush middle
         j++
     }
     print i

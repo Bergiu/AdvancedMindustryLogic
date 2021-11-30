@@ -1,0 +1,45 @@
+input = bank1
+message = message1
+switch_control = switch3
+switch_output = switch1
+
+read cell_len input 1
+
+if cell_len == 0 {
+    print "Empty"
+    printflush message
+    control enabled switch_control 0 0 0 0
+    control enabled switch_output 1 0 0 0
+    end
+}
+
+sensor sw_on switch_control @enabled
+if not sw_on {
+    control enabled switch_output 0 0 0 0
+    i = 2
+    while i <= cell_len {
+        read x input i
+        print i
+        print ": "
+        print x
+        if i % 20 == 0 {
+            printflush message
+        } else {
+            print "\n"
+        }
+        i++
+    }
+} else {
+    control enabled switch_control 0 0 0 0
+    control enabled switch_output 0 0 0 0
+    i = 2
+    print "Resetting"
+    printflush message
+    while i <= cell_len {
+        write 0 input i
+        i++
+    }
+    write 0 input 1
+    control enabled switch_output 1 0 0 0
+}
+

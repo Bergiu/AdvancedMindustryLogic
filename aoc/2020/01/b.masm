@@ -1,0 +1,68 @@
+set input bank1 
+set left message1 
+set middle message2 
+set right message3 
+set left_cell cell1 
+set right_cell cell2 
+print "Starting." 
+printflush left 
+read cell_len input 1 
+print "Starting." 
+print "\nInput length: " 
+print cell_len 
+printflush left 
+# loops = n * (n-1) * (n-2) / 2
+# operations = loops * inner_while_operations
+# time = operations / 1500 / 60 / 2.5
+# 200 * 199 * 198 / 2 * 10 / 1500 / 60 / 2.5 = 200 min
+set match 0 
+set i 2 
+set while_start_8780403355624 @counter
+op lessThanEq var_8780403353405 i cell_len
+op notEqual skip_8780403355624 var_8780403353405 1
+op mul skip_8780403355624 skip_8780403355624 34
+op add @counter @counter skip_8780403355624
+op add var_8780403353516 i 1
+set j var_8780403353516 
+read val_i input i 
+set while_start_8780403354841 @counter
+op lessThanEq var_8780403353682 j cell_len
+op notEqual skip_8780403354841 var_8780403353682 1
+op mul skip_8780403354841 skip_8780403354841 20
+op add @counter @counter skip_8780403354841
+read val_j input j 
+set while_start_8780403354805 @counter
+op lessThanEq var_8780403354128 k cell_len
+op notEqual skip_8780403354805 var_8780403354128 1
+op mul skip_8780403354805 skip_8780403354805 12
+op add @counter @counter skip_8780403354805
+read val_k input k 
+op add var_8780403354314 val_i val_j
+op add var_8780403354344 var_8780403354314 val_k
+op equal var_8780403354634 var_8780403354344 2020
+op notEqual if_skip var_8780403354634 1
+op mul if_skip if_skip 3
+op add @counter @counter if_skip
+op mul var_8780403354748 val_i val_j
+op mul var_8780403354778 var_8780403354748 val_k
+set match var_8780403354778  
+op add k k 1 
+set @counter while_start_8780403354805
+ 
+op add j j 1 
+set @counter while_start_8780403354841
+ 
+print i 
+print "/" 
+print cell_len 
+printflush right 
+op add i i 1 
+set @counter while_start_8780403355624
+ 
+print "Result: " 
+print match 
+printflush middle 
+print "Finished." 
+printflush left 
+op sub var_8780403356302 @counter 1
+set @counter var_8780403356302 

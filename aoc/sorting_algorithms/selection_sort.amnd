@@ -1,0 +1,58 @@
+input = bank1
+message = message1
+switch_control = switch3
+switch_output = switch1
+
+read cell_len input 1
+
+if cell_len == 0 {
+    print "Empty"
+    printflush message
+    end
+}
+
+sensor sw_on switch_control @enabled
+if not sw_on {
+    print "Press button to start"
+    printflush message
+    end
+}
+control enabled switch_control 0 0 0 0
+control enabled switch_output 0 0 0 0
+
+
+print "Starting"
+printflush message
+
+# selection sort: (n-1) * n / 2
+# gehe über alle elemente und tausche immer das aktuelle mit dem kleinsten
+i = 2
+while i <= cell_len - 1 {
+    read x input i
+    min = x
+    min_pos = null
+    j = i + 1
+    while j <= cell_len {
+        read y input j
+        if y < min {
+            min = y
+            min_pos = j
+        }
+        j++
+    }
+    if min != x {
+        write min input i
+        write x input min_pos
+    }
+    print "Starting\n"
+    print i
+    print "/"
+    print cell_len
+    printflush message
+    i++
+}
+
+print "Finished\n"
+print "Press button to start again"
+printflush message
+control enabled switch_output 1 0 0 0

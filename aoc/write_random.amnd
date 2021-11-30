@@ -1,0 +1,19 @@
+cell = bank1
+switch_control = switch2
+
+sensor sw_on switch_control @enabled
+if not sw_on {
+    end
+}
+
+
+write 20 cell 1
+x = 2
+while x <= 20 {
+    op rand num 100 0
+    op floor num num 0
+    write num cell x
+    x++
+}
+
+control enabled switch_control 0 0 0 0
