@@ -26,6 +26,7 @@ printflush message
 
 # selection sort: (n-1) * n / 2
 # gehe über alle elemente und tausche immer das aktuelle mit dem kleinsten
+# 200 Elements: ~12min time
 i = 2
 while i <= cell_len - 1 {
     read x input i

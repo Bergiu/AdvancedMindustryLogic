@@ -4,7 +4,7 @@ import sys
 # aoc/write_array_to_cell_pre_program.amnd
 PRE_PROGRAM = '''set cell bank1
 set message message2
-set control_switch switch3
+set control_switch switch2
 set finish_switch switch1
 sensor sw_on control_switch @enabled
 op notEqual var_8778676585855 sw_on true

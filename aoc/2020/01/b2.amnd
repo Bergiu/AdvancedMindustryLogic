@@ -1,7 +1,7 @@
 input = bank1
-left = message1
-middle = message2
-right = message3
+left = message2
+middle = message3
+right = message4
 
 left_cell = cell1
 right_cell = cell2
@@ -20,43 +20,36 @@ print "\nInput length: "
 print cell_len
 printflush left
 
-# loops = n * (n-1) * (n-2) / 2
-# operations = loops * inner_while_operations
-# time = operations / 1500 / 60 / 2.5
-# 200 * 199 * 198 / 2 * 10 / 1500 / 60 / 2.5 = 200 min
+# MEMORY NEEDS TO BE SORTED (min to max)
 match = 0
-i = 2
-while i <= cell_len {
+i = cell_len
+while i > 4 {
     read val_i input i
-    j = i + 1
-    while j <= cell_len {
+    j = i - 1
+    while j > 3 {
         read val_j input j
         needed = 2020 - (val_j + val_i)
-        k = cell_len
         if needed > 0 {
-            while k > j {
+            k = 2
+            while k < j {
                 read val_k input k
                 if val_k == needed {
                     match = val_i * val_j * val_k
-                    print "Finished: "
-                    print match
-                    printflush middle
-                    @counter -= 1
                 }
-                k--
+                k++
             }
         }
         print j
         print "/"
         print cell_len
         printflush middle
-        j++
+        j--
     }
     print i
     print "/"
     print cell_len
     printflush right
-    i++
+    i--
 }
 
 print "Result: "
