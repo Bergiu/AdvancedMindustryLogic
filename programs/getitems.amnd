@@ -27,6 +27,10 @@ if container_amount >= maximum_amount {
     end
 }
 
+print "Binding a unit of type: "
+print unittype
+printflush message
+
 # find free unit
 ubind unittype
 sensor flag @unit @flag
