@@ -1,0 +1,162 @@
+container = container1
+config = unloader1
+message = message1
+
+# config
+maximum_amount = 100
+min_transport_amount = 10
+unittype = @flare
+
+# config itemtype
+sensor itemtype config @config
+
+if itemtype == null {
+    print "Select an itemtype."
+    printflush message
+    end
+}
+
+# get amount of resource in container
+sensor container_amount container itemtype
+
+if container_amount >= maximum_amount {
+    print "Maximum amount of "
+    print itemtype
+    print " reached."
+    printflush message
+    end
+}
+
+# find free unit
+ubind unittype
+sensor flag @unit @flag
+
+loops = 200
+while loops > 0 and flag != 0 {
+    ubind unittype
+    sensor flag @unit @flag
+}
+
+if flag != 0 {
+    print "Waiting for a free unit of type: "
+    print unittype
+    printflush message
+    end
+}
+
+# flag unit
+op rand rand_num 100000 b
+op floor myflag rand_num b
+ucontrol flag myflag 0 0 0 0
+
+# find core
+# needs bound unit
+ulocate building core false @copper corex corey found core
+
+# use unit 10 times
+unit_looper = 10
+while unit_looper > 0 {
+    unit_looper += 1
+    sensor hisflag @unit @flag
+    if hisflag != myflag {
+        end
+    }
+    # config itemtype
+    sensor itemtype config @config
+
+    if itemtype == null {
+        print "Select an itemtype."
+        printflush message
+        ucontrol flag 0 0 0 0 0
+        end
+    }
+
+    # get amount of resource in container
+    sensor container_amount container itemtype
+
+    if container_amount >= maximum_amount {
+        print "Maximum amount of "
+        print itemtype
+        print " reached."
+        printflush message
+        ucontrol flag 0 0 0 0 0
+        end
+    }
+
+    # check if core has enough items
+    sensor core_amount core itemtype
+    if core_amount < min_transport_amount {
+        print "Core has not enough "
+        print itemtype
+        print "."
+        printflush message
+        # clear
+        ucontrol flag 0 0 0 0 0
+        end
+    }
+
+    print "Move to core"
+    printflush message
+
+    # empty in core
+    sensor cap @unit @itemCapacity
+    sensor have @unit @totalItems
+    ucontrol approach corex corey 2 0 0
+    looper = 0
+    if have > 0 {
+        again = true
+        while again {
+            ucontrol itemDrop core 9999 0 0 0
+            sensor have @unit @totalItems
+            looper += 1
+            if looper >= 200 {
+                ucontrol flag 0 0 0 0 0
+                end
+            }
+            again = have > 0
+        }
+    }
+    looper = 0
+    again = true
+    while again {
+        ucontrol itemTake core itemtype cap 0 0
+        sensor have @unit itemtype
+        looper += 1
+        if looper >= 200 {
+            ucontrol flag 0 0 0 0 0
+            end
+        }
+        again = have == 0
+    }
+
+    print "Move to container."
+    printflush message
+
+    # empty in container
+    sensor have @unit @totalItems
+    sensor contx container @x
+    sensor conty container @y
+    ucontrol approach contx conty 2 0 0
+    looper = 0
+    if have > 0 {
+        again = true
+        while again {
+            ucontrol itemDrop container 9999 0 0 0
+            sensor have @unit @totalItems
+            looper += 1
+            if looper >= 200 {
+                ucontrol flag 0 0 0 0 0
+                end
+            }
+            again = have > 0
+        }
+    } else {
+        print "Fatal Error."
+        printflush message
+        ucontrol flag 0 0 0 0 0
+        end
+    }
+}
+
+# clear flag
+ucontrol flag 0 0 0 0 0

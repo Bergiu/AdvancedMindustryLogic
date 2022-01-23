@@ -1,0 +1,7 @@
+sensor sorting_type sorter1 @config
+sensor conv_type conveyor1 @firstItem
+if conv_type != null {
+    control configure unloader1 conv_type 0 0 0
+} else {
+    control configure unloader1 sorting_type 0 0 0
+}
