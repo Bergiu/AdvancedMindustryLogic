@@ -11,7 +11,16 @@
   - `op equal x 1 2`: `x = 1 == 2`
 - easy set:
   - `set x 1`: `x = 1`
+- while
+- if, if/else
+- standard library with reusable code
 
+
+## How to use
+
+Install python and the dependencies.
+
+Then run `./main.py your_code.amnd | xclip -selection c` or `./main.py your_code.amnd`.
 
 # NeoVim
 
