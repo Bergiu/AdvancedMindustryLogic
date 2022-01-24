@@ -1,7 +1,55 @@
-unittype = @flare
-ubind unittype
-ulocate building core false true x y found a_building
-print @unit
-print "\n"
-print a_building
+
+# the following example searches for a unit that has no flag. after that it binds the unit to the processor and gives it
+# a flag between 1-100.
+# this can be used to prevent units from being used from two processors.
+
+# problems that occure: after deletion of the processor the unit can't be bound to another processor because it already
+# has a flag.
+
+# auto air does the following: it repeats (go to container and put items) 200 times and then sets the flag to 0. also it
+# sets the flag to 0 if one process finished.
+
+ubind @flare
+first = @unit
+all = false
+while not all {
+    ubind @flare
+    if @unit == first {
+        all = true
+    } else {
+        sensor unit_flag @unit @flag
+        print unit_flag
+        print "\n"
+    }
+}
 printflush message1
+end
+
+if @unit == null {
+    again = true
+    while again {
+        ubind @flare
+        sensor unit_flag @unit @flag
+        if unit_flag == 0 {
+            print "Binding\n"
+            op rand flag_value 100 if_skip
+            flag_value = flag_value // 1
+            ucontrol flag flag_value 0 0 0 0
+            again = false
+        } else {
+            print "Searching\n"
+            print "Flag: "
+            print unit_flag
+        }
+        printflush message1
+    }
+}
+
+print "Unit: "
+print @unit
+sensor tmp @unit @flag
+
+print "\nFlag: "
+print tmp
+printflush message1
+# ucontrol flag 0 0 0 0 0

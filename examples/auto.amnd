@@ -1,0 +1,171 @@
+printflush message1
+
+# Output:
+#   targetamount
+#   ore
+function detect_needed_orez() {
+    print "Detect Needed Orez"
+    targetamount = 0
+    sensor buildtype factory1 @config
+    if buildtype == @flare {
+        sensor qty factory1 @silicon
+        if qty < 15 {
+            printflush message1
+            print "OK let's set for @silicon"
+            ore = @silicon
+            targetamount = 15 - qty
+        }
+        printflush message1
+        print "Done detecting for @silicon"
+    }
+    printflush message1
+    print "Detection done for @flare"
+    if buildtype == @mono {
+        sensor qty factory1 @silicon
+        if qty < 30 {
+            printflush message1
+            print "OK let's set for @silicon"
+            ore = @silicon
+            targetamount = 30 - qty
+        }
+        printflush message1
+        print "Done detecting for @silicon"
+        sensor qty factory1 @lead
+        if qty < 15 {
+            printflush message1
+            print "OK let's set for @lead"
+            ore = @lead
+            targetamount = 15 - qty
+        }
+        printflush message1
+        print "Done detecting for @lead"
+    }
+    printflush message1
+    print "Detection done for @mono"
+    if targetamount <= 0 {
+        printflush message1
+        print "No work to do, ending"
+        end
+    }
+}
+
+function bind_unit() {
+    printflush message1
+    print "Try to bind to unit"
+    op rand myflag 1234567890 b
+    op floor myflag myflag b
+    looper = 0
+    again = true
+    while again {
+        ubind @flare
+        if @unit == null {
+            printflush message1
+            print "No units, aborting."
+            end
+        }
+        sensor hisflag @unit @flag
+        printflush message1
+        print "candidate unit has flag: "
+        print hisflag
+        print ","
+        print looper
+        looper += 1
+        if looper >= 50 {
+            end
+        }
+        again = hisflag != 0
+    }
+    sensor hisflag @unit @flag
+    if hisflag != 0 {
+        end
+    }
+    ucontrol flag myflag 0 0 0 0
+}
+
+function move_to_core() {
+    printflush message1
+    print "Act on unit"
+    ulocate building core false @copper corex corey found core
+    sensor cap @unit @itemCapacity
+    printflush message1
+    print "Move to core"
+    sensor hisflag @unit @flag
+    if hisflag != myflag {
+        end
+    }
+    ucontrol approach corex corey 1 0 0
+    looper = 0
+    again = true
+    while again {
+        ucontrol itemDrop core 9999 0 0 0
+        sensor have @unit @totalItems
+        printflush message1
+        print "Looping to empty (1st): "
+        print have
+        print ","
+        print looper
+        looper += 1
+        if looper >= 200 {
+            ucontrol flag 0 0 0 0 0
+            end
+        }
+        again = have > 0
+    }
+}
+
+function pick_up() {
+    print "Pick up"
+    op min targetamount targetamount cap
+    looper = 0
+    again = true
+    while again {
+        ucontrol itemTake core ore targetamount 0 0
+        sensor have @unit @totalItems
+        printflush message1
+        print "Looping to full: "
+        print have
+        print ","
+        print looper
+        looper += 1
+        if looper >= 200 {
+            ucontrol flag 0 0 0 0 0
+            end
+        }
+        again = have < targetamount
+    }
+}
+
+function move_back_and_drop_off() {
+    printflush message1
+    print "Drop off"
+    sensor rx factory1 @x
+    sensor ry factory1 @y
+    ucontrol approach rx ry 1 0 0
+    set looper 0
+    set again true
+    while again {
+        ucontrol itemDrop factory1 targetamount 0 0 0
+        sensor have @unit @totalItems
+        printflush message1
+        print "Looping to empty(2nd): "
+        print have
+        print ","
+        print looper
+        op add looper looper 1
+        if looper >= 200 {
+            ucontrol flag 0 0 0 0 0
+            end
+        }
+        again = have != 0
+    }
+    ucontrol flag 0 0 0 0 0
+}
+
+
+function main() {
+    exec detect_needed_orez()
+    exec bind_unit()
+    exec move_to_core()
+    exec pick_up()
+    exec move_back_and_drop_off()
+}
