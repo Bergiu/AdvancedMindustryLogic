@@ -1,0 +1,21 @@
+sensor sorting_type sorter2 @config
+
+function clog_prev_sort(conveyor, unloader) {
+    sensor conv_type conveyor @firstItem
+    if conv_type != null {
+        control configure unloader conv_type 0 0 0
+    } else {
+        control configure unloader sorting_type 0 0 0
+    }
+}
+
+exec clog_prev_sort(conveyor2, unloader2)
+exec clog_prev_sort(conveyor3, unloader3)
+exec clog_prev_sort(conveyor4, unloader4)
+exec clog_prev_sort(conveyor5, unloader5)
+exec clog_prev_sort(conveyor6, unloader6)
+exec clog_prev_sort(conveyor7, unloader7)
+exec clog_prev_sort(conveyor8, unloader8)
+exec clog_prev_sort(conveyor9, unloader9)
+exec clog_prev_sort(conveyor10, unloader10)
+exec clog_prev_sort(conveyor11, unloader11)
