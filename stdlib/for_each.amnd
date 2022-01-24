@@ -1,0 +1,32 @@
+# Iterates over an encoded memory range
+#
+# function_ptr: Function that should be executed for every number
+# begin_list: The index of the first cell
+# bits_per_number_in_one_float: Amount of bits that is used for one float during the encoding
+# real_length_of_list: The real length of the list
+#
+# The function_ptr function takes no arguments. It can use every variable that is used and
+# created in the for_each function.
+# The most important ones are:
+#   i: Current index
+#   number: Current number
+function for_each(function_ptr, begin_list, bits_per_number_in_one_float, real_length_of_list){
+    bit_block = ((2 ** bits_per_number_in_one_float) - 1)
+    cell_i = begin_list
+    i = 0
+    while i < real_length_of_list {
+        read encoded input cell_i
+        shift = 0
+        shift_max = FLOAT_USABLE_BIT_LENGTH // bits_per_number_in_one_float
+        while (shift < shift_max) and (i < real_length_of_list) {
+            number = (encoded >> (shift * bits_per_number_in_one_float)) & bit_block
+            # set return pointer and execute function
+            op add retptr @counter 1
+            set @counter function_ptr
+            # increases
+            i++
+            shift++
+        }
+        cell_i++
+    }
+}
