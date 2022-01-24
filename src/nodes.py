@@ -243,8 +243,8 @@ class ExecNode(Node):
         function_name = self.fnptr.token.value
         functions = list(self.find_function(tree, function_name))
         if len(functions) >= 2:
-            self.call_exception(TokenException("error", f"Multiple definitions of function  {function_name}.", self.fnptr.token, self.p))
-            self.call_exception(TokenException("error", f"Multiple definitions of function  {function_name}.", self.fnptr.token, self.p))
+            self.call_exception(TokenException("error", f"Multiple definitions of function {function_name}.", self.fnptr.token, self.p))
+            self.call_exception(TokenException("error", f"Multiple definitions of function {function_name}.", self.fnptr.token, self.p))
             return
         if len(functions) < 1:
             self.call_exception(TokenException("error", f"Missing definition of function {function_name}.", self.fnptr.token, self.p))
