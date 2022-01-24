@@ -1,0 +1,33 @@
+input = bank1
+message = message1
+
+read cell_len input 1
+
+if cell_len == 0 {
+    i = 1
+    while i <= 10 {
+        if i == 1 {
+            print "Empty"
+        }
+        printflush message
+        getlink message i
+        i++
+    }
+    end
+}
+
+i = 2
+while i <= cell_len {
+    read x input i
+    print i
+    print ": "
+    print x
+    if i % 20 == 0 {
+        y = (i - 1) // 20
+        getlink message y
+        printflush message
+    } else {
+        print "\n"
+    }
+    i++
+}

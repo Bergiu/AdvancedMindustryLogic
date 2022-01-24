@@ -1,6 +1,6 @@
-input = bank1
+input = bank2
 message = message1
-switch_control = switch3
+switch_control = switch2
 switch_output = switch1
 
 read cell_len input 1
@@ -17,12 +17,12 @@ sensor sw_on switch_control @enabled
 if not sw_on {
     control enabled switch_output 0 0 0 0
     i = 2
-    while i <= cell_len {
+    while i <= cell_len + 1 {
         read x input i
         print i
         print ": "
         print x
-        if i % 20 == 0 {
+        if i % 20 == 0 or i == cell_len + 1{
             printflush message
         } else {
             print "\n"
@@ -35,7 +35,7 @@ if not sw_on {
     i = 2
     print "Resetting"
     printflush message
-    while i <= cell_len {
+    while i <= cell_len + 1 {
         write 0 input i
         i++
     }
