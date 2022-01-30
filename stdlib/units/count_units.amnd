@@ -1,0 +1,33 @@
+# input:
+#   unittype: the unit that should be counted
+# output:
+#   count: the amount of the unit
+# counts the amount of a given unit. changes the bound unit! if the first unit dies, this method ends.
+function count_units(count_units::__unittype) {
+    # count
+    ubind count_units::__unittype
+    if @unit == null {
+        count = 0
+    } else {
+        count_units::__first = @unit
+        sensor is_dead @unit @dead
+        if not is_dead {
+            count = 1
+        } else {
+            count = 0
+        }
+        ubind count_units::__unittype
+        while count_units::__first != @unit {
+            sensor is_first_dead count_units::__first @dead
+            if is_first_dead {
+                end
+            }
+            sensor is_dead @unit @dead
+            if not is_dead {
+                count += 1
+            }
+            ubind count_units::__unittype
+        }
+    }
+}
+

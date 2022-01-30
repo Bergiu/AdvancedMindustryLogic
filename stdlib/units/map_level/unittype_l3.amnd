@@ -1,0 +1,37 @@
+# input: basetype, message
+# output: unittype
+# basetype is the type level 1 and unittype it the unit upgraded to the given level
+function unittype_l3(unittype_l3::__basetype, unittype_l3::__message) {
+    unittype_l3::__found = false
+    if unittype_l3::__basetype == @mono {
+        unittype = @mega
+        unittype_l3::__found = true
+    }
+    if unittype_l3::__basetype == @flare {
+        unittype = @zenith
+        unittype_l3::__found = true
+    }
+    if unittype_l3::__basetype == @dagger {
+        unittype = @fortress
+        unittype_l3::__found = true
+    }
+    if unittype_l3::__basetype == @nova {
+        unittype = @quasar
+        unittype_l3::__found = true
+    }
+    if unittype_l3::__basetype == @crawler {
+        unittype = @spiroct
+        unittype_l3::__found = true
+    }
+    if unittype_l3::__basetype == @risso {
+        unittype = @bryde
+        unittype_l3::__found = true
+    }
+    if not unittype_l3::__found {
+        print "Selected: "
+        print unittype_l3::__basetype
+        print "\nSelect a basetype."
+        printflush unittype_l3:__message
+        end
+    }
+}
