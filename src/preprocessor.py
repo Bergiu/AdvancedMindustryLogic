@@ -41,7 +41,7 @@ def replace_includes(text: str, filename: Union[str, pathlib.Path]) -> Tuple[Lin
     code_pos: CodePosResolver = []
     for index, line in enumerate(lines):
         line = line.strip()
-        res = re.match("^import ([a-zA-Z/_.]+)[ ]?", line)
+        res = re.match("^import ([a-zA-Z0-9/_.]+)[ ]?", line)
         if res is not None:
             new_lines.append("# " + line)
             code_pos.append((index, filename))
