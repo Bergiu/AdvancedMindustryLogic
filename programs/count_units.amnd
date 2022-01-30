@@ -1,40 +1,7 @@
 unittype = @mono
 message = message1
 
-# find free unit
-ubind unittype
-sensor flag @unit @flag
-
-loops = 200
-while loops > 0 and flag != 0 {
-    ubind unittype
-    sensor flag @unit @flag
-    loops -= 1
-}
-
-if flag != 0 {
-    print "Waiting for a free unit of type: "
-    print unittype
-    printflush message
-    end
-}
-
-# flag unit
-op rand rand_num 100000 b
-op floor myflag rand_num b
-ucontrol flag myflag 0 0 0 0
-
-# count
-ubind unittype
-sensor flag @unit @flag
-count = 1
-while flag != myflag {
-    count += 1
-    ubind unittype
-    sensor flag @unit @flag
-}
-
-ucontrol flag 0 0 0 0 0
-
+import ../stdlib/units/count_units.amnd
+exec count_units(unittype)
 print count
 printflush message

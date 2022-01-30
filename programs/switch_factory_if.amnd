@@ -1,0 +1,136 @@
+# TODO: select null if finished
+
+import ../stdlib/units/map_level/unittype_l2.amnd
+import ../stdlib/units/map_level/unittype_l3.amnd
+import ../stdlib/units/count_units.amnd
+
+message = message1
+factory_l3 = factory1
+factory_l2 = factory2
+factory_l1 = factory3
+# needs to be 4 less than the maximum
+max_units = 20
+
+print "Creating about "
+print max_units
+print " units."
+
+# count mono l3
+exec unittype_l3(@mono, message)
+exec count_units(unittype)
+mono_l3_count = count
+print "\n"
+print unittype
+print ": "
+print count
+# count flare l3
+exec unittype_l3(@flare, message)
+exec count_units(unittype)
+flare_l3_count = count
+print "\n"
+print unittype
+print ": "
+print count
+
+
+# if both max, disable
+if mono_l3_count > max_units and flare_l3_count > max_units {
+    # set it to a type that is impossible disables the factory
+    control configure factory_l3 @mega 0 0 0
+} else {
+    # if mono max, but flare not
+    if mono_l3_count > max_units and flare_l3_count <= max_units {
+        control configure factory_l3 @flare 0 0 0
+    } else {
+        # if flare max, but mono not
+        if mono_l3_count <= max_units and flare_l3_count > max_units {
+            control configure factory_l3 @mono 0 0 0
+        } else {
+            # else both needed, take selected
+            sensor basetype factory_l3 @config
+            # if nothing selected, take mono
+            if basetype == null {
+                control configure factory_l3 @mono 0 0 0
+            }
+        }
+    }
+}
+
+
+max_units -= 1
+# count mono l2
+exec unittype_l2(@mono, message)
+exec count_units(unittype)
+mono_l2_count = count
+print "\n"
+print unittype
+print ": "
+print count
+# count flare l2
+exec unittype_l2(@flare, message)
+exec count_units(unittype)
+flare_l2_count = count
+print "\n"
+print unittype
+print ": "
+print count
+
+
+# if both max, disable
+if mono_l2_count > max_units and flare_l2_count > max_units {
+    # set it to a type that is impossible disables the factory
+    control configure factory_l2 @mega 0 0 0
+} else {
+    # if mono max, but flare not
+    if mono_l2_count > max_units and flare_l2_count <= max_units {
+        control configure factory_l2 @flare 0 0 0
+    } else {
+        # if flare max, but mono not
+        if mono_l2_count <= max_units and flare_l2_count > max_units {
+            control configure factory_l2 @mono 0 0 0
+        } else {
+            # else both needed, take selected
+            sensor basetype factory_l2 @config
+            # if nothing selected, take mono
+            if basetype == null {
+                control configure factory_l2 @mono 0 0 0
+            }
+        }
+    }
+}
+
+# count mono
+exec count_units(@mono)
+mono_l1_count = count
+print "\nmono: "
+print count
+# count flare
+exec count_units(@flare)
+flare_l1_count = count
+print "\nflare: "
+print count
+
+
+# if both max, disable
+if mono_l1_count > max_units and flare_l1_count > max_units {
+    # set it to a type that is impossible disables the factory
+    control configure factory_l1 @mega 0 0 0
+} else {
+    # if mono max, but flare not
+    if mono_l1_count > max_units and flare_l1_count <= max_units {
+        control configure factory_l1 @flare 0 0 0
+    } else {
+        # if flare max, but mono not
+        if mono_l1_count <= max_units and flare_l1_count > max_units {
+            control configure factory_l1 @mono 0 0 0
+        } else {
+            # else both needed, take selected
+            sensor basetype factory_l1 @config
+            # if nothing selected, take flare
+            if basetype == null {
+                control configure factory_l1 @flare 0 0 0
+            }
+        }
+    }
+}
+printflush message
