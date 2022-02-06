@@ -16,7 +16,7 @@ syn match amndNumber "\v<\d+>"
 syn match amndNumber "\v<\d+\.\d+>"
 syn keyword amndBool true false
 syn match amndComment "\v#.*$"
-syn match amndAt "@[a-zA-Z0-9]*"
+syn match amndAt "@[a-zA-Z0-9\-]*"
 syntax region amndString start=/"/ end=/"/ oneline contains=amndInterpolatedWrapper
 syntax region amndInterpolatedWrapper start="\v\\\(\s*" end="\v\s*\)" contained containedin=amndString contains=amndInterpolatedString
 syntax match amndInterpolatedString "\v\w+(\(\))?" contained containedin=amndInterpolatedWrapper
