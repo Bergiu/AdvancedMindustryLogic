@@ -64,12 +64,31 @@ function f1(x) {
 exec plot(f1)
 ```
 
+### Exit functions
+A return keyword is not implemented and sometimes you want to exit a method directly. To do this just set a label to the end of the method with a noop and jump to it:
+
+```
+function example(x) {
+    if x > 100 {
+        jump exit always 0 0
+    }
+    # do stuff
+    ...
+    exit:
+    noop
+}
+```
+
 ### Behaviour of -
 1. `-` can be used as sign (`8*-5`) and it can be used as arithmetic operation (`8-5`).
 2. `-` cannot be used in normal variable names (`surge-alloy`), but it can be used in special variable names that start with `@` (`@surge-alloy`)
 3. You don't need spaces between operations (`delta=now-then`)
 
 This leads to a special behaviour if you use `@` variables in combination with arithmetics. For example `x = @time-delta`. The compiler can distinguish if you mean "`x` is `delta` subtracted from `@time`" or "`x` is `@time-delta`". The current behaviour is that there is no subtraction and the `@time-delta` is used as a variable name. So if you want to subtract something from a `@` variable you need to insert spaces: `x = @time - delta`.
+
+### Notes
+Numbers have 64 bit.
+Cells have float.
 
 ## How to use
 
@@ -88,7 +107,3 @@ Copy the file `vim/ftdetect/amnd.vim` to `~/.config/nvim/ftdetect/amnd.vim`.
 Copy `vim/syntax/amnd.vim` to `~/.config/nvim/syntax/amnd.vim`.
 
 This file is inspired by: https://github.com/purofle/vim-mindustry-logic
-
-
-# Notes
-Numbers have 64 bit.
