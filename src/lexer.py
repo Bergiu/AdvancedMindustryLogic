@@ -209,8 +209,14 @@ tokens = [
     'OP_LAND',
     'OP_LOR',
     'OP_NOT',
+    'BIN',
     'LABEL'
 ] + list(reserved.values())
+
+
+def t_BIN(t):
+    r'0b[01]+'
+    return t
 
 
 def t_ID(t):

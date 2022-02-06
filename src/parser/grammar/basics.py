@@ -126,7 +126,8 @@ def p_id(p):
 
 
 def p_int(p):
-    '''int : INT'''
+    '''int : INT
+           | BIN'''
     p[0] = Token(p.slice[1])
 
 
