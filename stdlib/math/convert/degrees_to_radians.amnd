@@ -1,0 +1,10 @@
+import ../constants.amnd
+
+# Converts degrees to radians
+# Input:
+#   deg: degrees
+# Output:
+#   rad: radian
+function degrees_to_radians(degrees_to_radians::__deg) {
+    rad = degrees_to_radians::__deg / 180 * pi
+}
