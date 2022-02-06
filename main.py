@@ -42,7 +42,7 @@ def main():
     else:
         out = do_parsing(text)
         if out.loc() > 1000:
-            raise Exception("PANIC: Maximum lines of code exceeded (max: 1000).")
+            raise Exception("PANIC: Maximum lines of code exceeded (max: 1000): " + str(out.loc()))
         code = out.to_code(out)
         if args.loc:
             print(out.loc())
