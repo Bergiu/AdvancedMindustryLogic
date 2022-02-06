@@ -1,0 +1,36 @@
+import ../stdlib/io/number_to_char_7bit.amnd
+
+# print all
+x = 0
+while x < 128 {
+    exec number_to_char(x)
+    print char
+    x++
+}
+print error
+printflush message1
+
+# print Hello World
+exec number_to_char(33)
+print char
+exec number_to_char(4)
+print char
+exec number_to_char(11)
+print char
+exec number_to_char(11)
+print char
+exec number_to_char(14)
+print char
+exec number_to_char(52)
+print char
+exec number_to_char(48)
+print char
+exec number_to_char(14)
+print char
+exec number_to_char(17)
+print char
+exec number_to_char(11)
+print char
+exec number_to_char(3)
+print char
+printflush message2
