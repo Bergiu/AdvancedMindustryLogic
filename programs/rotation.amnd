@@ -1,0 +1,31 @@
+draw clear 0 0 0 0 0 0
+# rotate old points
+rot = 45
+op cos cos_rot rot 0
+op sin sin_rot rot 0
+xrot = cos_rot*x - sin_rot*y
+yrot = sin_rot*x + cos_rot*y
+op cos cos_rot rot 0
+op sin sin_rot rot 0
+x1rot = cos_rot*x1 - sin_rot*y1
+y1rot = sin_rot*x1 + cos_rot*y1
+xrot = xrot + 88
+yrot = yrot + 88
+x1rot = x1rot + 88
+y1rot = y1rot + 88
+# calculate new point
+draw line xrot yrot x1rot y1rot 0 0
+set x1 x
+set y1 y
+op cos x a 0.5
+op sin y a 0.5
+op cos r b b
+op mul radius 60 r
+op mul x x 60
+op mul y y radius
+op add a a 20
+jump 0 lessThanEq a 360
+drawflush display1
+set a 0
+op add b b 10
+rot += 5
