@@ -1,0 +1,21 @@
+# Returns the size of the display.
+# If the display is not logic-display or large-logic-display an error is printed to the global variable `stderr` and `end` will be called
+# Input:
+#   display: The display
+# Output:
+#   display_size: The size of the display
+function get_display_size(get_size::__display) {
+    sensor get_size::__display_type get_size::__display @type
+    if get_size::__display_type == @logic-display {
+        display_size = 80
+    } else {
+        if get_size::__display_type == @large-logic-display {
+            display_size = 176
+        } else {
+            print "Display is not of type display. Type: "
+            print get_size::__display_type
+            printflush stderr
+            end
+        }
+    }
+}
