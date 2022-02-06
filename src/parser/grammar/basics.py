@@ -26,7 +26,7 @@ ids             # list of values
 
 
 from src.lexer import reserved
-from src.nodes import Token
+from src.nodes import Token, SignedToken
 from src.parser.types import value_t, ids_t, var_int_t, var_number_t, var_bool_t, null_t, number_t, fakeid_t, \
     var_string_t
 
@@ -130,9 +130,19 @@ def p_int(p):
     p[0] = Token(p.slice[1])
 
 
+def p_int_signed(p):
+    '''int : OP_SUB INT'''
+    p[0] = SignedToken(p.slice[1], p.slice[2])
+
+
 def p_double(p):
     '''double : DOUBLE'''
     p[0] = Token(p.slice[1])
+
+
+def p_double_signed(p):
+    '''double : OP_SUB DOUBLE'''
+    p[0] = SignedToken(p.slice[1], p.slice[2])
 
 
 def p_bool(p):

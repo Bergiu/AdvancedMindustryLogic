@@ -29,7 +29,7 @@ from typing import List, Union
 from src.parser.types import value_t, fakeid_t, var_int_t, draw_instruction_t, var_number_t, null_t, \
     control_instruction_t, var_bool_t, radar_target_t, radar_sort_t, int_t, jump_comparison_t, ucontrol_instruction_t, \
     ulocate_find_t, ulocate_group_t, op_instruction_t
-from src.nodes import Token, OperationNode
+from src.nodes import Token, OperationNode, LabelNode
 
 
 def p_write(p):
@@ -219,8 +219,14 @@ def p_end(p):
     p[0] = OperationNode(p, op)
 
 
+def p_label(p):
+    '''cmd_label : LABEL'''
+    op: Token = Token(p.slice[1])
+    p[0] = LabelNode(p, op)
+
+
 def p_jump(p):
-    '''cmd_jump : JUMP int jump_comparison value value'''
+    '''cmd_jump : JUMP value jump_comparison value value'''
     op: Token = Token(p.slice[1])
     int_o: int_t = p[2]
     jump_comparison: jump_comparison_t = p[3]

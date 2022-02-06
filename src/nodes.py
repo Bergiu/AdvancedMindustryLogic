@@ -140,6 +140,19 @@ class CodeBlockNode(Node):
         return out
 
 
+class LabelNode(Node):
+    def __init__(self, p, command: Union[Token, str]):
+        super().__init__(p)
+        self.command = command
+
+    def loc(self):
+        return 0
+
+    def to_code(self, tree: Node):
+        out = f"{self.command}"
+        return out
+
+
 class OperationNode(Node):
     def __init__(self, p, command: Union[Token, str], parameters: Optional[List[Any]] = None):
         super().__init__(p)
@@ -297,6 +310,22 @@ class Token:
         if isinstance(self.token, Token):
             return str(self.token)
         return str(self.token.value)
+
+
+class SignedToken:
+    def __init__(self, sign_token, value_token):
+        self.sign_token = sign_token
+        self.value_token = value_token
+
+    def __str__(self):
+        out = ""
+        if isinstance(self.sign_token, Token):
+            out += str(self.sign_token)
+        out += str(self.sign_token.value)
+        if isinstance(self.value_token, Token):
+            out += str(self.value_token)
+        out += str(self.value_token.value)
+        return out
 
 
 class WhileNode(Node):

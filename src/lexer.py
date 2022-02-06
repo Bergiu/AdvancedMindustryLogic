@@ -209,12 +209,16 @@ tokens = [
     'OP_LAND',
     'OP_LOR',
     'OP_NOT',
+    'LABEL'
 ] + list(reserved.values())
 
 
 def t_ID(t):
-    r'@?[a-zA-Z_][a-zA-Z_0-9/.:]*'
-    t.type = reserved.get(t.value, 'ID')
+    r'[a-zA-Z_][a-zA-Z_0-9/.:]*|@?[a-zA-Z_][a-zA-Z_0-9/.:\-]*'
+    if t.value.endswith(":"):
+        t.type = "LABEL"
+    else:
+        t.type = reserved.get(t.value, 'ID')
     return t
 
 
@@ -229,7 +233,6 @@ t_COMMA = r','
 t_OP_EQ = r'=='
 t_OP_ASSIGN = r'='
 t_OP_ADD = r'\+'
-t_OP_SUB = r'-'
 t_OP_MUL = r'\*'
 t_OP_DIV = r'/'
 t_OP_LT = r'<'
@@ -261,14 +264,19 @@ def t_COMMENT(t):
 t_ignore = ' \t'
 
 
+def t_OP_SUB(t):
+    r'-'
+    return t
+
+
 def t_DOUBLE(t):
-    r'-?\d+\.\d+'
+    r'\d+\.\d+'
     t.value = float(t.value)
     return t
 
 
 def t_INT(t):
-    r'-?\d+'
+    r'\d+'
     t.value = int(t.value)
     return t
 
@@ -310,9 +318,11 @@ lexer = lex.lex()
 
 
 def do_lexing(data):
+    out = ""
     lexer.input(data)
     while True:
         i = lexer.token()
         if i is None:
             break
-        print(i)
+        out += "\n" + str(i)
+    return out

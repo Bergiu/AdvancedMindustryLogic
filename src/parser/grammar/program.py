@@ -83,6 +83,7 @@ def p_instruction(p):
                    | cmd_while
                    | cmd_if
                    | cmd_if_else
+                   | cmd_label
     '''
     instruction: instruction_t = p[1]
     p[0] = instruction
