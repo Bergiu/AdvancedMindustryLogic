@@ -1,0 +1,70 @@
+message = message1
+conveyor = conveyor1
+count_lead=0
+count_titanium=0
+count_copper=0
+count_graphite=0
+timed_lead=0
+timed_titanium=0
+timed_copper=0
+timed_graphite=0
+start = @time
+
+while true {
+
+    # flank controlled
+
+    # wait until conveyor is not empty
+    sensor item conveyor @firstItem
+    while item == null {
+        sensor item conveyor @firstItem
+    }
+
+    # wait while conveyor is not empty
+    sensor no_item conveyor @firstItem
+    while no_item != null {
+        sensor no_item conveyor @firstItem
+    }
+
+    delta = (@time - start) / 1000
+    if item == @lead {
+        count_lead++
+        timed_lead = count_lead / delta
+    }
+    if item == @titanium {
+        count_titanium++
+        timed_titanium = count_titanium / delta
+    }
+    if item == @copper {
+        count_copper++
+        timed_copper = count_copper / delta
+    }
+    if item == @graphite {
+        count_graphite++
+        timed_graphite = count_graphite / delta
+    }
+    print start
+    print "\n"
+    print @time
+    print "\nLead: "
+    print count_lead
+    print " ("
+    print timed_lead
+    print ")"
+    print "\nTitanium: "
+    print count_titanium
+    print " ("
+    print timed_titanium
+    print ")"
+    print "\nCopper: "
+    print count_copper
+    print " ("
+    print timed_copper
+    print ")"
+    print "\nGraphite: "
+    print count_graphite
+    print " ("
+    print timed_graphite
+    print ")"
+    printflush message
+}
