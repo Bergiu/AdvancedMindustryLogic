@@ -1,0 +1,284 @@
+# Converts a 7 bit number to a character.
+# number range: 0-127
+# Maps to: abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789!§$%&/()=?ß`´*+'#_-:.;,><|^°~@{[]}äöüÄÖÜ€»«·…ø¹²³¼½¬¢µæðđŋħł¶ŧþыт
+# 0-25: a-z
+# 26-51: A-Z
+# 52: space
+# 53-62: 0-9
+# 63-72: !§$%&/()=?
+# 73-82: ß`´*+'#_-:
+# 83-92: .;,><|^°~@
+# 93-102: {[]}äöüÄÖÜ
+# 103-112: €»«·…ø¹²³¼
+# 113-122: ½¬¢µæðđŋħł
+# 123-128: ¶ŧþыт
+# Input:
+#   number: Number between 0-128.
+# Output:
+#   char: Character of the number.
+#   error: boolean, true if error
+function number_to_char(number_to_char::__number) {
+    if number_to_char::__number > 127 or number_to_char::__number < 0 {
+        error = true
+    } else {
+        error = false
+        @counter = @counter + (number_to_char::__number * 2) + 2
+        char = "a"
+        jump number_to_char::__the_end always 0 0
+        char = "b"
+        jump number_to_char::__the_end always 0 0
+        char = "c"
+        jump number_to_char::__the_end always 0 0
+        char = "d"
+        jump number_to_char::__the_end always 0 0
+        char = "e"
+        jump number_to_char::__the_end always 0 0
+        char = "f"
+        jump number_to_char::__the_end always 0 0
+        char = "g"
+        jump number_to_char::__the_end always 0 0
+        char = "h"
+        jump number_to_char::__the_end always 0 0
+        char = "i"
+        jump number_to_char::__the_end always 0 0
+        char = "j"
+        jump number_to_char::__the_end always 0 0
+        char = "k"
+        jump number_to_char::__the_end always 0 0
+        char = "l"
+        jump number_to_char::__the_end always 0 0
+        char = "m"
+        jump number_to_char::__the_end always 0 0
+        char = "n"
+        jump number_to_char::__the_end always 0 0
+        char = "o"
+        jump number_to_char::__the_end always 0 0
+        char = "p"
+        jump number_to_char::__the_end always 0 0
+        char = "q"
+        jump number_to_char::__the_end always 0 0
+        char = "r"
+        jump number_to_char::__the_end always 0 0
+        char = "s"
+        jump number_to_char::__the_end always 0 0
+        char = "t"
+        jump number_to_char::__the_end always 0 0
+        char = "u"
+        jump number_to_char::__the_end always 0 0
+        char = "v"
+        jump number_to_char::__the_end always 0 0
+        char = "w"
+        jump number_to_char::__the_end always 0 0
+        char = "x"
+        jump number_to_char::__the_end always 0 0
+        char = "y"
+        jump number_to_char::__the_end always 0 0
+        char = "z"
+        jump number_to_char::__the_end always 0 0
+        char = "A"
+        jump number_to_char::__the_end always 0 0
+        char = "B"
+        jump number_to_char::__the_end always 0 0
+        char = "C"
+        jump number_to_char::__the_end always 0 0
+        char = "D"
+        jump number_to_char::__the_end always 0 0
+        char = "E"
+        jump number_to_char::__the_end always 0 0
+        char = "F"
+        jump number_to_char::__the_end always 0 0
+        char = "G"
+        jump number_to_char::__the_end always 0 0
+        char = "H"
+        jump number_to_char::__the_end always 0 0
+        char = "I"
+        jump number_to_char::__the_end always 0 0
+        char = "J"
+        jump number_to_char::__the_end always 0 0
+        char = "K"
+        jump number_to_char::__the_end always 0 0
+        char = "L"
+        jump number_to_char::__the_end always 0 0
+        char = "M"
+        jump number_to_char::__the_end always 0 0
+        char = "N"
+        jump number_to_char::__the_end always 0 0
+        char = "O"
+        jump number_to_char::__the_end always 0 0
+        char = "P"
+        jump number_to_char::__the_end always 0 0
+        char = "Q"
+        jump number_to_char::__the_end always 0 0
+        char = "R"
+        jump number_to_char::__the_end always 0 0
+        char = "S"
+        jump number_to_char::__the_end always 0 0
+        char = "T"
+        jump number_to_char::__the_end always 0 0
+        char = "U"
+        jump number_to_char::__the_end always 0 0
+        char = "V"
+        jump number_to_char::__the_end always 0 0
+        char = "W"
+        jump number_to_char::__the_end always 0 0
+        char = "X"
+        jump number_to_char::__the_end always 0 0
+        char = "Y"
+        jump number_to_char::__the_end always 0 0
+        char = "Z"
+        jump number_to_char::__the_end always 0 0
+        char = " "
+        jump number_to_char::__the_end always 0 0
+        char = "0"
+        jump number_to_char::__the_end always 0 0
+        char = "1"
+        jump number_to_char::__the_end always 0 0
+        char = "2"
+        jump number_to_char::__the_end always 0 0
+        char = "3"
+        jump number_to_char::__the_end always 0 0
+        char = "4"
+        jump number_to_char::__the_end always 0 0
+        char = "5"
+        jump number_to_char::__the_end always 0 0
+        char = "6"
+        jump number_to_char::__the_end always 0 0
+        char = "7"
+        jump number_to_char::__the_end always 0 0
+        char = "8"
+        jump number_to_char::__the_end always 0 0
+        char = "9"
+        jump number_to_char::__the_end always 0 0
+        char = "!"
+        jump number_to_char::__the_end always 0 0
+        char = "§"
+        jump number_to_char::__the_end always 0 0
+        char = "$"
+        jump number_to_char::__the_end always 0 0
+        char = "%"
+        jump number_to_char::__the_end always 0 0
+        char = "&"
+        jump number_to_char::__the_end always 0 0
+        char = "/"
+        jump number_to_char::__the_end always 0 0
+        char = "("
+        jump number_to_char::__the_end always 0 0
+        char = ")"
+        jump number_to_char::__the_end always 0 0
+        char = "="
+        jump number_to_char::__the_end always 0 0
+        char = "?"
+        jump number_to_char::__the_end always 0 0
+        char = "ß"
+        jump number_to_char::__the_end always 0 0
+        char = "`"
+        jump number_to_char::__the_end always 0 0
+        char = "´"
+        jump number_to_char::__the_end always 0 0
+        char = "*"
+        jump number_to_char::__the_end always 0 0
+        char = "+"
+        jump number_to_char::__the_end always 0 0
+        char = "'"
+        jump number_to_char::__the_end always 0 0
+        char = "#"
+        jump number_to_char::__the_end always 0 0
+        char = "_"
+        jump number_to_char::__the_end always 0 0
+        char = "-"
+        jump number_to_char::__the_end always 0 0
+        char = ":"
+        jump number_to_char::__the_end always 0 0
+        char = "."
+        jump number_to_char::__the_end always 0 0
+        char = ";"
+        jump number_to_char::__the_end always 0 0
+        char = ","
+        jump number_to_char::__the_end always 0 0
+        char = ">"
+        jump number_to_char::__the_end always 0 0
+        char = "<"
+        jump number_to_char::__the_end always 0 0
+        char = "|"
+        jump number_to_char::__the_end always 0 0
+        char = "^"
+        jump number_to_char::__the_end always 0 0
+        char = "°"
+        jump number_to_char::__the_end always 0 0
+        char = "~"
+        jump number_to_char::__the_end always 0 0
+        char = "@"
+        jump number_to_char::__the_end always 0 0
+        char = "{"
+        jump number_to_char::__the_end always 0 0
+        char = "["
+        jump number_to_char::__the_end always 0 0
+        char = "]"
+        jump number_to_char::__the_end always 0 0
+        char = "}"
+        jump number_to_char::__the_end always 0 0
+        char = "ä"
+        jump number_to_char::__the_end always 0 0
+        char = "ö"
+        jump number_to_char::__the_end always 0 0
+        char = "ü"
+        jump number_to_char::__the_end always 0 0
+        char = "Ä"
+        jump number_to_char::__the_end always 0 0
+        char = "Ö"
+        jump number_to_char::__the_end always 0 0
+        char = "Ü"
+        jump number_to_char::__the_end always 0 0
+        char = "€"
+        jump number_to_char::__the_end always 0 0
+        char = "»"
+        jump number_to_char::__the_end always 0 0
+        char = "«"
+        jump number_to_char::__the_end always 0 0
+        char = "·"
+        jump number_to_char::__the_end always 0 0
+        char = "…"
+        jump number_to_char::__the_end always 0 0
+        char = "ø"
+        jump number_to_char::__the_end always 0 0
+        char = "¹"
+        jump number_to_char::__the_end always 0 0
+        char = "²"
+        jump number_to_char::__the_end always 0 0
+        char = "³"
+        jump number_to_char::__the_end always 0 0
+        char = "¼"
+        jump number_to_char::__the_end always 0 0
+        char = "½"
+        jump number_to_char::__the_end always 0 0
+        char = "¬"
+        jump number_to_char::__the_end always 0 0
+        char = "¢"
+        jump number_to_char::__the_end always 0 0
+        char = "µ"
+        jump number_to_char::__the_end always 0 0
+        char = "æ"
+        jump number_to_char::__the_end always 0 0
+        char = "ð"
+        jump number_to_char::__the_end always 0 0
+        char = "đ"
+        jump number_to_char::__the_end always 0 0
+        char = "ŋ"
+        jump number_to_char::__the_end always 0 0
+        char = "ħ"
+        jump number_to_char::__the_end always 0 0
+        char = "ł"
+        jump number_to_char::__the_end always 0 0
+        char = "¶"
+        jump number_to_char::__the_end always 0 0
+        char = "ŧ"
+        jump number_to_char::__the_end always 0 0
+        char = "þ"
+        jump number_to_char::__the_end always 0 0
+        char = "ы"
+        jump number_to_char::__the_end always 0 0
+        char = "т"
+        number_to_char::__the_end:
+        noop
+    }
+}
