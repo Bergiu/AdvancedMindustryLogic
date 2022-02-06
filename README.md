@@ -16,6 +16,61 @@
 - standard library with reusable code
 
 
+## Tips:
+
+### Execute function pointers
+Sometimes it can be practical to execute a function that is variable. For example you write a generic plot function that can plot the results of another function. In this case you want to inject the calculate-function into the plot-function:
+
+```
+function plot(f, from, to) {
+    x = from
+    while x < to {
+        # This does not work, because f is not defined
+        exec f(x)
+        print y
+        print "\n"
+    }
+}
+
+function f1(x) {
+    y = 2*x
+}
+
+exec plot(f1)
+```
+
+To solve this issue you can call the function manually without exec. To do this you first need to set the parameters manually, then set the return pointer and then set `@counter` to the function pointer:
+
+```
+function plot(f, from, to) {
+    i = from
+    while i < to {
+        # This works
+        # set params
+        x = i
+        # manually set return pointer
+        op add retptr @counter 1
+        # execute f
+        set @counter f
+        print y
+        print "\n"
+    }
+}
+
+function f1(x) {
+    y = 2*x
+}
+
+exec plot(f1)
+```
+
+### Behaviour of -
+1. `-` can be used as sign (`8*-5`) and it can be used as arithmetic operation (`8-5`).
+2. `-` cannot be used in normal variable names (`surge-alloy`), but it can be used in special variable names that start with `@` (`@surge-alloy`)
+3. You don't need spaces between operations (`delta=now-then`)
+
+This leads to a special behaviour if you use `@` variables in combination with arithmetics. For example `x = @time-delta`. The compiler can distinguish if you mean "`x` is `delta` subtracted from `@time`" or "`x` is `@time-delta`". The current behaviour is that there is no subtraction and the `@time-delta` is used as a variable name. So if you want to subtract something from a `@` variable you need to insert spaces: `x = @time - delta`.
+
 ## How to use
 
 Install python and the dependencies.
