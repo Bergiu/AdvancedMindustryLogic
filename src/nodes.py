@@ -170,24 +170,24 @@ class OperationNode(Node):
 
 
 class OperationStatementNode(Node):
-    def __init__(self, p, command: Union[Token, str], statement: Union[Token, str, StatementNode]):
+    def __init__(self, p, varname: Union[Token, str], statement: Union[Token, str, StatementNode]):
         super().__init__(p)
-        self.command = command
+        self.varname = varname
         self.statement = statement
 
     def loc(self):
-        out = 1
         if isinstance(self.statement, StatementNode):
-            out +=  self.statement.loc()
+            out = self.statement.loc()
+        else:
+            out = 1
         return out
 
     def to_code(self, tree: Node):
         out = ""
         if isinstance(self.statement, StatementNode):
-            out += f"{self.statement.to_code(tree)}\n"
-            out += f"{self.command} {self.statement.varname}"
+            out += f"{self.statement.to_code_custom(tree, self.varname)}"
         else:
-            out += f"{self.command} {self.statement}"
+            out += f"set {self.varname} {self.statement}"
         return out
 
 
@@ -442,4 +442,19 @@ class StatementNode(Node):
         else:
             val2 = self.value2
         out += f"op {self.operation} {self.varname} {val1} {val2}"
+        return out
+
+    def to_code_custom(self, tree: Node, varname: str):
+        out = ""
+        if isinstance(self.value1, StatementNode):
+            out += f"{self.value1.to_code(tree)}\n"
+            val1 = self.value1.varname
+        else:
+            val1 = self.value1
+        if isinstance(self.value2, StatementNode):
+            out += f"{self.value2.to_code(tree)}\n"
+            val2 = self.value2.varname
+        else:
+            val2 = self.value2
+        out += f"op {self.operation} {varname} {val1} {val2}"
         return out

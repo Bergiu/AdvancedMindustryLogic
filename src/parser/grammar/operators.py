@@ -120,6 +120,5 @@ def p_op_div_reduced(p):
 def p_op_set(p):
     '''cmd_op_short : fakeid OP_ASSIGN statement'''
     fakeid: fakeid_t = p[1]
-    op: str = f"set {fakeid}"
     statement: statement_t = p[3]
-    p[0] = OperationStatementNode(p, op, statement)
+    p[0] = OperationStatementNode(p, fakeid, statement)

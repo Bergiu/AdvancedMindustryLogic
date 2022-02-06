@@ -1,5 +1,9 @@
 # Advanced Mindustry Logic
 
+## TODO:
+- HEX numbers
+
+
 ## Additions
 - function: defines a function
 - exec: executes a function
