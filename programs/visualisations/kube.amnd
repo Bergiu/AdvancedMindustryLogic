@@ -1,0 +1,29 @@
+draw clear 0 0 0 0 0 0
+center_x = 176 / 2
+center_y = center_x
+kube_length = 100
+kube_length_half = kube_length / 2
+nkube_length_half = 0 - kube_length_half
+op cos cos_a winkel 0
+op sin sin_a winkel 0
+
+# unten links (x1,y1)
+x1 = center_x + (cos_a* nkube_length_half - sin_a*nkube_length_half)
+y1 = center_y + (sin_a* nkube_length_half + cos_a*nkube_length_half)
+x2 = center_x + (cos_a*kube_length_half - sin_a*nkube_length_half)
+y2 = center_y + sin_a*kube_length_half + cos_a*nkube_length_half
+draw line x1 y1 x2 y2 0 0
+x2 = center_x + (cos_a*nkube_length_half - sin_a*kube_length_half)
+y2 = center_y + (sin_a*nkube_length_half + cos_a*kube_length_half)
+draw line x1 y1 x2 y2 0 0
+
+# oben rechts (x1, y1)
+x1 = center_x + (cos_a*kube_length_half - sin_a*kube_length_half)
+y1 = center_y + (sin_a*kube_length_half + cos_a*kube_length_half)
+draw line x1 y1 x2 y2 0 0
+x2 = center_x + (cos_a*kube_length_half - sin_a*nkube_length_half)
+y2 = center_y + (sin_a*kube_length_half + cos_a*nkube_length_half)
+draw line x1 y1 x2 y2 0 0
+
+drawflush display1
+# winkel += 2
