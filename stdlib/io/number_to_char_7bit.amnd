@@ -22,262 +22,262 @@ function number_to_char(number_to_char::__number) {
         error = true
     } else {
         error = false
-        @counter = @counter + (number_to_char::__number * 2) + 2
-        char = "a"
+        @counter = @counter + (number_to_char::__number * 2) + 1
+        char = "a"  # 0
         jump number_to_char::__the_end always 0 0
-        char = "b"
+        char = "b"  # 1
         jump number_to_char::__the_end always 0 0
-        char = "c"
+        char = "c"  # 2
         jump number_to_char::__the_end always 0 0
-        char = "d"
+        char = "d"  # 3
         jump number_to_char::__the_end always 0 0
-        char = "e"
+        char = "e"  # 4
         jump number_to_char::__the_end always 0 0
-        char = "f"
+        char = "f"  # 5
         jump number_to_char::__the_end always 0 0
-        char = "g"
+        char = "g"  # 6
         jump number_to_char::__the_end always 0 0
-        char = "h"
+        char = "h"  # 7
         jump number_to_char::__the_end always 0 0
-        char = "i"
+        char = "i"  # 8
         jump number_to_char::__the_end always 0 0
-        char = "j"
+        char = "j"  # 9
         jump number_to_char::__the_end always 0 0
-        char = "k"
+        char = "k"  # 10
         jump number_to_char::__the_end always 0 0
-        char = "l"
+        char = "l"  # 11
         jump number_to_char::__the_end always 0 0
-        char = "m"
+        char = "m"  # 12
         jump number_to_char::__the_end always 0 0
-        char = "n"
+        char = "n"  # 13
         jump number_to_char::__the_end always 0 0
-        char = "o"
+        char = "o"  # 14
         jump number_to_char::__the_end always 0 0
-        char = "p"
+        char = "p"  # 15
         jump number_to_char::__the_end always 0 0
-        char = "q"
+        char = "q"  # 16
         jump number_to_char::__the_end always 0 0
-        char = "r"
+        char = "r"  # 17
         jump number_to_char::__the_end always 0 0
-        char = "s"
+        char = "s"  # 18
         jump number_to_char::__the_end always 0 0
-        char = "t"
+        char = "t"  # 19
         jump number_to_char::__the_end always 0 0
-        char = "u"
+        char = "u"  # 20
         jump number_to_char::__the_end always 0 0
-        char = "v"
+        char = "v"  # 21
         jump number_to_char::__the_end always 0 0
-        char = "w"
+        char = "w"  # 22
         jump number_to_char::__the_end always 0 0
-        char = "x"
+        char = "x"  # 23
         jump number_to_char::__the_end always 0 0
-        char = "y"
+        char = "y"  # 24
         jump number_to_char::__the_end always 0 0
-        char = "z"
+        char = "z"  # 25
         jump number_to_char::__the_end always 0 0
-        char = "A"
+        char = "A"  # 26
         jump number_to_char::__the_end always 0 0
-        char = "B"
+        char = "B"  # 27
         jump number_to_char::__the_end always 0 0
-        char = "C"
+        char = "C"  # 28
         jump number_to_char::__the_end always 0 0
-        char = "D"
+        char = "D"  # 29
         jump number_to_char::__the_end always 0 0
-        char = "E"
+        char = "E"  # 30
         jump number_to_char::__the_end always 0 0
-        char = "F"
+        char = "F"  # 31
         jump number_to_char::__the_end always 0 0
-        char = "G"
+        char = "G"  # 32
         jump number_to_char::__the_end always 0 0
-        char = "H"
+        char = "H"  # 33
         jump number_to_char::__the_end always 0 0
-        char = "I"
+        char = "I"  # 34
         jump number_to_char::__the_end always 0 0
-        char = "J"
+        char = "J"  # 35
         jump number_to_char::__the_end always 0 0
-        char = "K"
+        char = "K"  # 36
         jump number_to_char::__the_end always 0 0
-        char = "L"
+        char = "L"  # 37
         jump number_to_char::__the_end always 0 0
-        char = "M"
+        char = "M"  # 38
         jump number_to_char::__the_end always 0 0
-        char = "N"
+        char = "N"  # 39
         jump number_to_char::__the_end always 0 0
-        char = "O"
+        char = "O"  # 40
         jump number_to_char::__the_end always 0 0
-        char = "P"
+        char = "P"  # 41
         jump number_to_char::__the_end always 0 0
-        char = "Q"
+        char = "Q"  # 42
         jump number_to_char::__the_end always 0 0
-        char = "R"
+        char = "R"  # 43
         jump number_to_char::__the_end always 0 0
-        char = "S"
+        char = "S"  # 44
         jump number_to_char::__the_end always 0 0
-        char = "T"
+        char = "T"  # 45
         jump number_to_char::__the_end always 0 0
-        char = "U"
+        char = "U"  # 46
         jump number_to_char::__the_end always 0 0
-        char = "V"
+        char = "V"  # 47
         jump number_to_char::__the_end always 0 0
-        char = "W"
+        char = "W"  # 48
         jump number_to_char::__the_end always 0 0
-        char = "X"
+        char = "X"  # 49
         jump number_to_char::__the_end always 0 0
-        char = "Y"
+        char = "Y"  # 50
         jump number_to_char::__the_end always 0 0
-        char = "Z"
+        char = "Z"  # 51
         jump number_to_char::__the_end always 0 0
-        char = " "
+        char = " "  # 52
         jump number_to_char::__the_end always 0 0
-        char = "0"
+        char = "0"  # 53
         jump number_to_char::__the_end always 0 0
-        char = "1"
+        char = "1"  # 54
         jump number_to_char::__the_end always 0 0
-        char = "2"
+        char = "2"  # 55
         jump number_to_char::__the_end always 0 0
-        char = "3"
+        char = "3"  # 56
         jump number_to_char::__the_end always 0 0
-        char = "4"
+        char = "4"  # 57
         jump number_to_char::__the_end always 0 0
-        char = "5"
+        char = "5"  # 58
         jump number_to_char::__the_end always 0 0
-        char = "6"
+        char = "6"  # 59
         jump number_to_char::__the_end always 0 0
-        char = "7"
+        char = "7"  # 60
         jump number_to_char::__the_end always 0 0
-        char = "8"
+        char = "8"  # 61
         jump number_to_char::__the_end always 0 0
-        char = "9"
+        char = "9"  # 62
         jump number_to_char::__the_end always 0 0
-        char = "!"
+        char = "!"  # 63
         jump number_to_char::__the_end always 0 0
-        char = "§"
+        char = "§"  # 64
         jump number_to_char::__the_end always 0 0
-        char = "$"
+        char = "$"  # 65
         jump number_to_char::__the_end always 0 0
-        char = "%"
+        char = "%"  # 66
         jump number_to_char::__the_end always 0 0
-        char = "&"
+        char = "&"  # 67
         jump number_to_char::__the_end always 0 0
-        char = "/"
+        char = "/"  # 68
         jump number_to_char::__the_end always 0 0
-        char = "("
+        char = "("  # 69
         jump number_to_char::__the_end always 0 0
-        char = ")"
+        char = ")"  # 70
         jump number_to_char::__the_end always 0 0
-        char = "="
+        char = "="  # 71
         jump number_to_char::__the_end always 0 0
-        char = "?"
+        char = "?"  # 72
         jump number_to_char::__the_end always 0 0
-        char = "ß"
+        char = "ß"  # 73
         jump number_to_char::__the_end always 0 0
-        char = "`"
+        char = "`"  # 74
         jump number_to_char::__the_end always 0 0
-        char = "´"
+        char = "´"  # 75
         jump number_to_char::__the_end always 0 0
-        char = "*"
+        char = "*"  # 76
         jump number_to_char::__the_end always 0 0
-        char = "+"
+        char = "+"  # 77
         jump number_to_char::__the_end always 0 0
-        char = "'"
+        char = "'"  # 78
         jump number_to_char::__the_end always 0 0
-        char = "#"
+        char = "#"  # 79
         jump number_to_char::__the_end always 0 0
-        char = "_"
+        char = "_"  # 80
         jump number_to_char::__the_end always 0 0
-        char = "-"
+        char = "-"  # 81
         jump number_to_char::__the_end always 0 0
-        char = ":"
+        char = ":"  # 82
         jump number_to_char::__the_end always 0 0
-        char = "."
+        char = "."  # 83
         jump number_to_char::__the_end always 0 0
-        char = ";"
+        char = ";"  # 84
         jump number_to_char::__the_end always 0 0
-        char = ","
+        char = ","  # 85
         jump number_to_char::__the_end always 0 0
-        char = ">"
+        char = ">"  # 86
         jump number_to_char::__the_end always 0 0
-        char = "<"
+        char = "<"  # 87
         jump number_to_char::__the_end always 0 0
-        char = "|"
+        char = "|"  # 88
         jump number_to_char::__the_end always 0 0
-        char = "^"
+        char = "^"  # 89
         jump number_to_char::__the_end always 0 0
-        char = "°"
+        char = "°"  # 90
         jump number_to_char::__the_end always 0 0
-        char = "~"
+        char = "~"  # 91
         jump number_to_char::__the_end always 0 0
-        char = "@"
+        char = "@"  # 92
         jump number_to_char::__the_end always 0 0
-        char = "{"
+        char = "{"  # 93
         jump number_to_char::__the_end always 0 0
-        char = "["
+        char = "["  # 94
         jump number_to_char::__the_end always 0 0
-        char = "]"
+        char = "]"  # 95
         jump number_to_char::__the_end always 0 0
-        char = "}"
+        char = "}"  # 96
         jump number_to_char::__the_end always 0 0
-        char = "ä"
+        char = "ä"  # 97
         jump number_to_char::__the_end always 0 0
-        char = "ö"
+        char = "ö"  # 98
         jump number_to_char::__the_end always 0 0
-        char = "ü"
+        char = "ü"  # 99
         jump number_to_char::__the_end always 0 0
-        char = "Ä"
+        char = "Ä"  # 100
         jump number_to_char::__the_end always 0 0
-        char = "Ö"
+        char = "Ö"  # 101
         jump number_to_char::__the_end always 0 0
-        char = "Ü"
+        char = "Ü"  # 102
         jump number_to_char::__the_end always 0 0
-        char = "€"
+        char = "€"  # 103
         jump number_to_char::__the_end always 0 0
-        char = "»"
+        char = "»"  # 104
         jump number_to_char::__the_end always 0 0
-        char = "«"
+        char = "«"  # 105
         jump number_to_char::__the_end always 0 0
-        char = "·"
+        char = "·"  # 106
         jump number_to_char::__the_end always 0 0
-        char = "…"
+        char = "…"  # 107
         jump number_to_char::__the_end always 0 0
-        char = "ø"
+        char = "ø"  # 108
         jump number_to_char::__the_end always 0 0
-        char = "¹"
+        char = "¹"  # 109
         jump number_to_char::__the_end always 0 0
-        char = "²"
+        char = "²"  # 110
         jump number_to_char::__the_end always 0 0
-        char = "³"
+        char = "³"  # 111
         jump number_to_char::__the_end always 0 0
-        char = "¼"
+        char = "¼"  # 112
         jump number_to_char::__the_end always 0 0
-        char = "½"
+        char = "½"  # 113
         jump number_to_char::__the_end always 0 0
-        char = "¬"
+        char = "¬"  # 114
         jump number_to_char::__the_end always 0 0
-        char = "¢"
+        char = "¢"  # 115
         jump number_to_char::__the_end always 0 0
-        char = "µ"
+        char = "µ"  # 116
         jump number_to_char::__the_end always 0 0
-        char = "æ"
+        char = "æ"  # 117
         jump number_to_char::__the_end always 0 0
-        char = "ð"
+        char = "ð"  # 118
         jump number_to_char::__the_end always 0 0
-        char = "đ"
+        char = "đ"  # 119
         jump number_to_char::__the_end always 0 0
-        char = "ŋ"
+        char = "ŋ"  # 120
         jump number_to_char::__the_end always 0 0
-        char = "ħ"
+        char = "ħ"  # 121
         jump number_to_char::__the_end always 0 0
-        char = "ł"
+        char = "ł"  # 122
         jump number_to_char::__the_end always 0 0
-        char = "¶"
+        char = "¶"  # 123
         jump number_to_char::__the_end always 0 0
-        char = "ŧ"
+        char = "ŧ"  # 124
         jump number_to_char::__the_end always 0 0
-        char = "þ"
+        char = "þ"  # 125
         jump number_to_char::__the_end always 0 0
-        char = "ы"
+        char = "ы"  # 126
         jump number_to_char::__the_end always 0 0
-        char = "т"
+        char = "т"  # 127
         number_to_char::__the_end:
         noop
     }
