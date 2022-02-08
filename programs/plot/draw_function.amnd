@@ -1,0 +1,83 @@
+import ../stdlib/math/convert/radians_to_degrees.amnd
+import ../stdlib/display/get_display_size.amnd
+import ../stdlib/display/draw_function.amnd
+
+
+display = display1
+message = message1
+accuracy = 1  # pixel per line
+
+# constants:
+max_graphics_buffer = 256
+max_display_buffer = 1024
+
+exec get_display_size(display)
+
+print "Drawing"
+printflush message
+
+# white
+draw clear 255 255 255 0 0 0
+
+
+function f1(x) {
+    # y = x*x / 100
+    x = x / pi / 5
+    exec radians_to_degrees(x)
+    x_degrees = deg
+    op cos y x_degrees 0
+    y *= 40
+    y += 80
+}
+
+
+function f2(x) {
+    # y = x*x / 100
+    tmp = x / pi / 5 - 1/2*pi
+    exec radians_to_degrees(tmp)
+    x_degrees = deg
+    op sin y x_degrees 0
+    y *= 40
+    y += 80
+}
+
+
+function f3(x) {
+    # y = x*x / 100
+    tmp = x / pi * 3 - 1/2*pi
+    exec radians_to_degrees(tmp)
+    x_degrees = deg
+    op sin y x_degrees 0
+    y *= 10
+    y += 80
+}
+
+function f4(x) {
+    # y = x*x / 100
+    y = 80
+}
+
+
+# black
+draw color 0 0 0 255 0 0
+exec draw_function(f1, 4, display_size, display, message)
+drawflush display1
+
+
+# red
+draw color 255 0 0 255 0 0
+exec draw_function(f2, 4, display_size, display, message)
+drawflush display1
+
+
+# blue
+draw color 0 0 255 255 0 0
+exec draw_function(f3, 1, display_size, display, message)
+drawflush display1
+
+
+# green
+draw color 0 255 255 255 0 0
+exec draw_function(f4, 20, display_size, display, message)
+drawflush display1
+@counter -= 1
