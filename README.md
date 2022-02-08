@@ -93,6 +93,7 @@ This leads to a special behaviour if you use `@` variables in combination with a
 ### Notes
 Numbers have 64 bit.
 Cells have float.
+Maximum length of a variable name is 36 chars.
 
 ## How to use
 
