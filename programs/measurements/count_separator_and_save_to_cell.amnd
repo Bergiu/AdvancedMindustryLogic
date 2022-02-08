@@ -1,0 +1,68 @@
+message = message1
+conveyor = conveyor1
+cell = cell1
+switch = switch2
+
+cell_size = 64
+# cell_size = 512
+control enabled switch 0 0 0 0
+
+i = 0
+while i < cell_size {
+    print "Measurement: "
+    print i
+    print "/"
+    print cell_size
+    printflush message1
+    # flank controlled
+
+    # wait until conveyor is not empty
+    sensor item conveyor @firstItem
+    while item == null {
+        sensor item conveyor @firstItem
+    }
+
+    # wait while conveyor is not empty
+    sensor no_item conveyor @firstItem
+    while no_item != null {
+        sensor no_item conveyor @firstItem
+    }
+
+    timestamp = @time << 2
+    x = (2**52-4)
+    timestamp = timestamp & x # make sure last two numbers are removed
+    if item == @lead {
+        itemtype = 0
+    }
+    if item == @titanium {
+        itemtype = 1
+    }
+    if item == @copper {
+        itemtype = 2
+    }
+    if item == @graphite {
+        itemtype = 3
+    }
+    encoded = itemtype | timestamp # copy both into one variable
+    write encoded cell i
+    i++
+}
+print "Measurement: "
+print i
+print "/"
+print cell_size
+printflush message1
+
+# finished
+control enabled switch 1 0 0 0
+
+# wait until it's on
+sensor switch_on switch @enabled
+while not switch_on {
+    sensor switch_on switch @enabled
+}
+
+sensor switch_on switch @enabled
+while switch_on {
+    sensor switch_on switch @enabled
+}
