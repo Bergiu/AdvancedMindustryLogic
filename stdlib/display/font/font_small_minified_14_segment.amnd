@@ -1,0 +1,132 @@
+function segment_display_14(code) {
+    # Variables size, x, y are taken from global because this needs less loc
+    # speed can be improved by removing > 0 and then replacing notEqual with lessThan in IfNode.to_code
+    # TODO: add a dot.
+    y20 = 20 * size + y
+    y10 = 10 * size + y
+    x10 = 10 * size + x
+    x5 = 5 * size + x
+    if code & 0b000000000000001 > 0 {
+        draw line x y20 x10 y20 0 0
+    }
+    if code & 0b000000000000010 > 0 {
+        draw line x10 y20 x10 y10 0 0
+    }
+    if code & 0b000000000000100 > 0 {
+        draw line x10 y10 x10 y 0 0
+    }
+    if code & 0b000000000001000 > 0 {
+        draw line x y x10 y 0 0
+    }
+    if code & 0b000000000010000 > 0 {
+        draw line x y x y10 0 0
+    }
+    if code & 0b000000000100000 > 0 {
+        draw line x y10 x y20 0 0
+    }
+    if code & 0b000000001000000 > 0 {
+        draw line x y10 x5 y10 0 0
+    }
+    if code & 0b000000010000000 > 0 {
+        draw line x5 y10 x10 y10 0 0
+    }
+    if code & 0b000000100000000 > 0 {
+        draw line x y20 x5 y10 0 0
+    }
+    if code & 0b000001000000000 > 0 {
+        draw line x5 y20 x5 y10 0 0
+    }
+    if code & 0b000010000000000 > 0 {
+        draw line x10 y20 x5 y10 0 0
+    }
+    if code & 0b000100000000000 > 0 {
+        draw line x y x5 y10 0 0
+    }
+    if code & 0b001000000000000 > 0 {
+        draw line x5 y x5 y10 0 0
+    }
+    if code & 0b010000000000000 > 0 {
+        draw line x10 y x5 y10 0 0
+    }
+}
+
+
+# 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
+function write_letter(number, size, x, y) {
+    print number
+    printflush message1
+    @counter = @counter + (number * 2)
+    code = 0b000110000111111
+    jump the_end always 0 0
+    code = 0b000010000000110
+    jump the_end always 0 0
+    code = 0b000000011011011
+    jump the_end always 0 0
+    code = 0b000000010001111
+    jump the_end always 0 0
+    code = 0b000000011100110
+    jump the_end always 0 0
+    code = 0b010000001101001
+    jump the_end always 0 0
+    code = 0b000000011111101
+    jump the_end always 0 0
+    code = 0b000000000000111
+    jump the_end always 0 0
+    code = 0b000000011111111
+    jump the_end always 0 0
+    code = 0b000000011101111
+    jump the_end always 0 0
+    code = 0b000000011110111
+    jump the_end always 0 0
+    code = 0b001001010001111
+    jump the_end always 0 0
+    code = 0b000000000111001
+    jump the_end always 0 0
+    code = 0b001001000001111
+    jump the_end always 0 0
+    code = 0b000000001111001
+    jump the_end always 0 0
+    code = 0b000000001110001
+    jump the_end always 0 0
+    code = 0b000000010111101
+    jump the_end always 0 0
+    code = 0b000000011110110
+    jump the_end always 0 0
+    code = 0b001001000001001
+    jump the_end always 0 0
+    code = 0b000000000011110
+    jump the_end always 0 0
+    code = 0b010010001110000
+    jump the_end always 0 0
+    code = 0b000000000111000
+    jump the_end always 0 0
+    code = 0b000010100110110
+    jump the_end always 0 0
+    code = 0b010000100110110
+    jump the_end always 0 0
+    code = 0b000000000111111
+    jump the_end always 0 0
+    code = 0b000000011110011
+    jump the_end always 0 0
+    code = 0b010000000111111
+    jump the_end always 0 0
+    code = 0b010000011110011
+    jump the_end always 0 0
+    code = 0b000000011101101
+    jump the_end always 0 0
+    code = 0b001001000000001
+    jump the_end always 0 0
+    code = 0b000000000111110
+    jump the_end always 0 0
+    code = 0b000110000110000
+    jump the_end always 0 0
+    code = 0b010100000110110
+    jump the_end always 0 0
+    code = 0b010110100000000
+    jump the_end always 0 0
+    code = 0b000000011101110
+    jump the_end always 0 0
+    code = 0b000110000001001
+    the_end:
+    exec segment_display_14(code)
+}

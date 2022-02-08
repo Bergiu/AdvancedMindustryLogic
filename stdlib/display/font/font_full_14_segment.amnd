@@ -1,0 +1,340 @@
+function segment_display_14(code) {
+    # Variables size, x, y are taken from global because this needs less loc
+    # speed can be improved by removing > 0 and then replacing notEqual with lessThan in IfNode.to_code
+    # TODO: add a dot.
+    y20 = 20 * size + y
+    y10 = 10 * size + y
+    x10 = 10 * size + x
+    x5 = 5 * size + x
+    if code & 0b000000000000001 > 0 {
+        draw line x y20 x10 y20 0 0
+    }
+    if code & 0b000000000000010 > 0 {
+        draw line x10 y20 x10 y10 0 0
+    }
+    if code & 0b000000000000100 > 0 {
+        draw line x10 y10 x10 y 0 0
+    }
+    if code & 0b000000000001000 > 0 {
+        draw line x y x10 y 0 0
+    }
+    if code & 0b000000000010000 > 0 {
+        draw line x y x y10 0 0
+    }
+    if code & 0b000000000100000 > 0 {
+        draw line x y10 x y20 0 0
+    }
+    if code & 0b000000001000000 > 0 {
+        draw line x y10 x5 y10 0 0
+    }
+    if code & 0b000000010000000 > 0 {
+        draw line x5 y10 x10 y10 0 0
+    }
+    if code & 0b000000100000000 > 0 {
+        draw line x y20 x5 y10 0 0
+    }
+    if code & 0b000001000000000 > 0 {
+        draw line x5 y20 x5 y10 0 0
+    }
+    if code & 0b000010000000000 > 0 {
+        draw line x10 y20 x5 y10 0 0
+    }
+    if code & 0b000100000000000 > 0 {
+        draw line x y x5 y10 0 0
+    }
+    if code & 0b001000000000000 > 0 {
+        draw line x5 y x5 y10 0 0
+    }
+    if code & 0b010000000000000 > 0 {
+        draw line x10 y x5 y10 0 0
+    }
+}
+
+function space(size, x, y) {
+    exec segment_display_14(0b000000000000000)
+}
+function exclamation_mark(size, x, y) { # !
+    exec segment_display_14(0b100000000000110)
+}
+function double_quote(size, x, y) { # "
+    exec segment_display_14(0b000001000000010)
+}
+function hashtag(size, x, y) { # #
+    exec segment_display_14(0b001001011001110)
+}
+function dollar(size, x, y) { # $
+    exec segment_display_14(0b001001011101101)
+}
+function percent(size, x, y) { # %
+    exec segment_display_14(0b011111111100100)
+}
+function ampersand(size, x, y) { # &
+    exec segment_display_14(0b010001101011001)
+}
+function single_quote(size, x, y) { # '
+    exec segment_display_14(0b000001000000000)
+}
+function parentheses_open(size, x, y) { # (
+    exec segment_display_14(0b010010000000000)
+}
+function parentheses_close(size, x, y) { # )
+    exec segment_display_14(0b000100100000000)
+}
+function star(size, x, y) { # *
+    exec segment_display_14(0b011111111000000)
+}
+function plus(size, x, y) { # +
+    exec segment_display_14(0b001001011000000)
+}
+function comma(size, x, y) { # ,
+    exec segment_display_14(0b000100000000000)
+}
+function dash(size, x, y) { # -
+    exec segment_display_14(0b000000011000000)
+}
+function dot(size, x, y) { # .
+    exec segment_display_14(0b100000000000000)
+}
+function slash(size, x, y) { # /
+    exec segment_display_14(0b000110000000000)
+}
+function n0 (size, x, y) {
+    exec segment_display_14(0b000110000111111)
+}
+function n1 (size, x, y) {
+    exec segment_display_14(0b000010000000110)
+}
+function n2 (size, x, y) {
+    exec segment_display_14(0b000000011011011)
+}
+function n3 (size, x, y) {
+    exec segment_display_14(0b000000010001111)
+}
+function n4 (size, x, y) {
+    exec segment_display_14(0b000000011100110)
+}
+function n5 (size, x, y) {
+    exec segment_display_14(0b010000001101001)
+}
+function n6 (size, x, y) {
+    exec segment_display_14(0b000000011111101)
+}
+function n7 (size, x, y) {
+    exec segment_display_14(0b000000000000111)
+}
+function n8 (size, x, y) {
+    exec segment_display_14(0b000000011111111)
+}
+function n9 (size, x, y) {
+    exec segment_display_14(0b000000011101111)
+}
+function colon(size, x, y) { # :
+    exec segment_display_14(0b001001000000000)
+}
+function semicolon(size, x, y) { # ;
+    exec segment_display_14(0b000101000000000)
+}
+function smaller(size, x, y) { # <
+    exec segment_display_14(0b010010001000000)
+}
+function equal(size, x, y) { # =
+    exec segment_display_14(0b000000011001000)
+}
+function bigger(size, x, y) { # >
+    exec segment_display_14(0b000100110000000)
+}
+function questionmark(size, x, y) { # ?
+    exec segment_display_14(0b101000010000011)
+}
+function at(size, x, y) { # @
+    exec segment_display_14(0b000001010111011)
+}
+function A (size, x, y) {
+    exec segment_display_14(0b000000011110111)
+}
+function B (size, x, y) {
+    exec segment_display_14(0b001001010001111)
+}
+function C (size, x, y) {
+    exec segment_display_14(0b000000000111001)
+}
+function D (size, x, y) {
+    exec segment_display_14(0b001001000001111)
+}
+function E (size, x, y) {
+    exec segment_display_14(0b000000001111001)
+}
+function F (size, x, y) {
+    exec segment_display_14(0b000000001110001)
+}
+function G (size, x, y) {
+    exec segment_display_14(0b000000010111101)
+}
+function H (size, x, y) {
+    exec segment_display_14(0b000000011110110)
+}
+function I (size, x, y) {
+    exec segment_display_14(0b001001000001001)
+}
+function J (size, x, y) {
+    exec segment_display_14(0b000000000011110)
+}
+function K (size, x, y) {
+    exec segment_display_14(0b010010001110000)
+}
+function L (size, x, y) {
+    exec segment_display_14(0b000000000111000)
+}
+function M (size, x, y) {
+    exec segment_display_14(0b000010100110110)
+}
+function N (size, x, y) {
+    exec segment_display_14(0b010000100110110)
+}
+function O (size, x, y) {
+    exec segment_display_14(0b000000000111111)
+}
+function P (size, x, y) {
+    exec segment_display_14(0b000000011110011)
+}
+function Q (size, x, y) {
+    exec segment_display_14(0b010000000111111)
+}
+function R (size, x, y) {
+    exec segment_display_14(0b010000011110011)
+}
+function S (size, x, y) {
+    exec segment_display_14(0b000000011101101)
+}
+function T (size, x, y) {
+    exec segment_display_14(0b001001000000001)
+}
+function U (size, x, y) {
+    exec segment_display_14(0b000000000111110)
+}
+function V (size, x, y) {
+    exec segment_display_14(0b000110000110000)
+}
+function W (size, x, y) {
+    exec segment_display_14(0b010100000110110)
+}
+function X (size, x, y) {
+    exec segment_display_14(0b010110100000000)
+}
+function Y (size, x, y) {
+    exec segment_display_14(0b000000011101110)
+}
+function Z (size, x, y) {
+    exec segment_display_14(0b000110000001001)
+}
+function brackets_open(size, x, y) { # [
+    exec segment_display_14(0b000000000111001)
+}
+function backslash(size, x, y) { # \
+    exec segment_display_14(0b010000100000000)
+}
+function brackets_close(size, x, y) { # ]
+    exec segment_display_14(0b000000000001111)
+}
+function up(size, x, y) { # ^
+    exec segment_display_14(0b010100000000000)
+}
+function down(size, x, y) { # _
+    exec segment_display_14(0b000000000001000)
+}
+function gravis(size, x, y) { # `
+    exec segment_display_14(0b000000100000000)
+}
+function a (size, x, y) {
+    exec segment_display_14(0b001000001011000)
+}
+function b (size, x, y) {
+    exec segment_display_14(0b010000001111000)
+}
+function c (size, x, y) {
+    exec segment_display_14(0b000000011011000)
+}
+function d (size, x, y) {
+    exec segment_display_14(0b000100010001110)
+}
+function e (size, x, y) {
+    exec segment_display_14(0b000100001011000)
+}
+function f (size, x, y) {
+    exec segment_display_14(0b001010011000000)
+}
+function g (size, x, y) {
+    exec segment_display_14(0b000010010001110)
+}
+function h (size, x, y) {
+    exec segment_display_14(0b001000001110000)
+}
+function i (size, x, y) {
+    exec segment_display_14(0b001000000000000)
+}
+function j (size, x, y) {
+    exec segment_display_14(0b000101000010000)
+}
+function k (size, x, y) {
+    exec segment_display_14(0b011011000000000)
+}
+function l (size, x, y) {
+    exec segment_display_14(0b000000000110000)
+}
+function m (size, x, y) {
+    exec segment_display_14(0b001000011010100)
+}
+function n (size, x, y) {
+    exec segment_display_14(0b001000001010000)
+}
+function o (size, x, y) {
+    exec segment_display_14(0b000000011011100)
+}
+function p (size, x, y) {
+    exec segment_display_14(0b000000101110000)
+}
+function q (size, x, y) {
+    exec segment_display_14(0b000010010000110)
+}
+function r (size, x, y) {
+    exec segment_display_14(0b000000001010000)
+}
+function s (size, x, y) {
+    exec segment_display_14(0b010000010001000)
+}
+function t (size, x, y) {
+    exec segment_display_14(0b000000001111000)
+}
+function u (size, x, y) {
+    exec segment_display_14(0b000000000011100)
+}
+function v (size, x, y) {
+    exec segment_display_14(0b000100000010000)
+}
+function w (size, x, y) {
+    exec segment_display_14(0b010100000010100)
+}
+function x (size, x, y) {
+    exec segment_display_14(0b010110100000000)
+}
+function y (size, x, y) {
+    exec segment_display_14(0b000001010001110)
+}
+function z (size, x, y) {
+    exec segment_display_14(0b000100001001000)
+}
+function braces_open(size, x, y) { # {
+    exec segment_display_14(0b000100101001001)
+}
+function pipe(size, x, y) { # |
+    exec segment_display_14(0b001001000000000)
+}
+function braces_close(size, x, y) { # }
+    exec segment_display_14(0b010010010001001)
+}
+function tilde(size, x, y) { # ~
+    exec segment_display_14(0b000110011000000)
+}
+function del(size, x, y) { # (del)
+    exec segment_display_14(0b000000000000000)
+}

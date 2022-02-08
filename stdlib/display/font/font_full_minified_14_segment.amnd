@@ -1,0 +1,252 @@
+function segment_display_14(code) {
+    # Variables size, x, y are taken from global because this needs less loc
+    # speed can be improved by removing > 0 and then replacing notEqual with lessThan in IfNode.to_code
+    # TODO: add a dot.
+    y20 = 20 * size + y
+    y10 = 10 * size + y
+    x10 = 10 * size + x
+    x5 = 5 * size + x
+    if code & 0b000000000000001 > 0 {
+        draw line x y20 x10 y20 0 0
+    }
+    if code & 0b000000000000010 > 0 {
+        draw line x10 y20 x10 y10 0 0
+    }
+    if code & 0b000000000000100 > 0 {
+        draw line x10 y10 x10 y 0 0
+    }
+    if code & 0b000000000001000 > 0 {
+        draw line x y x10 y 0 0
+    }
+    if code & 0b000000000010000 > 0 {
+        draw line x y x y10 0 0
+    }
+    if code & 0b000000000100000 > 0 {
+        draw line x y10 x y20 0 0
+    }
+    if code & 0b000000001000000 > 0 {
+        draw line x y10 x5 y10 0 0
+    }
+    if code & 0b000000010000000 > 0 {
+        draw line x5 y10 x10 y10 0 0
+    }
+    if code & 0b000000100000000 > 0 {
+        draw line x y20 x5 y10 0 0
+    }
+    if code & 0b000001000000000 > 0 {
+        draw line x5 y20 x5 y10 0 0
+    }
+    if code & 0b000010000000000 > 0 {
+        draw line x10 y20 x5 y10 0 0
+    }
+    if code & 0b000100000000000 > 0 {
+        draw line x y x5 y10 0 0
+    }
+    if code & 0b001000000000000 > 0 {
+        draw line x5 y x5 y10 0 0
+    }
+    if code & 0b010000000000000 > 0 {
+        draw line x10 y x5 y10 0 0
+    }
+}
+
+
+function write_letter(number, size, x, y) {
+    print number
+    printflush message1
+    @counter = @counter + (number * 2)
+    code = 0b000000000000000 # (space) 00
+    jump the_end always 0 0
+    code = 0b100000000000110 # ! 01
+    jump the_end always 0 0
+    code = 0b000001000000010 # " 02
+    jump the_end always 0 0
+    code = 0b001001011001110 # # 03
+    jump the_end always 0 0
+    code = 0b001001011101101 # $ 04
+    jump the_end always 0 0
+    code = 0b011111111100100 # % 05
+    jump the_end always 0 0
+    code = 0b010001101011001 # & 06
+    jump the_end always 0 0
+    code = 0b000001000000000 # ' 07
+    jump the_end always 0 0
+    code = 0b010010000000000 # ( 08
+    jump the_end always 0 0
+    code = 0b000100100000000 # ) 09
+    jump the_end always 0 0
+    code = 0b011111111000000 # * 10
+    jump the_end always 0 0
+    code = 0b001001011000000 # + 11
+    jump the_end always 0 0
+    code = 0b000100000000000 # , 12
+    jump the_end always 0 0
+    code = 0b000000011000000 # - 13
+    jump the_end always 0 0
+    code = 0b100000000000000 # . 14
+    jump the_end always 0 0
+    code = 0b000110000000000 # / 15
+    jump the_end always 0 0
+    code = 0b000110000111111 # 0 16
+    jump the_end always 0 0
+    code = 0b000010000000110 # 1 17
+    jump the_end always 0 0
+    code = 0b000000011011011 # 2 18
+    jump the_end always 0 0
+    code = 0b000000010001111 # 3 19
+    jump the_end always 0 0
+    code = 0b000000011100110 # 4 20
+    jump the_end always 0 0
+    code = 0b010000001101001 # 5 21
+    jump the_end always 0 0
+    code = 0b000000011111101 # 6 22
+    jump the_end always 0 0
+    code = 0b000000000000111 # 7 23
+    jump the_end always 0 0
+    code = 0b000000011111111 # 8 24
+    jump the_end always 0 0
+    code = 0b000000011101111 # 9 25
+    jump the_end always 0 0
+    code = 0b001001000000000 # : 26
+    jump the_end always 0 0
+    code = 0b000101000000000 # ; 27
+    jump the_end always 0 0
+    code = 0b010010001000000 # < 28
+    jump the_end always 0 0
+    code = 0b000000011001000 # = 29
+    jump the_end always 0 0
+    code = 0b000100110000000 # > 30
+    jump the_end always 0 0
+    code = 0b101000010000011 # ? 31
+    jump the_end always 0 0
+    code = 0b000001010111011 # @ 32
+    jump the_end always 0 0
+    code = 0b000000011110111 # A 33
+    jump the_end always 0 0
+    code = 0b001001010001111 # B 34
+    jump the_end always 0 0
+    code = 0b000000000111001 # C 35
+    jump the_end always 0 0
+    code = 0b001001000001111 # D 36
+    jump the_end always 0 0
+    code = 0b000000001111001 # E 37
+    jump the_end always 0 0
+    code = 0b000000001110001 # F 38
+    jump the_end always 0 0
+    code = 0b000000010111101 # G 39
+    jump the_end always 0 0
+    code = 0b000000011110110 # H 40
+    jump the_end always 0 0
+    code = 0b001001000001001 # I 41
+    jump the_end always 0 0
+    code = 0b000000000011110 # J 42
+    jump the_end always 0 0
+    code = 0b010010001110000 # K 43
+    jump the_end always 0 0
+    code = 0b000000000111000 # L 44
+    jump the_end always 0 0
+    code = 0b000010100110110 # M 45
+    jump the_end always 0 0
+    code = 0b010000100110110 # N 46
+    jump the_end always 0 0
+    code = 0b000000000111111 # O 47
+    jump the_end always 0 0
+    code = 0b000000011110011 # P 48
+    jump the_end always 0 0
+    code = 0b010000000111111 # Q 49
+    jump the_end always 0 0
+    code = 0b010000011110011 # R 50
+    jump the_end always 0 0
+    code = 0b000000011101101 # S 51
+    jump the_end always 0 0
+    code = 0b001001000000001 # T 52
+    jump the_end always 0 0
+    code = 0b000000000111110 # U 53
+    jump the_end always 0 0
+    code = 0b000110000110000 # V 54
+    jump the_end always 0 0
+    code = 0b010100000110110 # W 55
+    jump the_end always 0 0
+    code = 0b010110100000000 # X 56
+    jump the_end always 0 0
+    code = 0b000000011101110 # Y 57
+    jump the_end always 0 0
+    code = 0b000110000001001 # Z 58
+    jump the_end always 0 0
+    code = 0b000000000111001 # [ 59
+    jump the_end always 0 0
+    code = 0b010000100000000 # \ 60
+    jump the_end always 0 0
+    code = 0b000000000001111 # ] 61
+    jump the_end always 0 0
+    code = 0b010100000000000 # ^ 62
+    jump the_end always 0 0
+    code = 0b000000000001000 # _ 63
+    jump the_end always 0 0
+    code = 0b000000100000000 # ` 64
+    jump the_end always 0 0
+    code = 0b001000001011000 # a 65
+    jump the_end always 0 0
+    code = 0b010000001111000 # b 66
+    jump the_end always 0 0
+    code = 0b000000011011000 # c 67
+    jump the_end always 0 0
+    code = 0b000100010001110 # d 68
+    jump the_end always 0 0
+    code = 0b000100001011000 # e 69
+    jump the_end always 0 0
+    code = 0b001010011000000 # f 70
+    jump the_end always 0 0
+    code = 0b000010010001110 # g 71
+    jump the_end always 0 0
+    code = 0b001000001110000 # h 72
+    jump the_end always 0 0
+    code = 0b001000000000000 # i 73
+    jump the_end always 0 0
+    code = 0b000101000010000 # j 74
+    jump the_end always 0 0
+    code = 0b011011000000000 # k 75
+    jump the_end always 0 0
+    code = 0b000000000110000 # l 76
+    jump the_end always 0 0
+    code = 0b001000011010100 # m 77
+    jump the_end always 0 0
+    code = 0b001000001010000 # n 78
+    jump the_end always 0 0
+    code = 0b000000011011100 # o 79
+    jump the_end always 0 0
+    code = 0b000000101110000 # p 80
+    jump the_end always 0 0
+    code = 0b000010010000110 # q 81
+    jump the_end always 0 0
+    code = 0b000000001010000 # r 82
+    jump the_end always 0 0
+    code = 0b010000010001000 # s 83
+    jump the_end always 0 0
+    code = 0b000000001111000 # t 84
+    jump the_end always 0 0
+    code = 0b000000000011100 # u 85
+    jump the_end always 0 0
+    code = 0b000100000010000 # v 86
+    jump the_end always 0 0
+    code = 0b010100000010100 # w 87
+    jump the_end always 0 0
+    code = 0b010110100000000 # x 88
+    jump the_end always 0 0
+    code = 0b000001010001110 # y 89
+    jump the_end always 0 0
+    code = 0b000100001001000 # z 90
+    jump the_end always 0 0
+    code = 0b000100101001001 # { 91
+    jump the_end always 0 0
+    code = 0b001001000000000 # | 92
+    jump the_end always 0 0
+    code = 0b010010010001001 # } 93
+    jump the_end always 0 0
+    code = 0b000110011000000 # ~ 94
+    jump the_end always 0 0
+    code = 0b000000000000000 # (del) 95
+    jump the_end always 0 0
+    the_end:
+    exec segment_display_14(code)
+}

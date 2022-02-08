@@ -1,0 +1,160 @@
+function segment_display_14(code) {
+    # Variables size, x, y are taken from global because this needs less loc
+    # speed can be improved by removing > 0 and then replacing notEqual with lessThan in IfNode.to_code
+    # TODO: add a dot.
+    y20 = 20 * size + y
+    y10 = 10 * size + y
+    x10 = 10 * size + x
+    x5 = 5 * size + x
+    if code & 0b000000000000001 > 0 {
+        draw line x y20 x10 y20 0 0
+    }
+    if code & 0b000000000000010 > 0 {
+        draw line x10 y20 x10 y10 0 0
+    }
+    if code & 0b000000000000100 > 0 {
+        draw line x10 y10 x10 y 0 0
+    }
+    if code & 0b000000000001000 > 0 {
+        draw line x y x10 y 0 0
+    }
+    if code & 0b000000000010000 > 0 {
+        draw line x y x y10 0 0
+    }
+    if code & 0b000000000100000 > 0 {
+        draw line x y10 x y20 0 0
+    }
+    if code & 0b000000001000000 > 0 {
+        draw line x y10 x5 y10 0 0
+    }
+    if code & 0b000000010000000 > 0 {
+        draw line x5 y10 x10 y10 0 0
+    }
+    if code & 0b000000100000000 > 0 {
+        draw line x y20 x5 y10 0 0
+    }
+    if code & 0b000001000000000 > 0 {
+        draw line x5 y20 x5 y10 0 0
+    }
+    if code & 0b000010000000000 > 0 {
+        draw line x10 y20 x5 y10 0 0
+    }
+    if code & 0b000100000000000 > 0 {
+        draw line x y x5 y10 0 0
+    }
+    if code & 0b001000000000000 > 0 {
+        draw line x5 y x5 y10 0 0
+    }
+    if code & 0b010000000000000 > 0 {
+        draw line x10 y x5 y10 0 0
+    }
+}
+
+function n0 (size, x, y) {
+    exec segment_display_14(0b000110000111111)
+}
+function n1 (size, x, y) {
+    exec segment_display_14(0b000010000000110)
+}
+function n2 (size, x, y) {
+    exec segment_display_14(0b000000011011011)
+}
+function n3 (size, x, y) {
+    exec segment_display_14(0b000000010001111)
+}
+function n4 (size, x, y) {
+    exec segment_display_14(0b000000011100110)
+}
+function n5 (size, x, y) {
+    exec segment_display_14(0b010000001101001)
+}
+function n6 (size, x, y) {
+    exec segment_display_14(0b000000011111101)
+}
+function n7 (size, x, y) {
+    exec segment_display_14(0b000000000000111)
+}
+function n8 (size, x, y) {
+    exec segment_display_14(0b000000011111111)
+}
+function n9 (size, x, y) {
+    exec segment_display_14(0b000000011101111)
+}
+function A (size, x, y) {
+    exec segment_display_14(0b000000011110111)
+}
+function B (size, x, y) {
+    exec segment_display_14(0b001001010001111)
+}
+function C (size, x, y) {
+    exec segment_display_14(0b000000000111001)
+}
+function D (size, x, y) {
+    exec segment_display_14(0b001001000001111)
+}
+function E (size, x, y) {
+    exec segment_display_14(0b000000001111001)
+}
+function F (size, x, y) {
+    exec segment_display_14(0b000000001110001)
+}
+function G (size, x, y) {
+    exec segment_display_14(0b000000010111101)
+}
+function H (size, x, y) {
+    exec segment_display_14(0b000000011110110)
+}
+function I (size, x, y) {
+    exec segment_display_14(0b001001000001001)
+}
+function J (size, x, y) {
+    exec segment_display_14(0b000000000011110)
+}
+function K (size, x, y) {
+    exec segment_display_14(0b010010001110000)
+}
+function L (size, x, y) {
+    exec segment_display_14(0b000000000111000)
+}
+function M (size, x, y) {
+    exec segment_display_14(0b000010100110110)
+}
+function N (size, x, y) {
+    exec segment_display_14(0b010000100110110)
+}
+function O (size, x, y) {
+    exec segment_display_14(0b000000000111111)
+}
+function P (size, x, y) {
+    exec segment_display_14(0b000000011110011)
+}
+function Q (size, x, y) {
+    exec segment_display_14(0b010000000111111)
+}
+function R (size, x, y) {
+    exec segment_display_14(0b010000011110011)
+}
+function S (size, x, y) {
+    exec segment_display_14(0b000000011101101)
+}
+function T (size, x, y) {
+    exec segment_display_14(0b001001000000001)
+}
+function U (size, x, y) {
+    exec segment_display_14(0b000000000111110)
+}
+function V (size, x, y) {
+    exec segment_display_14(0b000110000110000)
+}
+function W (size, x, y) {
+    exec segment_display_14(0b010100000110110)
+}
+function X (size, x, y) {
+    exec segment_display_14(0b010110100000000)
+}
+function Y (size, x, y) {
+    exec segment_display_14(0b000000011101110)
+}
+function Z (size, x, y) {
+    exec segment_display_14(0b000110000001001)
+}
