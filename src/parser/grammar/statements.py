@@ -361,9 +361,8 @@ def p_statement_inverse(p):
         value1: statement_t = p[3]
     else:
         value1: statement_t = p[2]
-    value2: str = "true"
-    operation: str = "xor"
-    p[0] = StatementNode(p, operation, value1, value2)
+    operation: str = "not"
+    p[0] = StatementNode(p, operation, value1, "0")
 
 
 def p_statement_land(p):
