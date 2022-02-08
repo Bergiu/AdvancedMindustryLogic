@@ -1,0 +1,43 @@
+# Draws a line but removes the overflow mechanism.
+# The mlog default draw function has an overflow mechanism. That means, that values that are too high are reduced to fit into the display. This sometimes is not desired. This method removes this behaviour.
+# Input:
+#   x1: x starting point
+#   y1: y starting point
+#   x2: x end point
+#   y2: y end point
+# Output:
+#   overflow: Is true when an overflow was fixed.
+function draw_line_no_overflow(draw_line_no_overflow::__x1, draw_line_no_overflow::__y1, draw_line_no_overflow::__x2, draw_line_no_overflow::__y2, draw_line_no_overflow::__max_x, draw_line_no_overflow::__max_y) {
+    overflow = false
+    # skip if completely out of scope
+    if draw_line_no_overflow::__x1 > draw_line_no_overflow::__max_x and draw_line_no_overflow::__x2 > draw_line_no_overflow::__max_x {
+        overflow = true
+        jump draw_line_no_overflow::__exit always 0 0
+    }
+    if draw_line_no_overflow::__y1 > draw_line_no_overflow::__max_y and draw_line_no_overflow::__y2 > draw_line_no_overflow::__max_y {
+        overflow = true
+        jump draw_line_no_overflow::__exit always 0 0
+    }
+    if (draw_line_no_overflow::__y1 <= draw_line_no_overflow::__max_y) and (draw_line_no_overflow::__y2 > draw_line_no_overflow::__max_y) {
+        overflow = true
+        draw_line_no_overflow::__delta_y = draw_line_no_overflow::__y2 - draw_line_no_overflow::__y1
+        draw_line_no_overflow::__y_until_max = draw_line_no_overflow::__max_y - draw_line_no_overflow::__y1
+        draw_line_no_overflow::__relation = draw_line_no_overflow::__y_until_max / draw_line_no_overflow::__delta_y
+        draw_line_no_overflow::__delta_x = draw_line_no_overflow::__x2 - draw_line_no_overflow::__x1
+        draw_line_no_overflow::__x2 = draw_line_no_overflow::__x1 + draw_line_no_overflow::__delta_x * draw_line_no_overflow::__relation
+        draw_line_no_overflow::__y2 = draw_line_no_overflow::__max_y
+    }
+    if (draw_line_no_overflow::__x1 <= draw_line_no_overflow::__max_x) and (draw_line_no_overflow::__x2 > draw_line_no_overflow::__max_x) {
+        overflow = true
+        draw_line_no_overflow::__x2 = draw_line_no_overflow::__max_x
+        draw_line_no_overflow::__delta_x = draw_line_no_overflow::__x2 - draw_line_no_overflow::__x1
+        x_until_max = draw_line_no_overflow::__max_x - draw_line_no_overflow::__x1
+        draw_line_no_overflow::__relation = x_until_max / draw_line_no_overflow::__delta_x
+        draw_line_no_overflow::__delta_y = draw_line_no_overflow::__y2 - draw_line_no_overflow::__y1
+        draw_line_no_overflow::__y2 = draw_line_no_overflow::__y1 + draw_line_no_overflow::__delta_y * draw_line_no_overflow::__relation
+    }
+    draw line draw_line_no_overflow::__x1 draw_line_no_overflow::__y1 draw_line_no_overflow::__x2 draw_line_no_overflow::__y2 0 0
+    draw_line_no_overflow::__exit:
+    noop
+}
+
