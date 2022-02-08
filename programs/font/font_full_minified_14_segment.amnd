@@ -1,0 +1,46 @@
+import ../../stdlib/display/font/font_full_minified_14_segment.amnd
+
+draw clear 0 0 0 0 0 0
+draw stroke 2 0 0 0 0 0
+
+# Hello World
+exec write_letter(40, 1, 5, 90)
+drawflush display1
+exec write_letter(69, 1, 20, 90)
+drawflush display1
+exec write_letter(76, 1, 35, 90)
+drawflush display1
+exec write_letter(76, 1, 50, 90)
+drawflush display1
+exec write_letter(79, 0.5, 65, 100)
+drawflush display1
+exec write_letter(55, 1, 5, 65)
+drawflush display1
+exec write_letter(79, 1, 20, 65)
+drawflush display1
+exec write_letter(82, 1, 35, 65)
+drawflush display1
+exec write_letter(76, 1, 50, 65)
+drawflush display1
+exec write_letter(68, 1.5, 65, 65)
+drawflush display1
+
+# <''>
+exec write_letter(8, 1, 20, 35)
+drawflush display1
+exec write_letter(7, 1, 35, 35)
+drawflush display1
+exec write_letter(7, 1, 50, 35)
+drawflush display1
+exec write_letter(9, 1, 65, 35)
+drawflush display1
+
+# UWU
+exec write_letter(53, 1, 130, 150)
+drawflush display1
+exec write_letter(55, 1, 145, 150)
+drawflush display1
+exec write_letter(53, 1, 160, 150)
+drawflush display1
+
+@counter -= 1
