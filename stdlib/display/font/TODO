@@ -1,0 +1,3 @@
+- check if `@counter = @counter + (... * 2)` still works after compiler update
+- add prefix to variable names
+- move segment_display_14 into a separate file
