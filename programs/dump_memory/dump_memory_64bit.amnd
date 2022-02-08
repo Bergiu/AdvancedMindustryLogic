@@ -1,0 +1,27 @@
+cell = cell1
+message = message1
+
+memory_size = 64
+i = 0
+print "Page "
+page = i // 10
+print page
+print "\n"
+while i < 64 {
+    read result cell i
+    print result
+    if (i % 10 == 9)  {
+        printflush message
+        print "Page "
+        page = i // 10 + 1
+        print page
+        print "\n"
+    } else {
+        if i == memory_size - 1 {
+            printflush message
+        } else {
+            print "\n"
+        }
+    }
+    i++
+}

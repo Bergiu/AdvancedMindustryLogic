@@ -1,0 +1,88 @@
+# input
+input_cell = cell1
+# output
+status_cell = cell2
+output1 = message1
+output2 = message2
+# shows errors
+debug = message3
+# indicates if the program is finished and can be used to restart it
+switch = switch1
+
+# constants
+memory_size = 64
+display_size = 256
+number_size = 7
+cell_size = 52
+
+
+import ../stdlib/io/number_to_char_7bit.amnd
+
+
+# TODO:
+# add that this waits to start until the switch of the separator is turned on
+
+
+# amount characters needed for one cell: ceil(52 / 7)
+tmp = cell_size / number_size
+op ceil amount_chars_per_cell tmp 0
+# amount characters needed for all cells: ceil(52/7) * 64
+# amount message boxes needed for all cells: ceil(52/7) * 64 / 256 = 2.0
+printflush output1
+print "In progress."
+printflush output1
+printflush output2
+print "In progress."
+printflush output2
+cell_i = 0
+while cell_i < memory_size {
+    write cell_i status_cell 0
+    cell_part_i = 0
+    read cell_value input_cell cell_i
+    while cell_part_i < amount_chars_per_cell {
+        moved_value = cell_value >> (number_size * cell_part_i)
+        mask = 0b1111111
+        bit7part = moved_value & mask
+        exec number_to_char(bit7part)
+        if error {
+            printflush devnull
+            print "ERROR encoding. i: "
+            print i
+            print "; cell_part_i: "
+            print cell_part_i
+            print "; cell_value: "
+            print cell_value
+            print "; moved_cell_value: "
+            print moved_cell_value
+            print "; bit7part: "
+            print bit7part
+            printflush debug
+            @counter -= 1
+        }
+        print char
+        cell_part_i++
+    }
+    cell_i++
+    if cell_i % 32 == 0 {
+        if cell_i // 32 == 1 {
+            printflush output1
+        } else {
+            printflush output2
+        }
+    }
+}
+write cell_i status_cell 0
+
+# finished
+control enabled switch 1 0 0 0
+
+# wait until it's on
+sensor switch_on switch @enabled
+while not switch_on {
+    sensor switch_on switch @enabled
+}
+
+sensor switch_on switch @enabled
+while switch_on {
+    sensor switch_on switch @enabled
+}
