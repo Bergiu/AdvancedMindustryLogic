@@ -1,8 +1,7 @@
-# has a bug on sectors where the sun is maximum over a longer time
-data = cell1
-status = cell2
+data = cell1  # used to save directions
+status = cell2  # used for status information
+output_cell = cell3
 message = message1
-clock_message = message2
 
 # wait until schematic finished building
 if data == null {
@@ -15,37 +14,44 @@ if status == null {
     printflush message
     end
 }
-if clock_message == null {
-    print "Message Box is not connected"
-    printflush message
-    end
-}
 
 # add possibility to restart
 restart = false
 if restart {
     started = 0
-    last_power = -1
-    old_getting_dark = -1
-    midnight = -1
-}
-
-if midnight == -1 {
-    print "Collecting data to estimate the time."
-    printflush clock_message
 }
 
 # 1. initialize with start time
 if started == 0 {
+    started = 1
     print "Initializing"
     printflush message
     # started
-    started = 1
     last_power = -1
     old_getting_dark = -1
     midnight = -1
+    found_midnight = 0
+    midnight_time = -1
     # first tick
     first_tick = @tick
+    write started status 0
+    write first_tick status 1
+    write midnight status 2
+    write midnight_time status 3
+    write -1 status 4  # midnight time average
+    write -1 status 5  # absolute pos
+    write -1 status 6  # relative pos
+    write found_midnight status 7
+    i = 0
+    while i < 64 {
+        write 0 output_cell i
+        i++
+    }
+    i = 0
+    while i < 64 {
+        write 0 data i
+        i++
+    }
     end
 } else {
     print "Collecting data"
@@ -60,8 +66,8 @@ if started == 0 {
     round_tick = tick // 1
     print "\nTick: "
     print round_tick
-    write absolute_pos status 0
-    write relative_pos status 1
+    write absolute_pos status 5
+    write relative_pos status 6
     sensor power panel1 @powerNetIn
     print "\nPower: "
     round_power = ((power * 100) // 1) / 100
@@ -112,6 +118,14 @@ if started == 0 {
         }
         i++
     }
+    # the program calculates when the sun is going up or down and when this switches its midnight or midday.
+    # in some sectors the sun is at it's maximum for a longer time, so the switching is calculated wrong.
+    # longer max is a variable that contains it this is true for the current sector. in this case the calculation
+    # is only done during midnight.
+    sum_eq = 7 - sum_up - sum_down
+    if sum_eq > 0 {
+        longer_max = true
+    }
     print "\nSum Up: "
     print sum_up
     print "\nSum down: "
@@ -131,15 +145,44 @@ if started == 0 {
     }
     print "\nOld Getting Dark: "
     print old_getting_dark
+    if getting_dark and longer_max and midnight == -1 {
+        print "\nWait until midnight."
+        printflush message
+        old_getting_dark = getting_dark
+        end
+    }
     if old_getting_dark != getting_dark {
         # midday or midnight
+        changed = false
         if not getting_dark {
             # not sun is rising, so its midnight
             midnight = true
             midnight_time = (relative_pos - 3 + 64) % 64
+            changed = true
         } else {
-            midnight = false
-            midnight_time = (relative_pos - 3 + 32) % 64
+            if not longer_max {
+                midnight = false
+                midnight_time = (relative_pos - 3 + 32) % 64
+                changed = true
+            }
+        }
+        if changed {
+            # save midnight time in output cell for mean midnight time
+            write midnight status 2
+            write midnight_time status 3
+            # increase length
+            read len output_cell 0
+            if len < 62 {
+                new_len = len + 1
+                write new_len output_cell 0
+            }
+            # increase position
+            read pos output_cell 1
+            new_pos = (pos + 1) % 62
+            new_pos_ = new_pos + 1
+            write new_pos output_cell 1
+            # save midnight time
+            write midnight_time output_cell new_pos_
         }
     }
     if midnight == -1 {
@@ -148,40 +191,11 @@ if started == 0 {
         end
     }
     old_getting_dark = getting_dark
+    found_midnight = 1
+    write found_midnight status 7
     print "\nMidnight: "
     print midnight
     print "\nMidnight Time: "
     print midnight_time
-    # calculate time
-    current_time = (((@tick - first_tick) % 83520) / 1305 - midnight_time + 64) % 64  # ranges from 0 to 64
-    round_current_time = current_time * 10 // 1 / 10
-    print "\n1/64 Day Time: "
-    print round_current_time
-    current_real_time = current_time / 64 * 24
     printflush message
-    # print 24h
-    real_time_h = current_real_time // 1
-    real_time_min = (current_real_time % 1) * 60 // 1
-    print "24h Time: "
-    print real_time_h
-    print ":"
-    if real_time_min < 10 {
-        print 0
-    }
-    print real_time_min
-    # print 12h
-    real_time_12h = current_real_time % 12 // 1
-    print "\n12h Time: "
-    print real_time_12h
-    print ":"
-    if real_time_min < 10 {
-        print 0
-    }
-    print real_time_min
-    if current_real_time // 1 > 12 {
-        print " PM"
-    } else {
-        print " AM"
-    }
-    printflush clock_message
 }

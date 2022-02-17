@@ -1,0 +1,27 @@
+# doesn't work because midnight time is a modulo arithmetic...
+# should also not calculate the mean but throw away all values that are trash
+data = cell2
+status = cell1
+
+read len data 0
+
+if len == 0 {
+    end
+}
+
+print "Len: "
+print len
+len_ = len + 2
+sum = 0
+i = 2
+while i < 64 {
+    read midnight_time data i
+    sum += midnight_time
+    i++
+}
+avg = sum // len
+write avg status 4
+
+print "\nAvg: "
+print avg
+printflush message1
