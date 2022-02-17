@@ -1,0 +1,17 @@
+# small display has 80 pixels
+# cell can save 64 values
+# 2 cells needed to save 80 values
+# each pixel shows one value
+
+# each day is about 83.520 ticks
+# 83520/80 = 1044 ticks per 1/80 days
+
+pos = (@tick % 83520) // 1044 # ranges from 0-80
+write pos cell3 0
+sensor power panel1 @powerNetIn
+if pos < 64 {
+    write power cell1 pos
+} else {
+    pos = pos % 64
+    write power cell2 pos
+}

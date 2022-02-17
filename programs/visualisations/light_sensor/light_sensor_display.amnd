@@ -1,0 +1,24 @@
+i = 0
+while i < 80 {
+    read pos cell3 0
+    if i < 64 {
+        read power cell1 i
+    } else {
+        i_ = i % 64
+        read power cell2 i_
+    }
+    height = 80 / 6 * power
+    draw color 0 0 0 255 0 0  # black
+    draw rect i 0 1 80 0 0
+    if i == pos {
+        last_pos = pos
+        draw color 255 0 0 255 0 0  # red
+    } else {
+        draw color 255 255 255 255 0 0  # white
+    }
+    draw rect i 0 1 height 0 0
+    if i == 39 or i == 79 {
+        drawflush display1
+    }
+    i++
+}

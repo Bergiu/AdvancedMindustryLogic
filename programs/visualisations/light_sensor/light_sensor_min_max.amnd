@@ -1,0 +1,32 @@
+min = 6
+min_pos = 0
+max = 0
+max_pos = 0
+i = 0
+while i < 80 {
+    read pos cell3 0
+    if i < 64 {
+        read power cell1 i
+    } else {
+        i_ = i % 64
+        read power cell2 i_
+    }
+    if power < min {
+        min = power
+        min_pos = i
+    }
+    if power > max {
+        max = power
+        max_pos = i
+    }
+    i++
+}
+write min_pos cell3 0
+write min cell3 1
+write max_pos cell3 2
+write max cell3 3
+print "Min: "
+print min
+print "\nMax: "
+print max
+printflush message1

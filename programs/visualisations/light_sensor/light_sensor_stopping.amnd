@@ -1,0 +1,39 @@
+# small display has 80 pixels
+# cell can save 64 values
+# 2 cells needed to save 80 values
+# each pixel shows one value
+
+# each day is about 83.520 ticks
+# 83520/80 = 1044 ticks per 1/80 days
+
+# wait for input switch
+sensor switch_on switch2 @enabled
+while not switch_on {
+    sensor switch_on switch2 @enabled
+}
+
+# reset output switch
+control enabled switch1 0 0 0 0
+
+# measure data
+first_tick = @tick
+pos = 0
+while pos < 80 {
+    pos = (@tick - first_tick) // 1044 # ranges from 0-80
+    write pos cell3 0
+    sensor power panel1 @powerNetIn
+    if pos < 64 {
+        write power cell1 pos
+    } else {
+        mem_pos = pos % 64
+        write power cell2 mem_pos
+    }
+}
+
+# enable output switch and wait until input switch is off
+control enabled switch1 1 0 0 0
+
+sensor switch_on switch2 @enabled
+while switch_on {
+    sensor switch_on switch2 @enabled
+}

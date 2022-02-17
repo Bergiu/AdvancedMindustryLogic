@@ -1,0 +1,27 @@
+last_val = 0
+i = 0
+while i < 80 {
+    read pos cell3 0
+    if i < 64 {
+        read power cell1 i
+    } else {
+        i_ = i % 64
+        read power cell2 i_
+    }
+    draw_i = (i + 79 - pos) % 80
+    if last_val < power {
+        height = 70
+    } else {
+        if last_val == power {
+            height = 50
+        }
+        height = 20
+    }
+    draw color 0 0 0 255 0 0  # black
+    draw rect draw_i 0 1 80 0 0
+    draw color 255 255 255 255 0 0  # white
+    draw rect draw_i 0 1 height 0 0
+    drawflush display1
+    last_val = power
+    i++
+}
