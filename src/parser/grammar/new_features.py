@@ -23,7 +23,7 @@ can also be statements. For this take a look at the statements module.
 """
 
 
-from src.parser.types import statement_t, codeblock_t, ids_t, fakeid_t, func_param_t
+from src.parser.types import statement_t, codeblock_t, ids_t, ids_inplace_t, fakeid_t, func_param_t
 from src.nodes import Token, IfNode, IfElseNode, WhileNode, FunctionNode, ExecNode
 
 
@@ -53,9 +53,9 @@ def p_while(p):
 
 
 def p_func_param(p):
-    '''func_param : LPAREN ids RPAREN'''
-    ids: ids_t = p[2]
-    p[0] = ids
+    '''func_param : LPAREN ids_inplace RPAREN'''
+    ids_inplace: ids_t = p[2]
+    p[0] = ids_inplace
 
 
 def p_function(p):
@@ -69,8 +69,14 @@ def p_function(p):
     p[0] = FunctionNode(p, fakeid, func_param, codeblock, lcurly, rcurly)
 
 
+def p_exec_param(p):
+    '''exec_param : LPAREN ids RPAREN'''
+    ids: ids_t = p[2]
+    p[0] = ids
+
+
 def p_exec(p):
-    '''cmd_exec : EXEC fakeid func_param'''
+    '''cmd_exec : EXEC fakeid exec_param'''
     fakeid: fakeid_t = p[2]
     func_param: func_param_t = p[3]
     p[0] = ExecNode(p, fakeid, func_param)

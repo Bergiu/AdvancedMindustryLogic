@@ -210,7 +210,8 @@ tokens = [
     'OP_LOR',
     'OP_NOT',
     'BIN',
-    'LABEL'
+    'LABEL',
+    'INPLACE',
 ] + list(reserved.values())
 
 
@@ -220,9 +221,11 @@ def t_BIN(t):
 
 
 def t_ID(t):
-    r'[a-zA-Z_][a-zA-Z_0-9/.:]*|@?[a-zA-Z_][a-zA-Z_0-9/.:\-]*'
+    r'\*?[a-zA-Z_][a-zA-Z_0-9/.:]*|@?[a-zA-Z_][a-zA-Z_0-9/.:\-]*'
     if t.value.endswith(":"):
         t.type = "LABEL"
+    if t.value.startswith("*"):
+        t.type = "INPLACE"
     else:
         t.type = reserved.get(t.value, 'ID')
     return t

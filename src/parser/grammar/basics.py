@@ -31,6 +31,25 @@ from src.parser.types import value_t, ids_t, var_int_t, var_number_t, var_bool_t
     var_string_t
 
 
+def p_ids1_inplace(p):
+    '''ids_inplace : inplace_value'''
+    value: value_t = p[1]
+    p[0] = [value]
+
+
+def p_ids2_inplace(p):
+    '''ids_inplace : ids_inplace COMMA inplace_value'''
+    ids: ids_t = p[1]
+    value: value_t = p[3]
+    ids.append(value)
+    p[0] = ids
+
+
+def p_ids3_inplace(p):
+    '''ids_inplace : '''
+    p[0] = []
+
+
 def p_ids1(p):
     '''ids : value'''
     value: value_t = p[1]
@@ -94,6 +113,14 @@ def p_null(p):
     p[0] = out
 
 
+def p_inplace_value(p):
+    '''inplace_value : value
+                     | inplace
+    '''
+    out: value_t = p[1]
+    p[0] = out
+
+
 def p_value(p):
     '''value : fakeid
              | string
@@ -153,6 +180,11 @@ def p_bool(p):
 
 def p_string(p):
     '''string : STRING'''
+    p[0] = Token(p.slice[1])
+
+
+def p_inplace(p):
+    '''inplace : INPLACE'''
     p[0] = Token(p.slice[1])
 
 

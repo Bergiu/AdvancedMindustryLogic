@@ -285,9 +285,19 @@ class ExecNode(Node):
             return "ERROR"
         for i, param_value in enumerate(self.params):
             param_name = function.params[i]
-            out += f"set {param_name} {param_value}\n"
+            if param_name.token.type == "INPLACE":
+                reduced_name = str(param_name)[1:]
+                out += f"set {reduced_name} {param_value}\n"
+            else:
+                out += f"set {param_name} {param_value}\n"
         out += "op add retptr @counter 1\n"
         out += f"set @counter {self.fnptr.token.value}"
+        # set inplace variables to related value
+        for i, param_value in enumerate(self.params):
+            param_name = function.params[i]
+            if param_name.token.type == "INPLACE":
+                reduced_name = str(param_name)[1:]
+                out += f"\nset {param_value} {reduced_name}"
         return out
 
 

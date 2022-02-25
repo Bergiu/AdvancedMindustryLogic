@@ -6,6 +6,7 @@
 
 ## Additions
 - function: defines a function
+    - scoped / overwrite parameters
 - exec: executes a function
 - easy operations:
   - `op add x 1 2`: `x = 1 + 2`
@@ -18,6 +19,45 @@
 - while
 - if, if/else
 - standard library with reusable code
+
+### Function
+```
+function add(a, b) {
+    out = a + b
+}
+exec add(8, 4)
+print out
+```
+
+Has no return value, but variables are public. So if you need the out value just use it.
+
+#### Scopes
+
+```
+function add(a, b) {
+    c = a
+    a = b
+    b = c
+}
+x = 8
+y = 4
+exec add(x, y)
+```
+
+Doesn't work. Parameters in a function will not overwrite the original variable.
+
+```
+function add(*a, *b) {
+    c = a
+    a = b
+    b = c
+}
+x = 8
+y = 4
+exec add(x, y)
+```
+
+If you put a `*` infront of the variable name the method will overwrite the global value.
 
 
 ## Tips:
