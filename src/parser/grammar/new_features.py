@@ -23,8 +23,8 @@ can also be statements. For this take a look at the statements module.
 """
 
 
-from src.parser.types import statement_t, codeblock_t, ids_t, ids_inplace_t, fakeid_t, func_param_t
-from src.nodes import Token, IfNode, IfElseNode, WhileNode, FunctionNode, ExecNode
+from src.parser.types import statement_t, codeblock_t, ids_t, ids_inplace_t, fakeid_t, inplace_param_t, ids_param_t
+from src.nodes import Token, IfNode, IfElseNode, WhileNode, FunctionNode, ExecNode, NewObjectNode, StructNode
 
 
 def p_if(p):
@@ -52,16 +52,16 @@ def p_while(p):
     p[0] = WhileNode(p, while_o, statement, codeblock)
 
 
-def p_func_param(p):
-    '''func_param : LPAREN ids_inplace RPAREN'''
-    ids_inplace: ids_t = p[2]
+def p_inplace_param(p):
+    '''inplace_param : LPAREN ids_inplace RPAREN'''
+    ids_inplace: ids_inplace_t = p[2]
     p[0] = ids_inplace
 
 
 def p_function(p):
-    '''cmd_function : FUNCTION fakeid func_param LCURLY lineend codeblock RCURLY'''
+    '''cmd_function : FUNCTION fakeid inplace_param LCURLY lineend codeblock RCURLY'''
     fakeid: fakeid_t = p[2]
-    func_param: func_param_t = p[3]
+    func_param: inplace_param_t = p[3]
     lcurly: Token = Token(p.slice[4])
     # TODO: add lineend
     codeblock: codeblock_t = p[6]
@@ -69,14 +69,29 @@ def p_function(p):
     p[0] = FunctionNode(p, fakeid, func_param, codeblock, lcurly, rcurly)
 
 
-def p_exec_param(p):
-    '''exec_param : LPAREN ids RPAREN'''
+def p_ids_param(p):
+    '''ids_param : LPAREN ids RPAREN'''
     ids: ids_t = p[2]
     p[0] = ids
 
 
 def p_exec(p):
-    '''cmd_exec : EXEC fakeid exec_param'''
+    '''cmd_exec : EXEC fakeid ids_param'''
     fakeid: fakeid_t = p[2]
-    func_param: func_param_t = p[3]
+    func_param: ids_param_t = p[3]
     p[0] = ExecNode(p, fakeid, func_param)
+
+
+def p_struct(p):
+    '''cmd_struct : STRUCT fakeid ids_param'''
+    fakeid: fakeid_t = p[2]
+    params: ids_param_t = p[3]
+    p[0] = StructNode(p, fakeid, params)
+
+
+def p_new(p):
+    '''cmd_new : NEW fakeid OP_ASSIGN fakeid ids_param'''
+    varname: fakeid_t = p[2]
+    structname: fakeid_t = p[4]
+    params: ids_param_t = p[5]
+    p[0] = NewObjectNode(p, varname, structname, params)

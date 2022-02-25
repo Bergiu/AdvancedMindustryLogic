@@ -157,6 +157,8 @@ reserved_keys = [
     'compl',
     'bitand',
     'bitor',
+    'struct',
+    'new'
 ]
 
 reserved_keys.extend(instruction_names)

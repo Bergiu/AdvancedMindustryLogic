@@ -1,0 +1,71 @@
+# # Vec3D
+# # x, y, z
+
+# function Vec3D::stretch2(*x, *y, *z, a) {
+#     x *= a
+#     y *= a
+#     z *= a
+# }
+
+# A::x = 4
+# A::y = 8
+# A::z = 2
+# exec Vec3D::stretch2(A::x, A::y, A::z, 10)
+
+
+# function Vec3D::rot(this: Vec3D, alpha) {
+#     this.x = cos(alpha) * this.x
+#     this.y = sin(alpha) * this.y
+# }
+
+# function Vec3D::rot(this: Vec3D, alpha) {
+#     this.x = "name".x
+#     this.y = "name".y
+#     this.z = "name".z
+#     this.x = cos(alpha) * this.x
+#     this.y = sin(alpha) * this.y
+# }
+
+# function Vec3D::rot(*this: Vec3D, alpha) {
+#     this.x = "name".x
+#     this.y = "name".y
+#     this.z = "name".z
+#     this.x = cos(alpha) * this.x
+#     this.y = sin(alpha) * this.y
+#     "name".x = this.x
+#     "name".y = this.y
+#     "name".z = this.z
+# }
+
+
+
+# # struct Triangle(A: Vec3D, B: Vec3D, C: Vec3D)
+
+# # new a = Vec3D(1,2,3)
+# # new b = Vec3D(2,2,3)
+# # new c = Vec3D(1,2,0)
+# # new T1 = Vec3D(a, b, c)
+# # T1.A.x
+
+
+
+struct Vec3D(x, y, z)
+
+function Vec3D::add(x1, y1, z1, x2, y2, z2, *x3, *y3, *z3) {
+    x3 = x1 + x2
+    y3 = y1 + y2
+    z3 = z1 + z2
+}
+
+function Vec3D::dist(x, y, z, *out) {
+    out = x + y + z
+}
+
+new A = Vec3D(10, 20, 50)
+new B = Vec3D(5, 8, 2)
+new C = Vec3D(0, 0, 0)
+
+exec Vec3D::add(A.x, A.y, A.z, B.x, B.y, B.z, C.x, C.y, C.z)
+exec Vec3D::dist(C.x, C.y, C.z, dist)
+print dist
+printflush message1

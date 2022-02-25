@@ -41,11 +41,11 @@ def main():
         code = do_lexing(text)
     else:
         out = do_parsing(text)
-        if out.loc() > 1000:
-            raise Exception("PANIC: Maximum lines of code exceeded (max: 1000): " + str(out.loc()))
+        if out.loc(out) > 1000:
+            raise Exception("PANIC: Maximum lines of code exceeded (max: 1000): " + str(out.loc(out)))
         code = out.to_code(out)
         if args.loc:
-            print(out.loc())
+            print(out.loc(out))
             return
     if not args.linter:
         if args.outfile is not None:

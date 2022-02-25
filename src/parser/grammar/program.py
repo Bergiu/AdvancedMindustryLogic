@@ -84,6 +84,8 @@ def p_instruction(p):
                    | cmd_if
                    | cmd_if_else
                    | cmd_label
+                   | cmd_struct
+                   | cmd_new
     '''
     instruction: instruction_t = p[1]
     p[0] = instruction
