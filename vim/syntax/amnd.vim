@@ -10,7 +10,7 @@ syn keyword amndIO read write draw print drawflush printflush
 syn keyword amndKeyword getlink control radar sensor ubind ucontrol uradar ulocate noop
 " syn match amndSubcommands 
 syn keyword amndTodos TODO XXX FIXME NOTE
-syn keyword amndStructure set
+syn keyword amndStructure set new struct
 syn keyword amndOperator op
 syn match amndNumber "\v<\d+>"
 syn match amndNumber "\v<\d+\.\d+>"
