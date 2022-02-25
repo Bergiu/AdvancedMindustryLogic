@@ -7,7 +7,27 @@ output2 = message2
 # shows errors
 debug = message3
 # indicates if the program is finished and can be used to restart it
-switch = switch1
+input_switch = switch2
+output_switch = switch1
+
+if input_cell == null {
+    end
+}
+if status_cell == null {
+    end
+}
+if output1 == null {
+    end
+}
+if output2 == null {
+    end
+}
+if input_switch == null {
+    end
+}
+if output_switch == null {
+    end
+}
 
 # constants
 memory_size = 64
@@ -19,8 +39,10 @@ cell_size = 52
 import ../../stdlib/io/number_to_char_7bit.amnd
 
 
-# TODO:
-# add that this waits to start until the switch of the separator is turned on
+sensor switch_on input_switch @enabled
+while not switch_on {
+    sensor switch_on input_switch @enabled
+}
 
 
 # amount characters needed for one cell: ceil(52 / 7)
@@ -74,15 +96,15 @@ while cell_i < memory_size {
 write cell_i status_cell 0
 
 # finished
-control enabled switch 1 0 0 0
+control enabled output_switch 1 0 0 0
 
 # wait until it's on
-sensor switch_on switch @enabled
+sensor switch_on output_switch @enabled
 while not switch_on {
-    sensor switch_on switch @enabled
+    sensor switch_on output_switch @enabled
 }
 
-sensor switch_on switch @enabled
+sensor switch_on output_switch @enabled
 while switch_on {
-    sensor switch_on switch @enabled
+    sensor switch_on output_switch @enabled
 }

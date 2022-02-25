@@ -1,29 +1,57 @@
 from decode_memory_dump import decode_memory_dumps
+import sys
 
-inp1 = "¬xöJaaaa°RöJaaaa77öJaaaaq_öJaaaa(¢öJaaaaÜfüJaaaaiyüJaaaaKQüJaaaaE#üJaaaa5äüJaaaa3gÄJaaaa<yÄJaaaarPÄJaaaar8ÄJaaaaR#ÄJaaaa`äÄJaaaaÜ¢ÄJaaaakgÖJaaaaIyÖJaaaa)QÖJaaaa[7ÖJaaaaħ'ÖJaaaaEäÖJaaaa1¢ÖJaaaa.fÜJaaaa¼xÜJaaaaiQÜJaaaaU7ÜJaaaa?'ÜJaaaa€}ÜJaaaad¢ÜJaaaaIf€Jaaaa"
-inp2 = "3x€Jaaaa>P€Jaaaaþ6€Jaaaa5]€Jaaaa<½€Jaaaa½d»Jaaaajw»Jaaaas6»JaaaaK+»Jaaaa$]»Jaaaaö½»Jaaaaæd«Jaaaaxw«JaaaaWO«Jaaaa·´«Jaaaa?]«JaaaaQ¼«Jaaaaje·JaaaaYw·Jaaaa§O·Jaaaaö5·Jaaaaы*·Jaaaa_{·Jaaaa3½·Jaaaa:d…Jaaaa2u…JaaaaßM…JaaaaV5…Jaaaa`*…Jaaaa·[…Jaaaas½…JaaaaJdøJaaaa"
+inp = open(sys.argv[1]).read().split("\n")
 
-example_data = decode_memory_dumps([inp1, inp2])
-
-
-decoded = []
-
-for x in example_data:
-    filt = 2**52 - 4
-    timestamp = x & filt
-    timestamp = timestamp >> 2
-    itemtype = x & 0b11
-    decoded.append((itemtype, timestamp))
-
-
-counted = []
-counts = {}
-for itemtype, timestamp in decoded:
-    if itemtype in counts:
-        counts[itemtype] += 1
+inputs = []
+cur = None
+for line in inp:
+    if cur is None:
+        cur = line
     else:
-        counts[itemtype] = 1
-    counted.append((timestamp, counts[itemtype], itemtype))
+        inputs.append((cur, line))
+        cur = None
+
+counts = {0: 0, 1: 0, 2: 0, 3: 0}
+counts_items = {0: "lead", 1: "titanium", 2: "copper", 3: "graphite"}
+decoded_list = []
+for inp1, inp2 in inputs:
+    example_data = decode_memory_dumps([inp1, inp2])
+
+    decoded = []
+
+    for x in example_data:
+        filt = 2**52 - 4
+        timestamp = x & filt
+        timestamp = timestamp >> 2
+        itemtype = x & 0b11
+        decoded.append((itemtype, timestamp))
+
+    decoded_list.append(decoded)
+
+#     counted = []
+#     for itemtype, timestamp in decoded:
+#         if itemtype in counts:
+#             counts[itemtype] += 1
+#         else:
+#             counts[itemtype] = 1
+#         counted.append((timestamp, counts[itemtype], itemtype))
 
 
-print(counts)
+out_lines = [""] * len(decoded_list[0])
+headers = ""
+for j, decoded_l in enumerate(decoded_list):
+    headers += f"M{j}-Type;M{j}-Timestamp;"
+    for i, data in enumerate(decoded_l):
+        out_lines[i] += f"{data[0]};{data[1]};"
+
+print(headers)
+print("\n".join(out_lines))
+
+
+# print(counts)
+
+
+# summ = sum([y for y in counts.values()])
+# for x, y in counts.items():
+#     print("Propability of {}: {}".format(counts_items[x], y / summ))
