@@ -1,0 +1,18 @@
+draw clear 0 0 0 0 0 0
+# calculate new point
+draw line x y x1 y1 0 0
+set x1 x
+set y1 y
+op cos x a 0.5
+op sin y a 0.5
+op cos r b b
+op mul radius 60 r
+op mul x x 60
+op mul y y radius
+op add a a 20
+x += 88
+y += 88
+jump 0 lessThanEq a 360
+drawflush display1
+set a 0
+op add b b 10

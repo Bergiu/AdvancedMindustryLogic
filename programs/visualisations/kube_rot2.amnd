@@ -1,0 +1,38 @@
+draw clear 0 0 0 0 0 0
+center_x = 176 / 2
+center_y = center_x
+kube_length = 100
+kube_length_half = kube_length / 2
+kube_length_half_x = kube_length_half
+kube_length_half_y = kube_length_half
+nkube_length_half = 0 - kube_length_half
+
+
+op cos r b 0
+op mul radius 60 r
+kube_length_half_y *= r
+
+op cos cos_a winkel 0
+op sin sin_a winkel 0
+kube_length_half_x = cos_a*kube_length_half_x - sin_a*kube_length_half_y
+kube_length_half_y = sin_a*kube_length_half_x + cos_a*kube_length_half_y
+
+Ax = center_x - kube_length_half_x
+Ay = center_y - kube_length_half_y
+Bx = center_x - kube_length_half_x
+By = center_y + kube_length_half_y
+Cx = center_x + kube_length_half_x
+Cy = center_y + kube_length_half_y
+Dx = center_x + kube_length_half_x
+Dy = center_y - kube_length_half_y
+
+
+draw line Ax Ay Bx By 0 0
+draw line Ax Ay Dx Dy 0 0
+draw line Cx Cy Bx By 0 0
+draw line Cx Cy Dx Dy 0 0
+
+
+drawflush display1
+winkel += 2
+b += 10
