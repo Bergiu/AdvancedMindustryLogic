@@ -1,0 +1,20 @@
+import ../../stdlib/math/convert/radians_to_degrees.amnd
+
+winkel += 1
+winkel2 = winkel / 12
+op sin x1 winkel 0
+op cos y1 winkel 0
+op sin x2 winkel2 0
+op cos y2 winkel2 0
+
+x1 = x1 * 30 + 40
+y1 = y1 * 30 + 40
+x2 = x2 * 20 + 40
+y2 = y2 * 20 + 40
+
+draw clear 0 0 0 0 0 0
+draw color 255 255 255 255 0 0
+draw line 40 40 x1 y1 0 0
+draw color 180 180 180 255 0 0
+draw line 40 40 x2 y2 0 0
+drawflush display1
