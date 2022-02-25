@@ -250,7 +250,6 @@ class CommentNode(Node):
 class ExecNode(Node):
     def __init__(self, p, fnptr: Token, params: List[Any]):
         super().__init__(p)
-        #function_name = p.slice[2].value.lexpos
         self.fnptr = fnptr
         self.params = params
 
@@ -258,11 +257,19 @@ class ExecNode(Node):
         function = self.get_related_function(tree)
         if function is None:
             return "ERROR"
-        out = 2 + len(self.params)
+        out = 2
         for i, param_value in enumerate(self.params):
-            param_name = function.params[i][1]
-            if param_name.token.type == "INPLACE":
+            param_type, param = function.params[i]
+            if param_type is None:
                 out += 1
+                if param.token.type == "INPLACE":
+                    out += 1
+            else:
+                struct = self.get_related_struct(tree, param_type.token.value)
+                if struct is not None:
+                    out += len(struct.attributes)
+                    if param.token.type == "INPLACE":
+                        out += len(struct.attributes)
         return out
 
     def get_related_function(self, tree: Node) -> Optional[FunctionNode]:
