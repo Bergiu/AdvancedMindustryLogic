@@ -1,0 +1,33 @@
+struct Vec2D(x, y)
+
+function Vec2D::rot(Vec2D Vec2D::rot::this, Vec2D::rot::alpha, Vec2D *Vec2D::rot::out) {
+    Vec2D::rot::sina = sin(Vec2D::rot::alpha)
+    Vec2D::rot::cosa = cos(Vec2D::rot::alpha)
+    Vec2D::rot::out.x = Vec2D::rot::cosa * Vec2D::rot::this.x - Vec2D::rot::sina * Vec2D::rot::this.y
+    Vec2D::rot::out.y = Vec2D::rot::sina * Vec2D::rot::this.x + Vec2D::rot::cosa * Vec2D::rot::this.y
+}
+
+function Vec2D::scale(Vec2D Vec2D::scale::a, Vec2D::scale::scalar, Vec2D *Vec2D::scale::out) {
+    Vec2D::scale::out.x = Vec2D::scale::a.x * Vec2D::scale::scalar
+    Vec2D::scale::out.y = Vec2D::scale::a.y * Vec2D::scale::scalar
+}
+
+function Vec2D::add(Vec2D Vec2D::add::a, Vec2D Vec2D::add::b, Vec2D *Vec2D::add::out) {
+    Vec2D::add::out.x = Vec2D::add::a.x + Vec2D::add::b.x
+    Vec2D::add::out.y = Vec2D::add::a.y + Vec2D::add::b.y
+}
+
+function Vec2D::sub(Vec2D Vec2D::sub::a, Vec2D Vec2D::sub::b, Vec2D *Vec2D::sub::out) {
+    Vec2D::sub::out.x = Vec2D::sub::a.x - Vec2D::sub::b.x
+    Vec2D::sub::out.y = Vec2D::sub::a.y - Vec2D::sub::b.y
+}
+
+function Vec2D::norm(Vec2D Vec2D::norm::a, Vec2D *Vec2D::norm::out) {
+    Vec2D::norm::scalar = 1 / len(Vec2D::norm::a.x, Vec2D::norm::a.y)
+    Vec2D::norm::out.x = Vec2D::norm::a.x * Vec2D::norm::scalar
+    Vec2D::norm::out.y = Vec2D::norm::a.y * Vec2D::norm::scalar
+}
+
+function Vec2D::scalar_product(Vec2D Vec2D::scalar_product::a, Vec2D Vec2D::scalar_product::b, *Vec2D::scalar_product::out) {
+    Vec2D::scalar_product::out = Vec2D::scalar_product::a.x * Vec2D::scalar_product::b.x + Vec2D::scalar_product::a.y * Vec2D::scalar_product::b.y
+}
