@@ -1,11 +1,35 @@
 message = message1
 conveyor = conveyor1
 cell = cell1
-switch = switch2
+switch = switch1
+switch_output = switch2
+
+# due to weird copy behaviour of mindustry
+if message == null {
+    end
+}
+if conveyor == null {
+    end
+}
+if cell == null {
+    end
+}
+if switch == null {
+    end
+}
+if switch_output == null {
+    end
+}
 
 cell_size = 64
-# cell_size = 512
-control enabled switch 0 0 0 0
+
+sensor switch_on switch @enabled
+while switch_on {
+    sensor switch_on switch @enabled
+}
+
+control enabled switch_output 0 0 0 0
+
 
 i = 0
 while i < cell_size {
@@ -55,14 +79,10 @@ printflush message1
 
 # finished
 control enabled switch 1 0 0 0
+control enabled switch_output 1 0 0 0
 
 # wait until it's on
 sensor switch_on switch @enabled
 while not switch_on {
-    sensor switch_on switch @enabled
-}
-
-sensor switch_on switch @enabled
-while switch_on {
     sensor switch_on switch @enabled
 }

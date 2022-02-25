@@ -1,0 +1,19 @@
+read len cell1 0
+jump 4 lessThan len 63
+control enabled switch1 1 0 0 0
+end
+sensor power panel1 @powerNetIn
+op lessThan smaller power 4.1
+op greaterThan bigger power 4.0
+op land between smaller bigger
+jump 4 notEqual between true
+op floor tick @tick power
+sensor power_new panel1 @powerNetIn
+op greaterThan raises power_new power
+jump 4 notEqual raises true
+sensor power_new panel1 @powerNetIn
+jump 13 lessThan power_new 4.1
+read len cell1 0
+op add new_len len 1
+write new_len cell1 0
+write tick cell1 new_len

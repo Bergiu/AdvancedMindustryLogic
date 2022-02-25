@@ -1,0 +1,25 @@
+read len cell1 0
+# finished
+if len >= 63 {
+    control enabled switch1 1 0 0 0
+    end
+}
+
+# start if power gets > 4
+sensor power panel1 @powerNetIn
+if power < 4 {
+    end
+}
+
+# wait until power is < 4 again
+while power >= 4 {
+    sensor power panel1 @powerNetIn
+}
+
+# now 1 day is over. save timestamp
+op floor tick @tick 0
+
+read len cell1 0
+len++
+write len cell1 0
+write tick cell1 len

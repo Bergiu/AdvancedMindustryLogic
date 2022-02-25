@@ -1,0 +1,25 @@
+read len cell1 0
+# finished
+if len >= 63 {
+    control enabled switch1 1 0 0 0
+    end
+}
+
+# search minimum
+sensor power_min panel1 @powerNetIn
+sensor power_now panel1 @powerNetIn
+while power_now > power_min {
+    power_min = power_now
+    sensor power_now panel1 @powerNetIn
+}
+# now the next value is higher so we should have the minimum
+# XXX: except it was just a fluctuation
+
+# wait until next minimum
+
+# now 1 day is over. save timestamp
+op floor tick @tick 0
+read len cell1 0
+len++
+write len cell1 0
+write tick cell1 len
