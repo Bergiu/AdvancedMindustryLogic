@@ -20,6 +20,7 @@ syn match amndAt "@[a-zA-Z0-9\-]*"
 syntax region amndString start=/"/ end=/"/ oneline contains=amndInterpolatedWrapper
 syntax region amndInterpolatedWrapper start="\v\\\(\s*" end="\v\s*\)" contained containedin=amndString contains=amndInterpolatedString
 syntax match amndInterpolatedString "\v\w+(\(\))?" contained containedin=amndInterpolatedWrapper
+syntax match amndPrefix "[a-zA-Z0-9\-\_]*::"
 
 hi def link amndConditional Conditional
 hi def link amndRepeat Repeat
@@ -35,6 +36,8 @@ hi def link amndString String
 hi def link amndBool Boolean
 hi def link amndAt Statement
 hi def link amndComment Comment
+" hi def link amndPrefix Comment
+hi def link amndPrefix SpecialKey
 highlight default link amndInterpolatedWrapper Delimiter
 
 let b:current_syntax = 'amnd'
