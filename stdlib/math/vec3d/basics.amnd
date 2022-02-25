@@ -1,3 +1,5 @@
+import ../trigonometry.amnd
+
 struct Vec3D(x, y, z)
 
 function Vec3D::rot_x(Vec3D Vec3D::rot_x::this, Vec3D::rot_x::alpha, Vec3D *Vec3D::rot_x::out) {
@@ -46,14 +48,15 @@ function Vec3D::sub(Vec3D Vec3D::sub::a, Vec3D Vec3D::sub::b, Vec3D *Vec3D::sub:
 }
 
 function Vec3D::len(Vec3D Vec3D::len::a, *Vec3D::len::out) {
+    # norm of the vector
     Vec3D::len::out = sqrt(Vec3D::len::a.x ** 2 + Vec3D::len::a.y ** 2 + Vec3D::len::a.z ** 2)
 }
 
-function Vec3D::norm(Vec3D Vec3D::norm::a, Vec3D *Vec3D::norm::out) {
-    Vec3D::norm::scalar = 1 / sqrt(Vec3D::norm::a.x ** 2 + Vec3D::norm::a.y ** 2 + Vec3D::norm::a.z ** 2)
-    Vec3D::norm::out.x = Vec3D::norm::a.x * Vec3D::norm::scalar
-    Vec3D::norm::out.y = Vec3D::norm::a.y * Vec3D::norm::scalar
-    Vec3D::norm::out.z = Vec3D::norm::a.z * Vec3D::norm::scalar
+function Vec3D::normalize(Vec3D Vec3D::normalize::a, Vec3D *Vec3D::normalize::out) {
+    Vec3D::normalize::scalar = 1 / sqrt(Vec3D::normalize::a.x ** 2 + Vec3D::normalize::a.y ** 2 + Vec3D::normalize::a.z ** 2)
+    Vec3D::normalize::out.x = Vec3D::normalize::a.x * Vec3D::normalize::scalar
+    Vec3D::normalize::out.y = Vec3D::normalize::a.y * Vec3D::normalize::scalar
+    Vec3D::normalize::out.z = Vec3D::normalize::a.z * Vec3D::normalize::scalar
 }
 
 function Vec3D::scalar_product(Vec3D Vec3D::scalar_product::a, Vec3D Vec3D::scalar_product::b, *Vec3D::scalar_product::out) {
@@ -61,4 +64,18 @@ function Vec3D::scalar_product(Vec3D Vec3D::scalar_product::a, Vec3D Vec3D::scal
     Vec3D::scalar_product::y = Vec3D::scalar_product::a.y * Vec3D::scalar_product::b.y
     Vec3D::scalar_product::z = Vec3D::scalar_product::a.z * Vec3D::scalar_product::b.z
     Vec3D::scalar_product::out = Vec3D::scalar_product::x + Vec3D::scalar_product::y + Vec3D::scalar_product::z
+}
+
+function Vec3D::angle(Vec3D Vec3D::angle::a, Vec3D Vec3D::angle::b, *Vec3D::angle::alpha) {
+    exec Vec3D::scalar_product(Vec3D::angle::a, Vec3D::angle::b, Vec3D::angle::scalar)
+    exec Vec3D::len(Vec3D::angle::a, Vec3D::angle::lena)
+    exec Vec3D::len(Vec3D::angle::b, Vec3D::angle::lenb)
+    Vec3D::angle::cosa = Vec3D::angle::scalar / (Vec3D::angle::lena * Vec3D::angle::lenb)
+    exec acos(Vec3D::angle::cosa, Vec3D::angle::alpha)
+}
+
+function Vec3D::cross_product(Vec3D Vec3D::cross_product::a, Vec3D Vec3D::cross_product::b, Vec3D *Vec3D::cross_product::out) {
+    Vec3D::cross_product::out.x = Vec3D::cross_product::a.y * Vec3D::cross_product::b.z - Vec3D::cross_product::b.y * Vec3D::cross_product::a.z
+    Vec3D::cross_product::out.y = Vec3D::cross_product::b.x * Vec3D::cross_product::a.z - Vec3D::cross_product::a.x * Vec3D::cross_product::b.z
+    Vec3D::cross_product::out.z = Vec3D::cross_product::a.x * Vec3D::cross_product::b.y - Vec3D::cross_product::b.x * Vec3D::cross_product::a.y
 }

@@ -1,0 +1,8 @@
+function asin(asin::x, *asin::phi) {
+    asin::phi = angle(sqrt(1 - asin::x**2), asin::x)
+}
+
+
+function acos(acos::x, *acos::phi) {
+    acos::phi = angle(acos::x, sqrt(1 - acos::x**2))
+}

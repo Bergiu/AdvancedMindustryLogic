@@ -22,10 +22,10 @@ function Vec2D::sub(Vec2D Vec2D::sub::a, Vec2D Vec2D::sub::b, Vec2D *Vec2D::sub:
     Vec2D::sub::out.y = Vec2D::sub::a.y - Vec2D::sub::b.y
 }
 
-function Vec2D::norm(Vec2D Vec2D::norm::a, Vec2D *Vec2D::norm::out) {
-    Vec2D::norm::scalar = 1 / len(Vec2D::norm::a.x, Vec2D::norm::a.y)
-    Vec2D::norm::out.x = Vec2D::norm::a.x * Vec2D::norm::scalar
-    Vec2D::norm::out.y = Vec2D::norm::a.y * Vec2D::norm::scalar
+function Vec2D::normalize(Vec2D Vec2D::normalize::a, Vec2D *Vec2D::normalize::out) {
+    Vec2D::normalize::scalar = 1 / len(Vec2D::normalize::a.x, Vec2D::normalize::a.y)
+    Vec2D::normalize::out.x = Vec2D::normalize::a.x * Vec2D::normalize::scalar
+    Vec2D::normalize::out.y = Vec2D::normalize::a.y * Vec2D::normalize::scalar
 }
 
 function Vec2D::scalar_product(Vec2D Vec2D::scalar_product::a, Vec2D Vec2D::scalar_product::b, *Vec2D::scalar_product::out) {
