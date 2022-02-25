@@ -4,24 +4,24 @@ draw clear 0 0 0 0 0 0
 draw stroke 2 0 0 0 0 0
 exec H(1, 5, 90)
 drawflush display1
-exec E(1, 20, 90)
+exec a(1, 20, 90)
 drawflush display1
-exec L(1, 35, 90)
+exec l(1, 35, 90)
 drawflush display1
-exec L(1, 50, 90)
+exec l(1, 50, 90)
 drawflush display1
-exec O(0.5, 65, 100)
+exec o(0.5, 65, 100)
 drawflush display1
 exec colon(0.5, 75, 100)
 drawflush display1
-exec W(1, 5, 65)
+exec H(1, 5, 65)
 drawflush display1
-exec O(1, 20, 65)
+exec a(1, 20, 65)
 drawflush display1
-exec R(1, 35, 65)
+exec r(1, 35, 65)
 drawflush display1
-exec L(1, 50, 65)
+exec r(1, 50, 65)
 drawflush display1
-exec D(1.5, 65, 65)
+exec y_(1.5, 65, 65)
 drawflush display1
 
