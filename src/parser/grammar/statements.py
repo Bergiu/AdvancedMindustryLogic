@@ -49,6 +49,24 @@ Bitwise operators:
 (~a)          # Bitwise not
 (compl a)     # Bitwise not
 
+Others:
+max(a, b)
+min(a, b)
+angle(a, b)
+len(a, b)
+noise(a, b)
+abs(a)
+log(a)
+log10(a)
+sin(a)
+cos(a)
+tan(a)
+floor(a)
+ceil(a)
+sqrt(a)
+rand(a)
+
+
 Precedence:
 1.  | `a ** b`                             | Power                                                              | left  |
 2.  | `~a`, `compl a`                      | Bitwise NOT                                                        | right |
@@ -416,6 +434,37 @@ def p_statement_not(p):
     value2: str = "true"
     operation: str = "notEqual"
     p[0] = StatementNode(p, operation, value1, value2)
+
+
+
+def p_statement_special_functions(p):
+    '''statement : MAX LPAREN statement COMMA statement RPAREN
+                 | MIN LPAREN statement COMMA statement RPAREN
+                 | ANGLE LPAREN statement COMMA statement RPAREN
+                 | LEN LPAREN statement COMMA statement RPAREN
+                 | NOISE LPAREN statement COMMA statement RPAREN
+    '''
+    value1: statement_t = p[3]
+    value2: statement_t = p[5]
+    operation: str = p[1]
+    p[0] = StatementNode(p, operation, value1, value2)
+
+
+def p_statement_special_functions2(p):
+    '''statement : ABS LPAREN statement RPAREN
+                 | LOG LPAREN statement RPAREN
+                 | LOG10 LPAREN statement RPAREN
+                 | SIN LPAREN statement RPAREN
+                 | COS LPAREN statement RPAREN
+                 | TAN LPAREN statement RPAREN
+                 | FLOOR LPAREN statement RPAREN
+                 | CEIL LPAREN statement RPAREN
+                 | SQRT LPAREN statement RPAREN
+                 | RAND LPAREN statement RPAREN
+    '''
+    value1: statement_t = p[3]
+    operation: str = p[1]
+    p[0] = StatementNode(p, operation, value1, "0")
 
 
 precedence = (

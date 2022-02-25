@@ -15,6 +15,8 @@
   - `op mul x 1 2`: `x = 1 * 2`
   - `op div x 1 2`: `x = 1 / 2`
   - `op equal x 1 2`: `x = 1 == 2`
+  - `op cos x a 0`: `x = cos(a)`
+    - max, min, angle, len, noise, abs, log, log10, sin, cos, tan, floor, ceil, sqrt, rand
 - easy set:
   - `set x 1`: `x = 1`
 - while
