@@ -1,23 +1,6 @@
 # # Vec3D
 # # x, y, z
 
-# function Vec3D::stretch2(*x, *y, *z, a) {
-#     x *= a
-#     y *= a
-#     z *= a
-# }
-
-# A::x = 4
-# A::y = 8
-# A::z = 2
-# exec Vec3D::stretch2(A::x, A::y, A::z, 10)
-
-
-# function Vec3D::rot(this: Vec3D, alpha) {
-#     this.x = cos(alpha) * this.x
-#     this.y = sin(alpha) * this.y
-# }
-
 # function Vec3D::rot(this: Vec3D, alpha) {
 #     this.x = "name".x
 #     this.y = "name".y
@@ -47,25 +30,21 @@
 # # new T1 = Vec3D(a, b, c)
 # # T1.A.x
 
+struct Vec2D(x, y)
 
-
-struct Vec3D(x, y, z)
-
-function Vec3D::add(x1, y1, z1, x2, y2, z2, *x3, *y3, *z3) {
-    x3 = x1 + x2
-    y3 = y1 + y2
-    z3 = z1 + z2
+function Vec2D::scale(Vec2D *vec, alpha) {
+    vec.x *= alpha
+    vec.y *= alpha
 }
 
-function Vec3D::dist(x, y, z, *out) {
-    out = x + y + z
+function Vec2D::dist(Vec2D vec, *out) {
+    out = vec.x + vec.y
 }
 
-new A = Vec3D(10, 20, 50)
-new B = Vec3D(5, 8, 2)
-new C = Vec3D(0, 0, 0)
 
-exec Vec3D::add(A.x, A.y, A.z, B.x, B.y, B.z, C.x, C.y, C.z)
-exec Vec3D::dist(C.x, C.y, C.z, dist)
+new A = Vec2D(1, 2)
+
+exec Vec2D::scale(A, 7)
+exec Vec2D::dist(A, dist)
 print dist
 printflush message1

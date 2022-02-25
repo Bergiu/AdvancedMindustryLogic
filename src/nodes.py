@@ -260,9 +260,8 @@ class ExecNode(Node):
             return "ERROR"
         out = 2 + len(self.params)
         for i, param_value in enumerate(self.params):
-            param_name = function.params[i]
+            param_name = function.params[i][1]
             if param_name.token.type == "INPLACE":
-                reduced_name = str(param_name)[1:]
                 out += 1
         return out
 
@@ -279,7 +278,7 @@ class ExecNode(Node):
         function = functions[0]
         x = len(function.params) - len(self.params)
         if x > 0:
-            param_names = " and ".join([f"'{param}'" for param in function.params[len(function.params) - x:]])
+            param_names = " and ".join([f"'{param[1]}'" for param in function.params[len(function.params) - x:]])
             if len(function.params) > 1:
                 self.call_exception(TokenException("error", f"TypeError: {function_name} missing {x} positional arguments: {param_names}", self.fnptr.token, self.p))
                 return
@@ -287,31 +286,62 @@ class ExecNode(Node):
                 self.call_exception(TokenException("error", f"TypeError: {function_name} missing {x} positional argument: {param_names}", self.fnptr.token, self.p))
                 return
         if x < 0:
-            param = self.params[len(self.params) + x].token
+            param = self.params[len(self.params) + x][1].token
             self.call_exception(TokenException("error", f"TypeError: {function_name} takes {len(function.params)} but {len(self.params)} were given", param, self.p))
             return
         return functions[0]
+
+    def get_related_struct(self, tree: Node, struct_name: str) -> Optional[StructNode]:
+        structs = list(self.find_struct(tree, struct_name))
+        if len(structs) >= 2 or len(structs) < 1:
+            # error handling is already done when creating instances of structs
+            return
+        return structs[0]
 
     def to_code(self, tree: Node):
         out = ""
         function = self.get_related_function(tree)
         if function is None:
             return "ERROR"
+        # set parameters to values
         for i, param_value in enumerate(self.params):
-            param_name = function.params[i]
-            if param_name.token.type == "INPLACE":
-                reduced_name = str(param_name)[1:]
-                out += f"set {reduced_name} {param_value}\n"
+            param_type, param = function.params[i]
+            if param.token.type == "INPLACE":
+                # remove * char for inplace params
+                param_name = str(param.token.value)[1:]
             else:
+                param_name = str(param.token.value)
+            if param_type is None:
+                # params without a type
                 out += f"set {param_name} {param_value}\n"
+            else:
+                # params that are structs
+                struct = self.get_related_struct(tree, param_type.token.value)
+                if struct is None:
+                    return "ERROR"
+                for i, attribute in enumerate(struct.attributes):
+                    attribute_name = str(attribute.token.value)
+                    out += f"set {param_name}.{attribute_name} {param_value}.{attribute_name}\n"
         out += "op add retptr @counter 1\n"
         out += f"set @counter {self.fnptr.token.value}"
         # set inplace variables to related value
         for i, param_value in enumerate(self.params):
-            param_name = function.params[i]
-            if param_name.token.type == "INPLACE":
-                reduced_name = str(param_name)[1:]
-                out += f"\nset {param_value} {reduced_name}"
+            param_type, param = function.params[i]
+            if param.token.type == "INPLACE":
+                # remove * char for inplace params
+                param_name = str(param.token.value)[1:]
+                if param_type is None:
+                    # params without a type
+                    out += f"\nset {param_value} {param_name}"
+                else:
+                    # params that are structs
+                    struct = self.get_related_struct(tree, param_type.token.value)
+                    if struct is None:
+                        return "ERROR"
+                    for i, attribute in enumerate(struct.attributes):
+                        attribute_name = str(attribute.token.value)
+                        out += f"\nset {param_value}.{attribute_name} {param_name}.{attribute_name}"
+                        print(attribute)
         return out
 
 

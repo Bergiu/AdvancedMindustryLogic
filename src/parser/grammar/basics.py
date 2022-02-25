@@ -27,20 +27,33 @@ ids             # list of values
 
 from src.lexer import reserved
 from src.nodes import Token, SignedToken
-from src.parser.types import value_t, ids_t, var_int_t, var_number_t, var_bool_t, null_t, number_t, fakeid_t, \
-    var_string_t
+from src.parser.types import value_t, ids_t, var_int_t, var_number_t, var_bool_t, null_t, number_t, \
+    fakeid_t, var_string_t, inplace_typed_value_t
+
+
+def p_inplace_typed_valued1(p):
+    '''inplace_typed_value : inplace_value'''
+    value: value_t = p[1]
+    p[0] = (None, value)
+
+
+def p_inplace_typed_valued2(p):
+    '''inplace_typed_value : fakeid inplace_value'''
+    struct_name: fakeid_t = p[1]
+    value: value_t = p[2]
+    p[0] = (struct_name, value)
 
 
 def p_ids1_inplace(p):
-    '''ids_inplace : inplace_value'''
-    value: value_t = p[1]
+    '''ids_inplace : inplace_typed_value'''
+    value: inplace_typed_value_t = p[1]
     p[0] = [value]
 
 
 def p_ids2_inplace(p):
-    '''ids_inplace : ids_inplace COMMA inplace_value'''
+    '''ids_inplace : ids_inplace COMMA inplace_typed_value'''
     ids: ids_t = p[1]
-    value: value_t = p[3]
+    value: inplace_typed_value_t = p[3]
     ids.append(value)
     p[0] = ids
 

@@ -8,6 +8,7 @@
 - function: defines a function
     - scoped / overwrite parameters
 - exec: executes a function
+- structs
 - easy operations:
   - `op add x 1 2`: `x = 1 + 2`
   - `op sub x 1 2`: `x = 1 - 2`
@@ -31,7 +32,7 @@ print out
 
 Has no return value, but variables are public. So if you need the out value just use it.
 
-#### Scopes
+#### Function Scopes
 
 ```
 function add(a, b) {
@@ -59,6 +60,31 @@ exec add(x, y)
 
 If you put a `*` infront of the variable name the method will overwrite the global value.
 
+### Structs
+
+```
+struct Vec3D(x, y, z)
+new A = Vec3D(10, 20, 50)
+o = A.x + A.y + A.z
+print o
+```
+
+
+### Passing structs to functions
+
+```
+struct Vec2D(x, y)
+function move(Vec2D *Point, Vec2D dir) {
+    Point.x += dir.x
+    Point.y += dir.y
+}
+new A = Vec2D(1, 2)
+new B = Vec2D(3, 4)
+exec move(A, B)
+print A.x
+```
+
+This example shows how to use structs in functions. Point is an inplace parameter and chances the outside object.
 
 ## Tips:
 

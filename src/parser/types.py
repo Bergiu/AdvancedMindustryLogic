@@ -1,5 +1,5 @@
 from src.nodes import *
-from typing import Union, List
+from typing import Union, List, Tuple
 
 keyword_t = Token
 string_t = Token
@@ -17,9 +17,9 @@ var_int_t = Union[fakeid_t, int_t]
 var_double_t = Union[fakeid_t, double_t]
 var_string_t = Union[fakeid_t, string_t]
 ids_t = List[value_t]
-ids_inplace_t = List[value_t]
-inplace_param_t = ids_inplace_t
 ids_param_t = ids_t
+inplace_typed_value_t = Tuple[Optional[fakeid_t], value_t]
+ids_inplace_t = List[inplace_typed_value_t]
 cmd_function_t = FunctionNode
 cmd_default_t = OperationNode
 draw_instruction_t = List[Union[Token, var_int_t, fakeid_t, var_number_t, null_t]]
