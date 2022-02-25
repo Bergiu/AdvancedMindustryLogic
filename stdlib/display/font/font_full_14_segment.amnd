@@ -317,7 +317,7 @@ function w (size, x, y) {
 function x (size, x, y) {
     exec segment_display_14(0b010110100000000)
 }
-function y (size, x, y) {
+function y_(size, x, y) {
     exec segment_display_14(0b000001010001110)
 }
 function z (size, x, y) {

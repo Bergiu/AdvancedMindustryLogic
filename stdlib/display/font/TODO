@@ -1,3 +1,4 @@
 - check if `@counter = @counter + (... * 2)` still works after compiler update
 - add prefix to variable names
 - move segment_display_14 into a separate file
+- `exec segment_display_14(0b000110000111111)` prints a 0. maybe i can add something to the compiler that makes this easier. For example this: `#define w0 exec segment_display_14(0b000110000111111)` will replace every line with w0 with the exec statement
