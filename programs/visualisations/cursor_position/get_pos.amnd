@@ -1,0 +1,9 @@
+sensor x arc1 @shootX
+sensor y arc1 @shootY
+write x cell1 0
+write y cell1 1
+
+
+176 / 6 = 29.33
+176 - 24*2 = 128
+128 / 4 = 32

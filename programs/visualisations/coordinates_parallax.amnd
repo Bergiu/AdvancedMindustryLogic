@@ -1,0 +1,96 @@
+import ../../stdlib/display/font/font_small_minified_14_segment.amnd
+
+
+# von 20 bis 156 pixel
+# 136 pixel
+
+draw clear 0 0 0 0 0 0
+
+ax_z_x = 0.4
+ax_z_y = 0.6
+
+
+ax_start = 20
+ax_end = 156
+ax_len = ax_end - ax_start
+ax_z_x_end = ax_start + ax_len * ax_z_x
+ax_z_y_end = ax_start + ax_len * ax_z_y
+
+# draw axes
+draw color 255 255 255 255 0 0
+draw line ax_start ax_start ax_start ax_end 0 0
+draw line ax_start ax_start ax_end ax_start 0 0
+draw line ax_start ax_start ax_z_x_end ax_z_y_end 0 0
+# y ax
+exec write_letter(0, 0.3, 20, 5)
+exec write_letter(5, 0.3, 70, 5)
+exec write_letter(1, 0.3, 117, 5)
+exec write_letter(0, 0.3, 123, 5)
+# x ax
+exec write_letter(0, 0.3, 10, 20)
+exec write_letter(5, 0.3, 10, 70)
+exec write_letter(1, 0.3, 4, 120)
+exec write_letter(0, 0.3, 10, 120)
+# z ax
+ax_scale_x = ax_start + 50 * ax_z_x - 10
+ax_scale_y = ax_start + 50 * ax_z_y
+exec write_letter(5, 0.3, ax_scale_x, ax_scale_y)
+ax_scale_x = ax_start + 100 * ax_z_x - 15
+ax_scale_x2 = ax_scale_x + 8
+ax_scale_y = ax_start + 100 * ax_z_y
+exec write_letter(1, 0.3, ax_scale_x, ax_scale_y)
+exec write_letter(0, 0.3, ax_scale_x2, ax_scale_y)
+
+function draw_help_lines(x, y, z) {
+    # calculate x and y position in graph
+    z_x = z * ax_z_x
+    z_y = z * ax_z_y
+    x_proj = ax_start + x + z_x
+    y_proj = ax_start + y + z_y
+
+    # calculate help lines
+    z_help_x = ax_start + z_x
+    z_help_y = ax_start + z_y
+
+    # draw help lines
+    draw color 0 255 0 70 0 0
+    draw line ax_start ax_start z_help_x z_help_y 0 0
+    draw line z_help_x z_help_y x_proj z_help_y 0 0
+    draw line x_proj z_help_y x_proj y_proj 0 0
+}
+
+
+function draw_point(x, y, z) {
+    # calculate x and y position in graph
+    z_x = z * ax_z_x
+    z_y = z * ax_z_y
+    x_proj = ax_start + x + z_x
+    y_proj = ax_start + y + z_y
+
+    # draw point
+    draw color 255 0 0 255 0 0
+    draw poly x_proj y_proj 100 2 0 0
+}
+
+
+function draw_name(x, y, z, name) {
+    # calculate x and y position in graph
+    z_x = z * ax_z_x
+    z_y = z * ax_z_y
+    x_name = ax_start + x + z_x + 8
+    y_name = ax_start + y + z_y - 8
+
+    # draw point
+    draw color 255 255 255 255 0 0
+    exec write_letter(name, 0.3, x_name, y_name)
+}
+
+
+exec draw_help_lines(13, 18, 100)
+exec draw_help_lines(70, 90, 30)
+exec draw_point(13, 18, 100)
+exec draw_point(70, 90, 30)
+exec draw_name(13, 18, 100, 10)
+exec draw_name(70, 90, 30, 11)
+
+drawflush display1
