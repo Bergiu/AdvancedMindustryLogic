@@ -1,4 +1,4 @@
-import ./struct.amnd
+import ./__struct__.amnd
 import ./add.amnd            # a + b
 import ./sub.amnd            # a - b
 import ./scale.amnd          # a * λ
