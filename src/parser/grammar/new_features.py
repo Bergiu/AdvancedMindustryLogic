@@ -79,7 +79,14 @@ def p_exec(p):
     '''cmd_exec : EXEC fakeid ids_param'''
     fakeid: fakeid_t = p[2]
     func_param: ids_param_t = p[3]
-    p[0] = ExecNode(p, fakeid, func_param)
+    p[0] = ExecNode(p, fakeid, func_param, False)
+
+
+def p_exec_ptr(p):
+    '''cmd_exec : EXEC_PTR fakeid ids_param'''
+    fakeid: fakeid_t = p[2]
+    func_param: ids_param_t = p[3]
+    p[0] = ExecNode(p, fakeid, func_param, True)
 
 
 def p_struct(p):

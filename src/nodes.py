@@ -65,6 +65,16 @@ class Node:
             if isinstance(x, FunctionNode) and x.function_name == function_name:
                 yield x
 
+    def find_parent_function(self, tree: Node):
+        # XXX: May not work in every case. I have just tested it for default cases.
+        # I don't know if it works for example in functions in function.
+        last_function = None
+        for x in tree:
+            if x == self:
+                return last
+            if isinstance(x, FunctionNode):
+                last = x
+
     def find_parent(self, tree: Node) -> Node:
         last = None
         for x in tree:
@@ -248,10 +258,11 @@ class CommentNode(Node):
 
 
 class ExecNode(Node):
-    def __init__(self, p, fnptr: Token, params: List[Any]):
+    def __init__(self, p, fnptr: Token, params: List[Any], ptr: bool):
         super().__init__(p)
         self.fnptr = fnptr
         self.params = params
+        self.ptr = ptr
 
     def loc(self, tree: Node):
         function = self.get_related_function(tree)
@@ -273,7 +284,23 @@ class ExecNode(Node):
         return out
 
     def get_related_function(self, tree: Node) -> Optional[FunctionNode]:
-        function_name = self.fnptr.token.value
+        if self.ptr:
+            parent_function = self.find_parent_function(tree)
+            pos_in_name = self.fnptr.token.value.rfind(".")
+            if pos_in_name == -1:
+                self.call_exception(TokenException("error", f"Invalid Pointer Name: {self.fnptr.token.value}.", self.fnptr.token, self.p))
+                return
+            reduced_ptr_name = self.fnptr.token.value[:pos_in_name]
+            reduced_ptr_name_right = self.fnptr.token.value[pos_in_name + 1:]
+            function_name = None
+            for param_type, param in parent_function.params:
+                if param.token.value == reduced_ptr_name:
+                    function_name = f"{param_type.token.value}::{reduced_ptr_name_right}"
+            if function_name is None:
+                self.call_exception(TokenException("error", f"Unable to find related function to {self.fnptr.token.value}", self.fnptr.token, self.p))
+                return
+        else:
+            function_name = self.fnptr.token.value
         functions = list(self.find_function(tree, function_name))
         if len(functions) >= 2:
             self.call_exception(TokenException("error", f"Multiple definitions of function {function_name}.", self.fnptr.token, self.p))
@@ -348,7 +375,6 @@ class ExecNode(Node):
                     for i, attribute in enumerate(struct.attributes):
                         attribute_name = str(attribute.token.value)
                         out += f"\nset {param_value}.{attribute_name} {param_name}.{attribute_name}"
-                        print(attribute)
         return out
 
 

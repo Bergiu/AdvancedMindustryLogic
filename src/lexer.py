@@ -154,6 +154,7 @@ reserved_keys = [
     # 'define',
     'function',
     'exec',
+    'exec_ptr',
     'compl',
     'bitand',
     'bitor',

@@ -26,7 +26,7 @@ def preprocess(text: str, filename: str) -> Tuple[str, CodePosResolver]:
     return text, code_pos
 
 
-def _preprocess_intern(text: str, filename: Union[str, pathlib.Path], already_included) -> Tuple[LinesOfCode, CodePosResolver]:
+def _preprocess_intern(text: str, filename: Union[str, pathlib.Path], already_included: AlreadyIncluded) -> Tuple[LinesOfCode, CodePosResolver]:
     return replace_includes(text, filename, already_included)
 
 
@@ -36,7 +36,7 @@ def repair_eof(text) -> str:
     return text
 
 
-def replace_includes(text: str, filename: Union[str, pathlib.Path], already_included) -> Tuple[LinesOfCode, CodePosResolver, AlreadyIncluded]:
+def replace_includes(text: str, filename: Union[str, pathlib.Path], already_included: AlreadyIncluded) -> Tuple[LinesOfCode, CodePosResolver]:
     lines = text.split("\n")
     new_lines = []
     code_pos: CodePosResolver = []

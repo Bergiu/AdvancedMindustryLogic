@@ -1,0 +1,28 @@
+struct Interface(hello)
+function Interface::hello(string) {
+    noop
+}
+
+function Single::hello(string) {
+    print "Single "
+    print string
+    print "\n"
+}
+new Single = Interface(Single::hello)
+
+function Double::hello(string) {
+    print "Double "
+    print string
+    print string
+    print "\n"
+}
+new Double = Interface(Double::hello)
+
+
+function use_interface(Interface interface) {
+    exec_ptr interface.hello("ABC")
+}
+
+exec use_interface(Single)
+exec use_interface(Double)
+printflush message1

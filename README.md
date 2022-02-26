@@ -9,6 +9,7 @@
     - scoped / overwrite parameters
 - exec: executes a function
 - structs
+- interfaces
 - easy operations:
   - `op add x 1 2`: `x = 1 + 2`
   - `op sub x 1 2`: `x = 1 - 2`
@@ -87,6 +88,45 @@ print A.x
 ```
 
 This example shows how to use structs in functions. Point is an inplace parameter and chances the outside object.
+
+
+### Interfaces
+```
+struct Interface(hello)
+function Interface::hello(string) {
+    noop
+}
+
+function Single::hello(string) {
+    print "Single "
+    print string
+    print "\n"
+}
+new Single = Interface(Single::hello)
+
+function Double::hello(string) {
+    print "Double "
+    print string
+    print string
+    print "\n"
+}
+new Double = Interface(Double::hello)
+
+
+function use_interface(Interface interface) {
+    exec_ptr interface.hello("ABC")
+}
+
+exec use_interface(Single)
+exec use_interface(Double)
+printflush message1
+```
+
+To make in interface you need to add the function names of the interface as attributes to a struct. Then add the functions without content (no operation). The struct name must be the prefix of the function name (`StructName::FunctionName`).
+
+To implement the interface you need to implement each function and prefix it with the name of the implementation struct. In this example it's `Single` and `Double`. After implementing the functions create an object of the interface and pass the function names as attributes. This will save the pointer to the function in the object.
+
+Now you can create another function that takes an interface as parameter. To execute the function of the passed object you need to use `exec_ptr` instead of `exec`. This will resolve the variable to the given interface type to check the function parameters.
 
 ## Tips:
 

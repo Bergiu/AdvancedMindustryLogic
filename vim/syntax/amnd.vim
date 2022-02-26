@@ -4,7 +4,7 @@ endif
 
 syn keyword amndConditional jump end if else
 syn keyword amndRepeat while
-syn keyword amndStatement exec function
+syn keyword amndStatement exec exec_ptr function
 syn keyword amndImport import
 syn keyword amndIO read write draw print drawflush printflush
 syn keyword amndKeyword getlink control radar sensor ubind ucontrol uradar ulocate noop
