@@ -1,4 +1,4 @@
-import ../../stdlib/math/convert/radians_to_degrees.amnd
+import ../../stdlib/math/trigonometry/radians_to_degrees.amnd
 import ../../stdlib/display/get_display_size.amnd
 import ../../stdlib/display/draw_function.amnd
 
