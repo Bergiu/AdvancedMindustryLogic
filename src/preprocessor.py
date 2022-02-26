@@ -10,6 +10,7 @@ LineNumber = int
 Filename = str
 CodeLine = Tuple[LineNumber, Filename]
 CodePosResolver = List[CodeLine]
+AlreadyIncluded = List[Filename]
 
 
 class File:
@@ -19,14 +20,14 @@ class File:
 
 
 def preprocess(text: str, filename: str) -> Tuple[str, CodePosResolver]:
-    lines, code_pos = _preprocess_intern(text, filename)
+    lines, code_pos = _preprocess_intern(text, filename, [])
     text = "\n".join(lines)
     text = repair_eof(text)
     return text, code_pos
 
 
-def _preprocess_intern(text: str, filename: Union[str, pathlib.Path]) -> Tuple[LinesOfCode, CodePosResolver]:
-    return replace_includes(text, filename)
+def _preprocess_intern(text: str, filename: Union[str, pathlib.Path], already_included) -> Tuple[LinesOfCode, CodePosResolver]:
+    return replace_includes(text, filename, already_included)
 
 
 def repair_eof(text) -> str:
@@ -35,7 +36,7 @@ def repair_eof(text) -> str:
     return text
 
 
-def replace_includes(text: str, filename: Union[str, pathlib.Path]) -> Tuple[LinesOfCode, CodePosResolver]:
+def replace_includes(text: str, filename: Union[str, pathlib.Path], already_included) -> Tuple[LinesOfCode, CodePosResolver, AlreadyIncluded]:
     lines = text.split("\n")
     new_lines = []
     code_pos: CodePosResolver = []
@@ -43,14 +44,18 @@ def replace_includes(text: str, filename: Union[str, pathlib.Path]) -> Tuple[Lin
         line = line.strip()
         res = re.match("^import ([a-zA-Z0-9/_.]+)[ ]?", line)
         if res is not None:
-            new_lines.append("# " + line)
-            code_pos.append((index, filename))
             new_filename = res.group(1)
-            relative_file = pathlib.Path(filename).parent.joinpath(new_filename)
-            imported_code = load_code(relative_file)
-            processed_code, new_code_pos = _preprocess_intern(imported_code, relative_file)
-            new_lines.extend(processed_code)
-            code_pos.extend(new_code_pos)
+            if new_filename in already_included:
+                new_lines.append("# " + line + " already included")
+            else:
+                already_included.append(new_filename)
+                code_pos.append((index, filename))
+                new_lines.append("# " + line)
+                relative_file = pathlib.Path(filename).parent.joinpath(new_filename)
+                imported_code = load_code(relative_file)
+                processed_code, new_code_pos = _preprocess_intern(imported_code, relative_file, already_included)
+                new_lines.extend(processed_code)
+                code_pos.extend(new_code_pos)
         else:
             new_lines.append(line)
             code_pos.append((index, filename))
