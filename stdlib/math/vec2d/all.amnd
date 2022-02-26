@@ -1,0 +1,7 @@
+import ./struct.amnd
+import ./add.amnd            # a + b
+import ./sub.amnd            # a - b
+import ./scale.amnd          # a * λ
+import ./rot.amnd            # rotates a with α
+import ./normalize.amnd      # a / |a|
+import ./scalar_product.amnd # dot product: a · b

@@ -1,0 +1,4 @@
+function Vec2D::sub(Vec2D Vec2D::sub::a, Vec2D Vec2D::sub::b, Vec2D *Vec2D::sub::out) {
+    Vec2D::sub::out.x = Vec2D::sub::a.x - Vec2D::sub::b.x
+    Vec2D::sub::out.y = Vec2D::sub::a.y - Vec2D::sub::b.y
+}

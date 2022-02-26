@@ -1,0 +1,3 @@
+function Vec2D::scalar_product(Vec2D Vec2D::scalar_product::a, Vec2D Vec2D::scalar_product::b, *Vec2D::scalar_product::out) {
+    Vec2D::scalar_product::out = Vec2D::scalar_product::a.x * Vec2D::scalar_product::b.x + Vec2D::scalar_product::a.y * Vec2D::scalar_product::b.y
+}

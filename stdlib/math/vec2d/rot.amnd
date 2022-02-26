@@ -1,0 +1,6 @@
+function Vec2D::rot(Vec2D Vec2D::rot::this, Vec2D::rot::alpha, Vec2D *Vec2D::rot::out) {
+    Vec2D::rot::sina = sin(Vec2D::rot::alpha)
+    Vec2D::rot::cosa = cos(Vec2D::rot::alpha)
+    Vec2D::rot::out.x = Vec2D::rot::cosa * Vec2D::rot::this.x - Vec2D::rot::sina * Vec2D::rot::this.y
+    Vec2D::rot::out.y = Vec2D::rot::sina * Vec2D::rot::this.x + Vec2D::rot::cosa * Vec2D::rot::this.y
+}

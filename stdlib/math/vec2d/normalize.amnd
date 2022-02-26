@@ -1,0 +1,5 @@
+function Vec2D::normalize(Vec2D Vec2D::normalize::a, Vec2D *Vec2D::normalize::out) {
+    Vec2D::normalize::scalar = len(Vec2D::normalize::a.x, Vec2D::normalize::a.y)
+    Vec2D::normalize::out.x = Vec2D::normalize::a.x / Vec2D::normalize::scalar
+    Vec2D::normalize::out.y = Vec2D::normalize::a.y / Vec2D::normalize::scalar
+}

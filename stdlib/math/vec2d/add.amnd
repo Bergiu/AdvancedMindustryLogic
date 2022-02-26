@@ -1,0 +1,4 @@
+function Vec2D::add(Vec2D Vec2D::add::a, Vec2D Vec2D::add::b, Vec2D *Vec2D::add::out) {
+    Vec2D::add::out.x = Vec2D::add::a.x + Vec2D::add::b.x
+    Vec2D::add::out.y = Vec2D::add::a.y + Vec2D::add::b.y
+}

@@ -1,0 +1,4 @@
+function Vec2D::scale(Vec2D Vec2D::scale::a, Vec2D::scale::scalar, Vec2D *Vec2D::scale::out) {
+    Vec2D::scale::out.x = Vec2D::scale::a.x * Vec2D::scale::scalar
+    Vec2D::scale::out.y = Vec2D::scale::a.y * Vec2D::scale::scalar
+}
