@@ -1,0 +1,8 @@
+# Arcus Sinus
+# Input:
+#   x: acos(x)
+# *Output:
+#   phi: phi=acos(x)
+function acos(acos::x, *acos::phi) {
+    acos::phi = angle(acos::x, sqrt(1 - acos::x**2))
+}

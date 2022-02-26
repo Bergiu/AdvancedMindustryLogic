@@ -1,0 +1,8 @@
+# Arcus Sinus
+# Input:
+#   x: asin(x)
+# *Output:
+#   phi: phi=asin(x)
+function asin(asin::x, *asin::phi) {
+    asin::phi = angle(sqrt(1 - asin::x**2), asin::x)
+}
