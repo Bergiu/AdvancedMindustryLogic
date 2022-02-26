@@ -1,0 +1,12 @@
+import ./__struct__.amnd
+import ./add.amnd             # a + b
+import ./sub.amnd             # a - b
+import ./scale.amnd           # a * λ
+import ./len.amnd             # norm: |a|
+import ./scalar_product.amnd  # a · b
+import ./cross_product.amnd   # a × b
+import ./angle.amnd           # angle of vector (x, y): angle(x, y) maybe = atan(y/x) or atan(x/y)
+import ./normalize.amnd       # a / |a|
+import ./rot_x.amnd           # a rotated on x axis
+import ./rot_y.amnd           # a rotated on y axis
+import ./rot_z.amnd           # a rotated on z axis

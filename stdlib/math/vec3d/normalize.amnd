@@ -1,0 +1,6 @@
+function Vec3D::normalize(Vec3D Vec3D::normalize::a, Vec3D *Vec3D::normalize::out) {
+    Vec3D::normalize::scalar = 1 / sqrt(Vec3D::normalize::a.x ** 2 + Vec3D::normalize::a.y ** 2 + Vec3D::normalize::a.z ** 2)
+    Vec3D::normalize::out.x = Vec3D::normalize::a.x * Vec3D::normalize::scalar
+    Vec3D::normalize::out.y = Vec3D::normalize::a.y * Vec3D::normalize::scalar
+    Vec3D::normalize::out.z = Vec3D::normalize::a.z * Vec3D::normalize::scalar
+}

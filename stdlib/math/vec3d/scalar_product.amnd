@@ -1,0 +1,6 @@
+function Vec3D::scalar_product(Vec3D Vec3D::scalar_product::a, Vec3D Vec3D::scalar_product::b, *Vec3D::scalar_product::out) {
+    Vec3D::scalar_product::x = Vec3D::scalar_product::a.x * Vec3D::scalar_product::b.x
+    Vec3D::scalar_product::y = Vec3D::scalar_product::a.y * Vec3D::scalar_product::b.y
+    Vec3D::scalar_product::z = Vec3D::scalar_product::a.z * Vec3D::scalar_product::b.z
+    Vec3D::scalar_product::out = Vec3D::scalar_product::x + Vec3D::scalar_product::y + Vec3D::scalar_product::z
+}

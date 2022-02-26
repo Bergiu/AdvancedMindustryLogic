@@ -1,0 +1,8 @@
+function Vec3D::rot_x(Vec3D Vec3D::rot_x::this, Vec3D::rot_x::alpha, Vec3D *Vec3D::rot_x::out) {
+    # Rotates a vector on the x axis
+    Vec3D::rot_x::sina = sin(Vec3D::rot_x::alpha)
+    Vec3D::rot_x::cosa = cos(Vec3D::rot_x::alpha)
+    Vec3D::rot_x::out.x = Vec3D::rot_x::this.x
+    Vec3D::rot_x::out.y = Vec3D::rot_x::cosa * Vec3D::rot_x::this.y - Vec3D::rot_x::sina * Vec3D::rot_x::this.z
+    Vec3D::rot_x::out.z = Vec3D::rot_x::sina * Vec3D::rot_x::this.y + Vec3D::rot_x::cosa * Vec3D::rot_x::this.z
+}

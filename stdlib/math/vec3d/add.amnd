@@ -1,0 +1,5 @@
+function Vec3D::add(Vec3D Vec3D::add::a, Vec3D Vec3D::add::b, Vec3D *Vec3D::add::out) {
+    Vec3D::add::out.x = Vec3D::add::a.x + Vec3D::add::b.x
+    Vec3D::add::out.y = Vec3D::add::a.y + Vec3D::add::b.y
+    Vec3D::add::out.z = Vec3D::add::a.z + Vec3D::add::b.z
+}

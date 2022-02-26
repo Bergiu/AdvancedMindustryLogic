@@ -1,0 +1,5 @@
+function Vec3D::scale(Vec3D Vec3D::scale::a, Vec3D::scale::scalar, Vec3D *Vec3D::scale::out) {
+    Vec3D::scale::out.x = Vec3D::scale::a.x * Vec3D::scale::scalar
+    Vec3D::scale::out.y = Vec3D::scale::a.y * Vec3D::scale::scalar
+    Vec3D::scale::out.z = Vec3D::scale::a.z * Vec3D::scale::scalar
+}

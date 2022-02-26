@@ -1,0 +1,5 @@
+function Vec3D::sub(Vec3D Vec3D::sub::a, Vec3D Vec3D::sub::b, Vec3D *Vec3D::sub::out) {
+    Vec3D::sub::out.x = Vec3D::sub::a.x - Vec3D::sub::b.x
+    Vec3D::sub::out.y = Vec3D::sub::a.y - Vec3D::sub::b.y
+    Vec3D::sub::out.z = Vec3D::sub::a.z - Vec3D::sub::b.z
+}

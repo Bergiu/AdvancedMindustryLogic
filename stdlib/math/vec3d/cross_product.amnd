@@ -1,0 +1,5 @@
+function Vec3D::cross_product(Vec3D Vec3D::cross_product::a, Vec3D Vec3D::cross_product::b, Vec3D *Vec3D::cross_product::out) {
+    Vec3D::cross_product::out.x = Vec3D::cross_product::a.y * Vec3D::cross_product::b.z - Vec3D::cross_product::b.y * Vec3D::cross_product::a.z
+    Vec3D::cross_product::out.y = Vec3D::cross_product::b.x * Vec3D::cross_product::a.z - Vec3D::cross_product::a.x * Vec3D::cross_product::b.z
+    Vec3D::cross_product::out.z = Vec3D::cross_product::a.x * Vec3D::cross_product::b.y - Vec3D::cross_product::b.x * Vec3D::cross_product::a.y
+}

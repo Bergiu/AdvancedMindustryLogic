@@ -1,0 +1,13 @@
+import ./__struct__.amnd
+import ../trigonometry/acos.amnd
+import ./scalar_product.amnd
+import ./len.amnd
+
+
+function Vec3D::angle(Vec3D Vec3D::angle::a, Vec3D Vec3D::angle::b, *Vec3D::angle::alpha) {
+    exec Vec3D::scalar_product(Vec3D::angle::a, Vec3D::angle::b, Vec3D::angle::scalar)
+    exec Vec3D::len(Vec3D::angle::a, Vec3D::angle::lena)
+    exec Vec3D::len(Vec3D::angle::b, Vec3D::angle::lenb)
+    Vec3D::angle::cosa = Vec3D::angle::scalar / (Vec3D::angle::lena * Vec3D::angle::lenb)
+    exec acos(Vec3D::angle::cosa, Vec3D::angle::alpha)
+}

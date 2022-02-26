@@ -1,0 +1,4 @@
+function Vec3D::len(Vec3D Vec3D::len::a, *Vec3D::len::out) {
+    # norm of the vector
+    Vec3D::len::out = sqrt(Vec3D::len::a.x ** 2 + Vec3D::len::a.y ** 2 + Vec3D::len::a.z ** 2)
+}
