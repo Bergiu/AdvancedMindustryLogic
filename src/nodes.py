@@ -222,7 +222,23 @@ class FunctionNode(Node):
     def loc(self, tree: Node):
         return self.code_block.loc(tree) + 4
 
+    def check_code(self, tree: Node):
+        error = False
+        for param_type, param in self.params:
+            if param_type is not None:
+                structs = list(self.find_struct(tree, param_type.token.value))
+                if len(structs) < 1:
+                    self.call_exception(TokenException("error", f"Missing definition of struct {param_type.token.value}", param_type.token, self.p))
+                    error = True
+                elif len(structs) >= 2:
+                    self.call_exception(TokenException("error", f"Multiple definitions of struct {param_type.token.value}", param_type.token, self.p))
+                    error = True
+        return not error
+
     def to_code(self, tree: Node):
+        valid = self.check_code(tree)
+        if not valid:
+            return "ERROR"
         out = ""
         lines = self.code_block.loc(tree) + 2
         out += f"op add {self.function_name} @counter 1\n"
@@ -303,7 +319,6 @@ class ExecNode(Node):
             function_name = self.fnptr.token.value
         functions = list(self.find_function(tree, function_name))
         if len(functions) >= 2:
-            self.call_exception(TokenException("error", f"Multiple definitions of function {function_name}.", self.fnptr.token, self.p))
             self.call_exception(TokenException("error", f"Multiple definitions of function {function_name}.", self.fnptr.token, self.p))
             return
         if len(functions) < 1:
