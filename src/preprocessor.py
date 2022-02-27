@@ -47,6 +47,7 @@ def replace_includes(text: str, filename: Union[str, pathlib.Path], already_incl
             new_filename = res.group(1)
             if new_filename in already_included:
                 new_lines.append("# " + line + " already included")
+                code_pos.append((index, filename))
             else:
                 already_included.append(new_filename)
                 code_pos.append((index, filename))
