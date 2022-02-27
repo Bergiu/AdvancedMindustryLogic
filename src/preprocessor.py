@@ -45,11 +45,12 @@ def replace_includes(text: str, filename: Union[str, pathlib.Path], already_incl
         res = re.match("^import ([a-zA-Z0-9/_.]+)[ ]?", line)
         if res is not None:
             new_filename = res.group(1)
-            if new_filename in already_included:
+            new_abs_name = pathlib.Path(filename).parent.joinpath(new_filename).resolve()
+            if new_abs_name in already_included:
                 new_lines.append("# " + line + " already included")
                 code_pos.append((index, filename))
             else:
-                already_included.append(new_filename)
+                already_included.append(new_abs_name)
                 code_pos.append((index, filename))
                 new_lines.append("# " + line)
                 relative_file = pathlib.Path(filename).parent.joinpath(new_filename)
