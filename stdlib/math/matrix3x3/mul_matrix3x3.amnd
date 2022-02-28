@@ -7,14 +7,14 @@ import ./__struct__.amnd
 # a11 a12 a13 | a11 a12 a13
 # a21 a22 a23 | a21 a22 a23
 # a31 a32 a33 | a31 a32 a33
-function Matrix3x3::mul_matrix3x3(Matrix3x3 m1, Matrix3x3 m2, Matrix3x3 *out) {
-    out.a11 = m1.a11 * m2.a11 + m1.a12 * m2.a21 + m1.a13 * m2.a31
-    out.a12 = m1.a11 * m2.a12 + m1.a12 * m2.a22 + m1.a13 * m2.a32
-    out.a13 = m1.a11 * m2.a13 + m1.a12 * m2.a23 + m1.a13 * m2.a33
-    out.a21 = m1.a21 * m2.a11 + m1.a22 * m2.a21 + m1.a23 * m2.a31
-    out.a22 = m1.a21 * m2.a12 + m1.a22 * m2.a22 + m1.a23 * m2.a32
-    out.a23 = m1.a21 * m2.a13 + m1.a22 * m2.a23 + m1.a23 * m2.a33
-    out.a31 = m1.a31 * m2.a11 + m1.a32 * m2.a21 + m1.a33 * m2.a31
-    out.a32 = m1.a31 * m2.a12 + m1.a32 * m2.a22 + m1.a33 * m2.a32
-    out.a33 = m1.a31 * m2.a13 + m1.a32 * m2.a23 + m1.a33 * m2.a33
+function Matrix3x3::mul_matrix3x3(Matrix3x3 Matrix3x3::mul_matrix3x3::m1, Matrix3x3 Matrix3x3::mul_matrix3x3::m2, Matrix3x3 *Matrix3x3::mul_matrix3x3::out) {
+    Matrix3x3::mul_matrix3x3::out.a11 = Matrix3x3::mul_matrix3x3::m1.a11 * Matrix3x3::mul_matrix3x3::m2.a11 + Matrix3x3::mul_matrix3x3::m1.a12 * Matrix3x3::mul_matrix3x3::m2.a21 + Matrix3x3::mul_matrix3x3::m1.a13 * Matrix3x3::mul_matrix3x3::m2.a31
+    Matrix3x3::mul_matrix3x3::out.a12 = Matrix3x3::mul_matrix3x3::m1.a11 * Matrix3x3::mul_matrix3x3::m2.a12 + Matrix3x3::mul_matrix3x3::m1.a12 * Matrix3x3::mul_matrix3x3::m2.a22 + Matrix3x3::mul_matrix3x3::m1.a13 * Matrix3x3::mul_matrix3x3::m2.a32
+    Matrix3x3::mul_matrix3x3::out.a13 = Matrix3x3::mul_matrix3x3::m1.a11 * Matrix3x3::mul_matrix3x3::m2.a13 + Matrix3x3::mul_matrix3x3::m1.a12 * Matrix3x3::mul_matrix3x3::m2.a23 + Matrix3x3::mul_matrix3x3::m1.a13 * Matrix3x3::mul_matrix3x3::m2.a33
+    Matrix3x3::mul_matrix3x3::out.a21 = Matrix3x3::mul_matrix3x3::m1.a21 * Matrix3x3::mul_matrix3x3::m2.a11 + Matrix3x3::mul_matrix3x3::m1.a22 * Matrix3x3::mul_matrix3x3::m2.a21 + Matrix3x3::mul_matrix3x3::m1.a23 * Matrix3x3::mul_matrix3x3::m2.a31
+    Matrix3x3::mul_matrix3x3::out.a22 = Matrix3x3::mul_matrix3x3::m1.a21 * Matrix3x3::mul_matrix3x3::m2.a12 + Matrix3x3::mul_matrix3x3::m1.a22 * Matrix3x3::mul_matrix3x3::m2.a22 + Matrix3x3::mul_matrix3x3::m1.a23 * Matrix3x3::mul_matrix3x3::m2.a32
+    Matrix3x3::mul_matrix3x3::out.a23 = Matrix3x3::mul_matrix3x3::m1.a21 * Matrix3x3::mul_matrix3x3::m2.a13 + Matrix3x3::mul_matrix3x3::m1.a22 * Matrix3x3::mul_matrix3x3::m2.a23 + Matrix3x3::mul_matrix3x3::m1.a23 * Matrix3x3::mul_matrix3x3::m2.a33
+    Matrix3x3::mul_matrix3x3::out.a31 = Matrix3x3::mul_matrix3x3::m1.a31 * Matrix3x3::mul_matrix3x3::m2.a11 + Matrix3x3::mul_matrix3x3::m1.a32 * Matrix3x3::mul_matrix3x3::m2.a21 + Matrix3x3::mul_matrix3x3::m1.a33 * Matrix3x3::mul_matrix3x3::m2.a31
+    Matrix3x3::mul_matrix3x3::out.a32 = Matrix3x3::mul_matrix3x3::m1.a31 * Matrix3x3::mul_matrix3x3::m2.a12 + Matrix3x3::mul_matrix3x3::m1.a32 * Matrix3x3::mul_matrix3x3::m2.a22 + Matrix3x3::mul_matrix3x3::m1.a33 * Matrix3x3::mul_matrix3x3::m2.a32
+    Matrix3x3::mul_matrix3x3::out.a33 = Matrix3x3::mul_matrix3x3::m1.a31 * Matrix3x3::mul_matrix3x3::m2.a13 + Matrix3x3::mul_matrix3x3::m1.a32 * Matrix3x3::mul_matrix3x3::m2.a23 + Matrix3x3::mul_matrix3x3::m1.a33 * Matrix3x3::mul_matrix3x3::m2.a33
 }

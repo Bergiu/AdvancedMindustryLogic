@@ -8,7 +8,7 @@ import ../vec3d/__struct__.amnd
 # ------------|---
 # a11 a12 a13 | x
 # a21 a22 a23 | y
-function Matrix2x3::mul_vec3d(Matrix2x3 m1, Vec3D vec, Vec2D *out) {
-    out.x = m1.a11 * vec.x + m1.a12 * vec.y + m1.a13 * vec.z
-    out.y = m1.a21 * vec.x + m1.a22 * vec.y + m1.a23 * vec.z
+function Matrix2x3::mul_vec3d(Matrix2x3 Matrix2x3::mul_vec3d::m1, Vec3D Matrix2x3::mul_vec3d::vec, Vec2D *Matrix2x3::mul_vec3d::out) {
+    Matrix2x3::mul_vec3d::out.x = Matrix2x3::mul_vec3d::m1.a11 * Matrix2x3::mul_vec3d::vec.x + Matrix2x3::mul_vec3d::m1.a12 * Matrix2x3::mul_vec3d::vec.y + Matrix2x3::mul_vec3d::m1.a13 * Matrix2x3::mul_vec3d::vec.z
+    Matrix2x3::mul_vec3d::out.y = Matrix2x3::mul_vec3d::m1.a21 * Matrix2x3::mul_vec3d::vec.x + Matrix2x3::mul_vec3d::m1.a22 * Matrix2x3::mul_vec3d::vec.y + Matrix2x3::mul_vec3d::m1.a23 * Matrix2x3::mul_vec3d::vec.z
 }

@@ -6,7 +6,7 @@ import ../vec2d/__struct__.amnd
 # --------|---
 # a11 a12 | x
 # a21 a22 | y
-function Matrix2x2::mul_vec2d(Matrix2x2 m, Vec2D vec, Vec2D *out) {
-    out.x = vec.x * m.a11 + vec.y * m.a12
-    out.y = vec.x * m.a21 + vec.y * m.a22
+function Matrix2x2::mul_vec2d(Matrix2x2 Matrix2x2::mul_vec2d::m, Vec2D Matrix2x2::mul_vec2d::vec, Vec2D *Matrix2x2::mul_vec2d::out) {
+    Matrix2x2::mul_vec2d::out.x = Matrix2x2::mul_vec2d::vec.x * Matrix2x2::mul_vec2d::m.a11 + Matrix2x2::mul_vec2d::vec.y * Matrix2x2::mul_vec2d::m.a12
+    Matrix2x2::mul_vec2d::out.y = Matrix2x2::mul_vec2d::vec.x * Matrix2x2::mul_vec2d::m.a21 + Matrix2x2::mul_vec2d::vec.y * Matrix2x2::mul_vec2d::m.a22
 }
