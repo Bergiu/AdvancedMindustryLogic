@@ -1,0 +1,13 @@
+import ./__struct__.amnd
+
+
+function MemVector::set(MemVector MemVector::set::this, MemVector::set::index, MemVector::set::number, *MemVector::set::error) {
+    if MemVector::set::index >= MemVector::set::this.size or MemVector::set::index < 0 {
+        # index not in range
+        MemVector::set::error = true
+    } else {
+        MemVector::set::error = false
+        MemVector::set::abs_pos = MemVector::set::this.pos + MemVector::set::index
+        write MemVector::set::number MemVector::set::this.memcell MemVector::set::abs_pos
+    }
+}

@@ -1,0 +1,25 @@
+import ../../memory/memory.amnd
+import ../../memory/memory_mapper.amnd
+import ../../memory/stupid_mapper.amnd
+import ./new.amnd
+import ./set.amnd
+import ./print.amnd
+
+
+# Example
+new memory = Memory(cell1, 64)
+exec Memory::reset(memory)
+exec MemVector::new(StupidMapper, memory, 3, true, vec1, error)
+if error {
+    print "Error initializing vector."
+    printflush message1
+    end
+}
+exec MemVector::set(vec1, 2, 10, error)
+if error {
+    print "Error setting element."
+    printflush message1
+    end
+}
+exec MemVector::print(vec1)
+printflush message1

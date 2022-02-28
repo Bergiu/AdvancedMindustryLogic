@@ -1,0 +1,16 @@
+import ./__struct__.amnd
+
+
+function MemVector::print(MemVector MemVector::print::this) {
+    MemVector::print::i = 0
+    print "("
+    while MemVector::print::i < MemVector::print::this.size {
+        read MemVector::print::value MemVector::print::this.memcell MemVector::print::i
+        print MemVector::print::value
+        MemVector::print::i++
+        if MemVector::print::i < MemVector::print::this.size {
+            print ", "
+        }
+    }
+    print ")"
+}

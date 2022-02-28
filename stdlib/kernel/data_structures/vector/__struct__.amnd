@@ -1,0 +1,8 @@
+# MemVector
+# A vector is a list with fixed size.
+# All elements can be initialized with 0.
+# You can access any element within a vector but not delete or add elements.
+# Saves all metadata in processor.
+
+struct MemVector(memcell, pos, size)
+# [..array]

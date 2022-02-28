@@ -1,0 +1,19 @@
+import ./__struct__.amnd
+import ../../memory/memory.amnd
+import ../../memory/memory_mapper.amnd
+
+
+function MemVector::new(IMemoryMapper MemVector::new::memory_mapper, Memory MemVector::new::memory, MemVector::new::size, MemVector::new::init, MemVector *MemVector::new::out, *MemVector::new::error) {
+    exec_ptr MemVector::new::memory_mapper.allocate(MemVector::new::memory, MemVector::new::size, MemVector::new::pos, MemVector::new::error)
+    if ! MemVector::new::error {
+        new MemVector::new::out = MemVector(MemVector::new::memory.memcell, MemVector::new::pos, MemVector::new::size)
+        if MemVector::new::init {
+            MemVector::new::abs_pos = MemVector::new::pos
+            MemVector::new::max_pos = MemVector::new::pos + MemVector::new::size
+            while MemVector::new::abs_pos < MemVector::new::max_pos {
+                write 0 MemVector::new::memory.memcell MemVector::new::abs_pos
+                MemVector::new::abs_pos++
+            }
+        }
+    }
+}

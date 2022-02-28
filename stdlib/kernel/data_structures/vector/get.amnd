@@ -1,0 +1,13 @@
+import ./__struct__.amnd
+
+
+function MemVector::get(MemVector MemVector::get::this, MemVector::get::index, *MemVector::get::number, *MemVector::get::error) {
+    if MemVector::get::index >= MemVector::get::this.size or MemVector::get::index < 0 {
+        # index not in range
+        MemVector::get::error = true
+    } else {
+        MemVector::get::error = false
+        MemVector::get::abs_pos = MemVector::get::this.pos + MemVector::get::index
+        read MemVector::get::number MemVector::get::this.memcell MemVector::get::abs_pos
+    }
+}
