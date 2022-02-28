@@ -6,23 +6,23 @@ import ./memory_mapper.amnd
 # Just allocates the next block. Can't be freed.
 # [..., next_pos]
 #
-# *memory: memory that should be used. links to the memory and contains metadata.
+# memory: memory that should be used. links to the memory and contains metadata.
 # size: the size that should be allocated.
 # *pos: returns the position in the memory that is reserved for you.
 # *error: true if an error occures.
-function StupidMapper::allocate(Memory *memory, size, *pos, *error) {
-    pos_pos = memory.size - 1
-    read pos memory.memcell pos_pos
-    next_pos = pos + size
-    if next_pos >= memory.size - 1 {
+function StupidMapper::allocate(Memory IMemoryMapper::allocate::memory, IMemoryMapper::allocate::size, *IMemoryMapper::allocate::pos, *IMemoryMapper::allocate::error) {
+    IMemoryMapper::allocate::pos_pos = IMemoryMapper::allocate::memory.size - 1
+    read IMemoryMapper::allocate::pos IMemoryMapper::allocate::memory.memcell IMemoryMapper::allocate::pos_pos
+    IMemoryMapper::allocate::next_pos = IMemoryMapper::allocate::pos + IMemoryMapper::allocate::size
+    if IMemoryMapper::allocate::next_pos >= IMemoryMapper::allocate::memory.size - 1 {
         # Not enough space left in memory.
-        error = true
+        IMemoryMapper::allocate::error = true
     } else {
-        error = false
-        write next_pos memory.memcell pos_pos
+        IMemoryMapper::allocate::error = false
+        write IMemoryMapper::allocate::next_pos IMemoryMapper::allocate::memory.memcell IMemoryMapper::allocate::pos_pos
     }
 }
-function StupidMapper::free(ptr, *error) {
-    error = true
+function StupidMapper::free(IMemoryMapper::free::ptr, *IMemoryMapper::free::error) {
+    IMemoryMapper::free::error = true
 }
 new StupidMapper = IMemoryMapper(StupidMapper::allocate, StupidMapper::free)

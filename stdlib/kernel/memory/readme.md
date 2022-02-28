@@ -25,5 +25,5 @@ There are multiple memory mappers with different benefits:
     - Returns the position of a pointer instead of the real block
     - This enables defragmentation of the memory
 
-# Vector
-Vector is an example of how the memory mappers can be used.
+# Additional ideas
+Maybe think about how to improve the mappers so that multiprocessing is possible.

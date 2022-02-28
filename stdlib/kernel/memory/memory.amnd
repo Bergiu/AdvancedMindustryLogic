@@ -14,3 +14,16 @@ struct Memory(memcell, size)
 # to the same reason.
 # Idea: i can add different kinds of memory. One that is faster but saves
 # every metadata in an extra cell and one that is slower but uses less space.
+
+function Memory::reset(Memory Memory::reset::memory) {
+    Memory::reset::pos = Memory::reset::memory.size - 1
+    write 0 Memory::reset::memory.memcell Memory::reset::pos
+}
+
+function Memory::delete(Memory Memory::reset::memory) {
+    Memory::reset::pos = 0
+    while Memory::reset::pos < Memory::reset::memory.size {
+        write 0 Memory::reset::memory.memcell Memory::reset::pos
+        Memory::reset::pos++
+    }
+}

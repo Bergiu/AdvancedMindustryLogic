@@ -6,9 +6,9 @@ import ./memory.amnd
 # They use memory mappers to claim memory when a vector is created
 # and to free it if one is destroyed.
 struct IMemoryMapper(allocate, free)
-function IMemoryMapper::allocate(Memory *memory, size, *pos, *error) {
+function IMemoryMapper::allocate(Memory *IMemoryMapper::allocate::memory, IMemoryMapper::allocate::size, *IMemoryMapper::allocate::pos, *IMemoryMapper::allocate::error) {
     noop
 }
-function IMemoryMapper::free(ptr, *error) {
+function IMemoryMapper::free(IMemoryMapper::free::ptr, *IMemoryMapper::free::error) {
     noop
 }
