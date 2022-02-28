@@ -1,0 +1,14 @@
+import ./memory.amnd
+
+
+# Interface for memory mappers.
+# Memory mappers are used for vectors and other datastructures.
+# They use memory mappers to claim memory when a vector is created
+# and to free it if one is destroyed.
+struct IMemoryMapper(allocate, free)
+function IMemoryMapper::allocate(Memory *memory, size, *pos, *error) {
+    noop
+}
+function IMemoryMapper::free(ptr, *error) {
+    noop
+}

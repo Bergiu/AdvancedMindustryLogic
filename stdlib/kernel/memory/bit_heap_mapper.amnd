@@ -1,0 +1,9 @@
+# memory has 512 cells
+# each cell can be reserved
+# 512 bits needed to save if each bit is reserved
+# with 52 bits per cell, 10 cells needed for this
+# fixed stack size: 10
+# each cell in stack saves a bitmap
+
+# memory 64 cells
+# 64 bit, 2 cells

@@ -1,0 +1,16 @@
+struct Memory(memcell, size)
+# memcell is the link to the memory cell
+# next_pos points to the next free position. For new memorys: 0.
+# size is the amount of cells in the memory. Either 64 or 512.
+
+# to be able to reuse freed space we need to add some extra steps.
+# the memory is divided into a stack and a heap. the stack is used
+# to save pointers to all vectors.
+
+# each vector needs to save if they are freed or in use. this should
+# be saved in the stack part, because that gives us the ability to
+# implement different kinds of vectors.
+# also the stack part should save how much capacity the vector has due
+# to the same reason.
+# Idea: i can add different kinds of memory. One that is faster but saves
+# every metadata in an extra cell and one that is slower but uses less space.

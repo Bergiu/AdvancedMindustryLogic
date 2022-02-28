@@ -1,0 +1,77 @@
+import ./memory.amnd
+import ./memory_mapper.amnd
+import ./stupid_mapper.amnd
+
+struct MemVector(memcell, pos, capacity, length)
+# [capacity, length, ..array]
+
+function MemVector::new(IMemoryMapper memory_mapper, Memory *memory, capacity, MemVector *out, *error) {
+    needed_space = capacity + 2
+    exec_ptr memory_mapper.allocate(memory, needed_space, pos, error)
+    if ! error {
+        new out = MemVector(memory.memcell, pos, capacity, 0)
+    }
+}
+
+function MemVector::append(MemVector *this, number, *error) {
+    relative_pos = this.length + 2
+    if relative_pos >= this.capacity {
+        error = true
+    } else {
+        error = false
+        abs_pos = this.pos + relative_pos
+        write number this.memcell abs_pos
+        this.length += 1
+    }
+}
+
+function MemVector::print(MemVector this) {
+    last_pos = this.pos + this.length + 1
+    i = this.pos + 2
+    while i <= last_pos {
+        read value this.memcell i
+        print value
+        i++
+    }
+}
+
+
+# Example:
+new mem1 = Memory(cell1, 64)
+exec MemVector::new(StupidMapper, mem1, 20, vec1, error)
+if error {
+    print "Error new"
+    printflush message2
+}
+exec MemVector::new(StupidMapper, mem1, 30, vec2, error)
+if error {
+    print "Error new 2"
+    printflush message2
+}
+
+exec MemVector::append(vec1, 1, error)
+if error {
+    print "Error append"
+    printflush message2
+}
+exec MemVector::append(vec2, 2, error)
+exec MemVector::append(vec1, 4, error)
+exec MemVector::append(vec2, 9, error)
+exec MemVector::append(vec1, 4, error)
+exec MemVector::append(vec2, 3, error)
+exec MemVector::print(vec1)
+print "\n"
+exec MemVector::print(vec2)
+print "\n\n"
+print vec1.pos
+print "\n"
+print vec1.capacity
+print "\n"
+print vec1.length
+print "\n\n"
+print vec2.pos
+print "\n"
+print vec2.capacity
+print "\n"
+print vec2.length
+printflush message1

@@ -1,0 +1,73 @@
+import ./memory.amnd
+import ./memory_mapper.amnd
+
+# IDEA: Pointer Mapper
+# if i return a pointer instead of the real position i am able to defragment
+# the memory
+
+
+# Heap Mapper Compressed
+# Divides the memory into a heap and a stack. The stack is used to save pointers
+# to allocated blocks, saves the length of the block and if it is freed.
+# The metadata for each allocated block is encoded into one number to save space.
+# The heap is used as memory that can be allocated.
+#
+# How the memory is used:
+# [heap | stack]
+# [..., | [block_ptr, size, freed], heap_size]
+#
+# Compression:
+# block_ptr maximum is <512 := 9 bit
+# size maximum is <512 := 9bit
+# freed 1 bit
+# comprimated 19 bit
+# decode:
+# read metadata cell 63
+# block_ptr = (metadata & 0b1111111110000000000) >> 10
+# size = (metadata & 0b1111111110) >> 1
+# freed = metadata & 0b1
+#
+# heap_size is 0 if uninitialized
+# metadata is 0 if not used, because size needs to be >1
+#
+# *memory: memory that should be used. links to the memory and contains metadata.
+# size: the size that should be allocated.
+# *pos: returns the position in the memory that is reserved for you.
+# *error: true if an error occures.
+function StupidMapper::allocate(Memory *memory, size, *pos, *error) {
+    # find next free block that is big enough
+    i = memory.size - 1
+    read heap_size memory.memcell i
+    # [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    # heap_size = 5
+    # [0, 1, 2, 3, 4,| 5, 6, 7, 8, 9, 10]
+    while i >= heap_size {
+        read metadata memory.memcell i
+        if metadata == 0 {
+            # can be used
+        } else {
+            freed = metadata & 0b1
+            if freed {
+                # check if size is enough
+                block_size = (metadata & 0b1111111110) >> 1
+                if block_size > size {
+                    # return position
+                    # change size and freed in metadata
+                    # insert new metadata for remaining space
+                    # this needs to be next the the current metadata
+                    # so all next metadata needs to be moved
+                    # pos = (metadata & 0b1111111110000000000) >> 10
+                } else {
+                    # check if next is also freed
+                }
+            }
+        }
+        i--
+    }
+
+    write next_pos memory.memcell pos_pos
+}
+function StupidMapper::free(ptr, *error) {
+    error = true
+}
+new StupidMapper = IMemoryMapper(StupidMapper::allocate, StupidMapper::free)
