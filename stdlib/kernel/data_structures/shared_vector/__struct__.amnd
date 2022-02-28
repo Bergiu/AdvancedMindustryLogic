@@ -1,0 +1,13 @@
+# SharedMemVector
+# A vector is a list with fixed size.
+# All elements can be initialized with 0.
+# You can access any element within a vector but not delete or add elements.
+# Saves all metadata in the memory cell.
+#
+# Differences to MemVector:
+# - Saves all metadata in the memory cell
+#
+# Memory Cell:
+# [size, ..array]
+
+struct SharedMemVector(memcell, pos)

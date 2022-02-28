@@ -1,0 +1,24 @@
+import ./__struct__.amnd
+import ../../memory/memory.amnd
+
+# Load:
+# Loads a shared memory vector from the given position in the memory.
+# Can be used for multiprocessing to read the shared memory vector from another
+# processor.
+#
+# Input:
+#   memory: the memory where the vector is saved
+#   pos: the position in the memory where the vector is saved
+# Out:
+#   *out: the shared memory vector that is loaded
+#   *error: true if an error occured
+
+function SharedMemVector::load(Memory SharedMemVector::load::memory, SharedMemVector::load::pos, SharedMemVector *SharedMemVector::load::out, *SharedMemVector::load::error) {
+    new SharedMemVector::load::out = SharedMemVector(SharedMemVector::load::memory.memcell, SharedMemVector::load::pos)
+    read SharedMemVector::load::size SharedMemVector::load::memory.memcell SharedMemVector::load::pos
+    SharedMemVector::load::error = false
+    if SharedMemVector::load::size <= 0 or SharedMemVector::load::size + SharedMemVector::load::pos > SharedMemVector::load::memory.size {
+        SharedMemVector::load::error = true
+    }
+}
+

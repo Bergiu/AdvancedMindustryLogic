@@ -1,0 +1,39 @@
+import ./__struct__.amnd
+import ../../memory/memory.amnd
+import ../../memory/memory_mapper.amnd
+
+# New:
+# Creates a new shared memory vector.
+# Allocates enough space for the vector and metadata.
+# Saves the size of the vector in the first cell of the allocated space.
+#
+# Input:
+#   memory_mapper: the implementation of the memory mapper that is used for this memory cell
+#   memory: the memory where the vector should be saved
+#   size: the size of the vector
+#   init: if true, all cells will be initialized with 0
+# Out:
+#  *out: the shared memory vector that is created
+#  *error: true if an error occured
+
+function SharedMemVector::new(IMemoryMapper SharedMemVector::new::memory_mapper, Memory SharedMemVector::new::memory, SharedMemVector::new::size, SharedMemVector::new::init, SharedMemVector *SharedMemVector::new::out, *SharedMemVector::new::error) {
+    # increase size by 1 for metadata
+    SharedMemVector::new::needed_space = SharedMemVector::new::size + 1
+    # allocate space
+    exec_ptr SharedMemVector::new::memory_mapper.allocate(SharedMemVector::new::memory, SharedMemVector::new::needed_space, SharedMemVector::new::pos, SharedMemVector::new::error)
+    if ! SharedMemVector::new::error {
+        # create mem vector
+        new SharedMemVector::new::out = SharedMemVector(SharedMemVector::new::memory.memcell, SharedMemVector::new::pos)
+        # write metadata
+        write SharedMemVector::new::size SharedMemVector::new::memory.memcell SharedMemVector::new::pos
+        # set all to 0
+        if SharedMemVector::new::init {
+            SharedMemVector::new::pos++
+            SharedMemVector::new::max_pos = SharedMemVector::new::pos + SharedMemVector::new::size
+            while SharedMemVector::new::pos < SharedMemVector::new::max_pos {
+                write 0 SharedMemVector::new::memory.memcell SharedMemVector::new::pos
+                SharedMemVector::new::pos++
+            }
+        }
+    }
+}

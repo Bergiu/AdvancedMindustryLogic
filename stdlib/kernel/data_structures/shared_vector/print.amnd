@@ -1,0 +1,26 @@
+import ./__struct__.amnd
+
+# Print:
+# Prints the content of the vector in the format "(x, y, z,...)".
+# Make no printflush.
+#
+# Input:
+#   this: the shared memory vector that should be printed.
+
+function SharedMemVector::print(SharedMemVector SharedMemVector::print::this) {
+    # start after metadata
+    read SharedMemVector::print::size SharedMemVector::print::this.memcell SharedMemVector::print::this.pos
+    SharedMemVector::print::i = 1
+    print "("
+    SharedMemVector::print::max_pos = SharedMemVector::print::size + 1
+    while SharedMemVector::print::i < SharedMemVector::print::max_pos {
+        read SharedMemVector::print::value SharedMemVector::print::this.memcell SharedMemVector::print::i
+        print SharedMemVector::print::value
+        SharedMemVector::print::i++
+        if SharedMemVector::print::i < SharedMemVector::print::max_pos {
+            print ", "
+        }
+    }
+    print ")"
+}
+

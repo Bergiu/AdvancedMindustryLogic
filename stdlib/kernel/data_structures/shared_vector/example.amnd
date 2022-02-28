@@ -1,0 +1,38 @@
+import ../../memory/memory.amnd
+import ../../memory/memory_mapper.amnd
+import ../../memory/stupid_mapper.amnd
+import ./__struct__.amnd
+import ./get.amnd
+import ./load.amnd
+import ./new.amnd
+import ./print.amnd
+import ./set.amnd
+
+# Example
+new memory = Memory(cell1, 64)
+exec Memory::reset(memory)
+exec SharedMemVector::new(StupidMapper, memory, 3, true, vec1, error)
+if error {
+    print "Error initializing vector."
+    printflush message1
+    end
+}
+exec SharedMemVector::set(vec1, 2, 10, error)
+if error {
+    print "Error setting element."
+    printflush message1
+    end
+}
+exec SharedMemVector::print(vec1)
+printflush message1
+
+# Comment the other code and uncomment this to see how multiprocessing works.
+# new memory = Memory(cell1, 64)
+# exec SharedMemVector::load(memory, 0, vec1, error)
+# if error {
+#     print "Error loading vector."
+#     printflush message1
+#     end
+# }
+# exec SharedMemVector::print(vec1)
+# printflush message1

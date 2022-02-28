@@ -1,0 +1,24 @@
+import ./__struct__.amnd
+
+# Set:
+# Sets the value of the given index to the number.
+#
+# Input:
+#   this: the shared memory vector where the number should be set
+#   index: the index of the number
+#   number: the number
+# Out:
+#   *error: true if an error occured
+
+function SharedMemVector::set(SharedMemVector SharedMemVector::set::this, SharedMemVector::set::index, SharedMemVector::set::number, *SharedMemVector::set::error) {
+    read SharedMemVector::set::size SharedMemVector::set::this.memcell SharedMemVector::set::this.pos
+    if SharedMemVector::set::index >= SharedMemVector::set::size or SharedMemVector::set::index < 0 {
+        # index not in range
+        SharedMemVector::set::error = true
+    } else {
+        SharedMemVector::set::error = false
+        SharedMemVector::set::abs_pos = SharedMemVector::set::this.pos + SharedMemVector::set::index + 1
+        write SharedMemVector::set::number SharedMemVector::set::this.memcell SharedMemVector::set::abs_pos
+    }
+}
+

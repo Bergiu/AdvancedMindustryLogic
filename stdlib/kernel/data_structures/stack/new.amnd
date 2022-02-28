@@ -1,0 +1,23 @@
+import ./__struct__.amnd
+import ../../memory/memory.amnd
+import ../../memory/memory_mapper.amnd
+
+# New:
+# Creates a new stack on the memory.
+# Allocates the required space and returns an error if not enough space is avaliable.
+#
+# Input:
+#   memory_mapper: the memory_mapper that should be used to allocate space
+#   memory: the memory that should be used
+#   capacity: the maximum capacity that is available for the stack
+# Out:
+#   *out: the new created mem stack
+#   *error: true if an error occured
+
+function MemStack::new(IMemoryMapper MemStack::new::memory_mapper, Memory MemStack::new::memory, MemStack::new::capacity, MemStack *MemStack::new::out, *MemStack::new::error) {
+    MemStack::new::needed_space = MemStack::new::capacity + 2
+    exec_ptr MemStack::new::memory_mapper.allocate(MemStack::new::memory, MemStack::new::needed_space, MemStack::new::pos, MemStack::new::error)
+    if ! MemStack::new::error {
+        new MemStack::new::out = MemStack(MemStack::new::memory.memcell, MemStack::new::pos, MemStack::new::capacity, 0)
+    }
+}

@@ -1,0 +1,37 @@
+import ../../memory/memory.amnd
+import ../../memory/memory_mapper.amnd
+import ../../memory/stupid_mapper.amnd
+import ./__struct__.amnd
+import ./new.amnd
+import ./append.amnd
+import ./print.amnd
+
+# Example:
+new mem1 = Memory(cell1, 64)
+exec Memory::reset(mem1)
+
+exec MemStack::new(StupidMapper, mem1, 20, vec1, error)
+if error {
+    print "Error new"
+    printflush message2
+}
+exec MemStack::new(StupidMapper, mem1, 30, vec2, error)
+if error {
+    print "Error new 2"
+    printflush message2
+}
+
+exec MemStack::append(vec1, 1, error)
+if error {
+    print "Error append"
+    printflush message2
+}
+exec MemStack::append(vec2, 2, error)
+exec MemStack::append(vec1, 4, error)
+exec MemStack::append(vec2, 9, error)
+exec MemStack::append(vec1, 4, error)
+exec MemStack::append(vec2, 3, error)
+exec MemStack::print(vec1)
+print "\n"
+exec MemStack::print(vec2)
+printflush message1

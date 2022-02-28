@@ -1,0 +1,10 @@
+struct MemStack(memcell, pos, capacity, length)
+# [capacity, length, ..array]
+
+# Stack
+# A stack has a maximum size (capacity) but also a length.
+# If you add new items to it the length increases. If you add more
+# than the capacity it gives an error.
+# You can only add new items on the top and remove one from top.
+# Metadata is saved in the processor, so it can't be used for
+# multiprocessing.

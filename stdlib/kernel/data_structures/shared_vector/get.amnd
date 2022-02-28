@@ -1,0 +1,24 @@
+import ./__struct__.amnd
+
+# Get:
+# Get the value of the vector at the given index.
+#
+# Input:
+#   this: The shared memory vector
+# Output:
+#   *number: The value
+#   *error: True if an error occured
+
+function SharedMemVector::get(SharedMemVector SharedMemVector::get::this, SharedMemVector::get::index, *SharedMemVector::get::number, *SharedMemVector::get::error) {
+    # between 1 and end
+    write SharedMemVector::get::size SharedMemVector::get::this.memcell SharedMemVector::get::this.pos
+    if SharedMemVector::get::index >= SharedMemVector::get::size or SharedMemVector::get::index < 0 {
+        # index not in range
+        SharedMemVector::get::error = true
+    } else {
+        SharedMemVector::get::error = false
+        SharedMemVector::get::abs_pos = SharedMemVector::get::this.pos + SharedMemVector::get::index + 1
+        read SharedMemVector::get::number SharedMemVector::get::this.memcell SharedMemVector::get::abs_pos
+    }
+}
+

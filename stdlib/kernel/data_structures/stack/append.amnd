@@ -1,0 +1,21 @@
+import ./__struct__.amnd
+
+# Append:
+# Appends a value to the stack. Returns an error if not enough space is available.
+#
+# Input:
+#   *this: the memory stack that should be used
+#   number: the number that should be appended
+#   *error: true if an error occured
+
+function MemStack::append(MemStack *MemStack::append::this, MemStack::append::number, *MemStack::append::error) {
+    MemStack::append::relative_pos = MemStack::append::this.length + 2
+    if MemStack::append::relative_pos >= MemStack::append::this.capacity {
+        MemStack::append::error = true
+    } else {
+        MemStack::append::error = false
+        MemStack::append::abs_pos = MemStack::append::this.pos + MemStack::append::relative_pos
+        write MemStack::append::number MemStack::append::this.memcell MemStack::append::abs_pos
+        MemStack::append::this.length += 1
+    }
+}

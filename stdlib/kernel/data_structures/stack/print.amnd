@@ -1,0 +1,18 @@
+import ./__struct__.amnd
+
+# Print:
+# Prints the content of the stack. Only shows the numbers added and not
+# the full capacity.
+#
+# Input:
+#   this: the memory stack that should be printed
+
+function MemStack::print(MemStack MemStack::print::this) {
+    MemStack::print::last_pos = MemStack::print::this.pos + MemStack::print::this.length + 1
+    MemStack::print::i = MemStack::print::this.pos + 2
+    while MemStack::print::i <= MemStack::print::last_pos {
+        read MemStack::print::value MemStack::print::this.memcell MemStack::print::i
+        print MemStack::print::value
+        MemStack::print::i++
+    }
+}
