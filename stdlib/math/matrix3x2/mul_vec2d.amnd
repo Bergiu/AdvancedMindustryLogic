@@ -1,0 +1,15 @@
+import ./__struct__.amnd
+import ../vec2d/__struct__.amnd
+import ../vec3d/__struct__.amnd
+
+#         | x
+#         | y
+# --------|---
+# a11 a12 | x
+# a21 a22 | y
+# a31 a32 | z
+function Matrix3x2::mul_vec2d(Matrix3x2 m1, Vec2D vec, Vec3D *out) {
+    out.x = m1.a11 * vec.x + m1.a12 * vec.y
+    out.y = m1.a21 * vec.x + m1.a22 * vec.y
+    out.z = m1.a31 * vec.x + m1.a32 * vec.y
+}

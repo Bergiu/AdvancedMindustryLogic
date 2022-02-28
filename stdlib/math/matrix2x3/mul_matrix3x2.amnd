@@ -1,0 +1,16 @@
+import ./__struct__.amnd
+import ../matrix2x2/__struct__.amnd
+import ../matrix3x2/__struct__.amnd
+
+#             | a11 a12
+#             | a21 a22
+#             | a31 a32
+# ------------|---------
+# a11 a12 a13 | a11 a12
+# a21 a22 a23 | a21 a22
+function Matrix2x3::mul_matrix3x2(Matrix2x3 m1, Matrix3x2 m2, Matrix2x2 *out) {
+    out.a11 = m1.a11 * m2.a11 + m1.a12 * m2.a21 + m1.a13 * m2.a31
+    out.a12 = m1.a11 * m2.a12 + m1.a12 * m2.a22 + m1.a13 * m2.a32
+    out.a21 = m1.a21 * m2.a11 + m1.a22 * m2.a21 + m1.a23 * m2.a31
+    out.a22 = m1.a21 * m2.a12 + m1.a22 * m2.a22 + m1.a23 * m2.a32
+}

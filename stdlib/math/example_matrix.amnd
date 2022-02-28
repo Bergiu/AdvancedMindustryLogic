@@ -1,0 +1,31 @@
+import ./vec3d/__struct__.amnd
+import ./matrix2x2/__struct__.amnd
+import ./matrix2x2/mul_vec2d.amnd
+import ./matrix2x3/__struct__.amnd
+import ./matrix2x3/mul_vec3d.amnd
+import ./matrix3x2/__struct__.amnd
+import ./matrix3x2/mul_vec2d.amnd
+
+
+function create_rot_matrix(alpha, Matrix2x2 *out) {
+    out.a11 = cos(alpha)
+    out.a12 = -1 * sin(alpha)
+    out.a21 = sin(alpha)
+    out.a22 = cos(alpha)
+}
+
+
+new v = Vec3D(1, 5, 10)
+# transform
+new m1 = Matrix2x3(1, 1, 0, 10, 0, 10)
+exec Matrix2x3::mul_vec3d(m1, v, t1)
+new m2 = Matrix3x2(10, 1, 0, 10, 0, 1)
+exec Matrix3x2::mul_vec2d(m2, t1, t2)
+# rotate
+exec create_rot_matrix(45, m3)
+exec Matrix2x2::mul_vec2d(m3, t2, t3)
+
+print t3.x
+print t3.y
+print t3.z
+printflush message1

@@ -1,0 +1,3 @@
+struct Matrix2x2(a11, a12, a21, a22)
+# | a11 a12 |
+# | a21 a22 |
