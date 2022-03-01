@@ -1,0 +1,32 @@
+import ../../memory/memory.amnd
+import ../../memory/memory_mapper.amnd
+import ../../memory/stupid_mapper.amnd
+import ./new.amnd
+import ./set.amnd
+import ./print.amnd
+
+
+# Example
+new memory = Memory(cell1, 64)
+exec Memory::reset(memory)
+exec MemMatrix::new(StupidMapper, memory, 2, 3, false, m1, error)
+if error {
+    print "Error initializing matrix."
+    printflush message1
+    end
+}
+exec MemMatrix::set(m1, 0, 0, 10, error)
+if error {
+    print "Error setting element."
+    printflush message1
+    end
+}
+exec MemMatrix::set(m1, 1, 1, 2, error)
+
+exec MemMatrix::set(m1, 0, 2, XXX, error)
+XXX++
+# 10 0
+# 0  2
+# 99 0
+exec MemMatrix::print(m1)
+printflush message1

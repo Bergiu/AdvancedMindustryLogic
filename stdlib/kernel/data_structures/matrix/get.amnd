@@ -1,0 +1,19 @@
+import ./__struct__.amnd
+# 00 01 02
+# 10 11 12
+# size_x = 3
+# size_y = 2
+# 0 1 2
+# 3 4 5
+
+
+function MemMatrix::get(MemMatrix this, x, y, *number, *error) {
+    if x >= this.size_x or y >= this.size_y or x < 0 or y < 0 {
+        # index not in range
+        error = true
+    } else {
+        error = false
+        abs_pos = this.pos + x + y * this.size_x
+        read number this.memcell abs_pos
+    }
+}

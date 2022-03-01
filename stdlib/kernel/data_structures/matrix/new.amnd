@@ -1,0 +1,20 @@
+import ./__struct__.amnd
+import ../../memory/memory.amnd
+import ../../memory/memory_mapper.amnd
+
+
+function MemMatrix::new(IMemoryMapper memory_mapper, Memory memory, size_x, size_y, init, MemMatrix *out, *error) {
+    size = size_x * size_y
+    exec_ptr memory_mapper.allocate(memory, size, pos, error)
+    if ! error {
+        new out = MemMatrix(memory.memcell, pos, size_x, size_y)
+        if init {
+            abs_pos = pos
+            max_pos = pos + size
+            while abs_pos < max_pos {
+                write 0 memory.memcell abs_pos
+                abs_pos++
+            }
+        }
+    }
+}

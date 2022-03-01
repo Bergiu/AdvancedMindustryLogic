@@ -1,0 +1,27 @@
+import ./__struct__.amnd
+
+
+function MemMatrix::print(MemMatrix this) {
+    i = 0
+    print "("
+    while i < this.size_y {
+        print "("
+        j = 0
+        i_ = i * this.size_x
+        while j < this.size_x {
+            abs_pos = this.pos + j + i_
+            read number this.memcell abs_pos
+            print number
+            j++
+            if j < this.size_x {
+                print ", "
+            }
+        }
+        i++
+        print ")"
+        if i < this.size_y {
+            print "\n"
+        }
+    }
+    print ")"
+}
