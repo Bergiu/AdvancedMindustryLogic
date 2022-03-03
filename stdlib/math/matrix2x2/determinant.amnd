@@ -1,0 +1,7 @@
+import ./__struct__.amnd
+
+# a11 a12
+# a21 a22
+function Matrix2x2::determinant(Matrix2x2 Matrix2x2::determinant::m1, *Matrix2x2::determinant::det) {
+    Matrix2x2::determinant::det = Matrix2x2::determinant::m1.a11 * Matrix2x2::determinant::m1.a22 - Matrix2x2::determinant::m1.a12 * Matrix2x2::determinant::m1.a21
+}

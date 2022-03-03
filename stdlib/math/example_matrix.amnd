@@ -1,6 +1,7 @@
 import ./vec3d/__struct__.amnd
 import ./matrix2x2/__struct__.amnd
 import ./matrix2x2/mul_vec2d.amnd
+import ./matrix2x2/determinant.amnd
 import ./matrix2x3/__struct__.amnd
 import ./matrix2x3/mul_vec3d.amnd
 import ./matrix3x2/__struct__.amnd
@@ -21,11 +22,13 @@ new m1 = Matrix2x3(1, 1, 0, 10, 0, 10)
 exec Matrix2x3::mul_vec3d(m1, v, t1)
 new m2 = Matrix3x2(10, 1, 0, 10, 0, 1)
 exec Matrix3x2::mul_vec2d(m2, t1, t2)
-# rotate
-exec create_rot_matrix(45, m3)
-exec Matrix2x2::mul_vec2d(m3, t2, t3)
 
-print t3.x
-print t3.y
-print t3.z
+new mm = Matrix2x2(0, 2, 2, 0)
+exec Matrix2x2::determinant(mm, det)
+print det
+print "\n"
+
+print t2.x
+print t2.y
+print t2.z
 printflush message1

@@ -1,0 +1,9 @@
+import ./__struct__.amnd
+import ../vec4d/__struct__.amnd
+
+function Matrix4x4::mul_vec4d(Matrix4x4 m, Vec4D v, Vec4D *out) {
+    out.a1 = v.a1 * m.a11 + v.a2 * m.a12 + v.a3 * m.a13 + v.a4 * m.a14
+    out.a2 = v.a1 * m.a21 + v.a2 * m.a22 + v.a3 * m.a23 + v.a4 * m.a24
+    out.a3 = v.a1 * m.a31 + v.a2 * m.a32 + v.a3 * m.a33 + v.a4 * m.a34
+    out.a4 = v.a1 * m.a41 + v.a2 * m.a42 + v.a3 * m.a43 + v.a4 * m.a44
+}
