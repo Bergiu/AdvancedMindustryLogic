@@ -1,0 +1,155 @@
+import ../../../stdlib/math/vec4d/__struct__.amnd
+import ../../../stdlib/math/matrix4x4/__struct__.amnd
+import ../../../stdlib/math/matrix4x4/mul_matrix4x4.amnd
+import ../../../stdlib/math/matrix4x4/mul_vec4d.amnd
+
+
+struct Pair(a1, a2)
+
+# Cube Points
+new A = Vec4D(-1, -1, -1, 1)
+new B = Vec4D(1, -1, -1, 1)
+new C = Vec4D(1, 1, -1, 1)
+new D = Vec4D(-1, 1, -1, 1)
+new E = Vec4D(-1, -1, 1, 1)
+new F = Vec4D(1, -1, 1, 1)
+new G = Vec4D(1, 1, 1, 1)
+new H = Vec4D(-1, 1, 1, 1)
+
+# Guide
+print "Press button to get next:\n"
+print "1: Isometric (Orthographic)\n"
+print "2: Dimetric (Orthographic)\n"
+print "3: Trimetric (Orthographic)\n"
+print "4: Military (Oblique)\n"
+print "5: Cavalier (Oblique)\n"
+print "6: Top-Down (Oblique)"
+printflush message2
+
+# Creates an orthographic projection matric
+function create_orthographic_projection(Pair angles, Matrix4x4 *out) {
+    cos_x = cos(angles.a1)
+    sin_x = sin(angles.a1)
+    cos_z = cos(angles.a2)
+    sin_z = sin(angles.a2)
+    new out = Matrix4x4(sin_x, 0, sin_z, 0,   cos_x, 1, cos_z, 0,   0, 0, 0, 0,   0, 0, 0, 1)
+}
+
+
+# Move and Scale Operation
+# new move = Matrix4x4(1, 0, 0, center, 0, 1, 0, center, 0, 0, 1, 0, 0, 0, 0, 1)
+# new scale = Matrix4x4(40, 0, 0, 0, 0, 40, 0, 0, 0, 0, 40, 0, 0, 0, 0, 1)
+center = 176 / 2
+new move_and_scale = Matrix4x4(40, 0, 0, center, 0, 40, 0, center, 0, 0, 40, 0, 0, 0, 0, 1)
+
+begin:
+# Orthographic Projections Angles
+if proj == 0 {
+    # Isometric (Orthographic)
+    new angles = Pair(120, -120)
+    proj_name = "1: Isometric (Orthographic)"
+} else {
+    if proj == 1 {
+        # Dimetric (Orthographic)
+        new angles = Pair(105, -105)
+        proj_name = "2: Dimetric (Orthographic)"
+    } else {
+        if proj == 2 {
+            # Trimetric (Orthographic)
+            new angles = Pair(155.1, -98.79)
+            proj_name = "3: Trimetric (Orthographic)"
+        } else {
+            if proj == 3 {
+                # Military (Oblique)
+                new angles = Pair(135, -135)
+                proj_name = "4: Military (Oblique)"
+            } else {
+                if proj == 4 {
+                    # Cavalier (Oblique)
+                    new angles = Pair(135, -90)
+                    proj_name = "5: Cavalier (Oblique)"
+                } else {
+                    # Top-Down (Oblique)
+                    new angles = Pair(180, -90)
+                    proj_name = "6: Top-Down (Oblique)"
+                }
+            }
+        }
+    }
+}
+max_proj = 5
+exec create_orthographic_projection(angles, orthographic_projection)
+exec Matrix4x4::mul_matrix4x4(move_and_scale, orthographic_projection, combined)
+
+middle:
+cosa = cos(alpha)
+sina = sin(alpha)
+alpha += 3
+nsina = -1 * sina
+new rot = Matrix4x4(cosa, 0, nsina, 0,   0, 1, 0, 0,   sina, 0, cosa, 0, 0, 0, 0, 1)
+
+# orthographic projection first, then move and scale
+exec Matrix4x4::mul_matrix4x4(combined, rot, projection_matrix)
+
+
+
+# transform points
+exec Matrix4x4::mul_vec4d(projection_matrix, A, A_)
+exec Matrix4x4::mul_vec4d(projection_matrix, B, B_)
+exec Matrix4x4::mul_vec4d(projection_matrix, C, C_)
+exec Matrix4x4::mul_vec4d(projection_matrix, D, D_)
+exec Matrix4x4::mul_vec4d(projection_matrix, E, E_)
+exec Matrix4x4::mul_vec4d(projection_matrix, F, F_)
+exec Matrix4x4::mul_vec4d(projection_matrix, G, G_)
+exec Matrix4x4::mul_vec4d(projection_matrix, H, H_)
+
+# clear
+draw clear 0 0 0 0 0 0
+
+# Cube Lines
+# back
+draw color 164 164 164 30 0 0
+draw triangle A_.a1 A_.a2 B_.a1 B_.a2 C_.a1 C_.a2
+draw triangle A_.a1 A_.a2 D_.a1 D_.a2 C_.a1 C_.a2
+# site left
+draw color 192 192 192 30 0 0
+draw triangle A_.a1 A_.a2 E_.a1 E_.a2 H_.a1 H_.a2
+draw triangle A_.a1 A_.a2 D_.a1 D_.a2 H_.a1 H_.a2
+# bottom
+draw color 128 128 128 30 0 0
+draw triangle A_.a1 A_.a2 B_.a1 B_.a2 E_.a1 E_.a2
+draw triangle B_.a1 B_.a2 E_.a1 E_.a2 F_.a1 F_.a2
+# front
+draw color 164 164 164 64 0 0
+draw triangle E_.a1 E_.a2 F_.a1 F_.a2 G_.a1 G_.a2
+draw triangle E_.a1 E_.a2 H_.a1 H_.a2 G_.a1 G_.a2
+# site right
+draw color 192 192 192 64 0 0
+draw triangle B_.a1 B_.a2 C_.a1 C_.a2 F_.a1 F_.a2
+draw triangle F_.a1 F_.a2 C_.a1 C_.a2 G_.a1 G_.a2
+# top
+draw color 255 255 255 64 0 0
+draw triangle C_.a1 C_.a2 D_.a1 D_.a2 G_.a1 G_.a2
+draw triangle D_.a1 D_.a2 G_.a1 G_.a2 H_.a1 H_.a2
+
+drawflush display1
+print proj_name
+printflush message1
+
+# get flank of switch
+sensor switch_enabled switch1 @enabled
+if switch_enabled != last {
+    if switch_enabled {
+        control enabled switch1 0 0 0 0
+        proj++
+        last = switch_enabled
+        if max_proj < proj {
+            proj = 0
+        }
+        jump begin always 0 0
+    } else {
+        last = switch_enabled
+    }
+}
+
+jump middle always 0 0
