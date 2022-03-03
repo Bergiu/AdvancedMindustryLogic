@@ -1,0 +1,99 @@
+import ../../../stdlib/math/vec2d/__struct__.amnd
+import ../../../stdlib/math/matrix3x3/__struct__.amnd
+import ../../../stdlib/math/matrix3x3/mul_matrix3x3.amnd
+import ../../../stdlib/math/matrix3x3/mul_matrix3x2.amnd
+
+function read_triangle(mem, pos, Matrix3x3 *m) {
+    read x1_pos mem pos
+    x1_pos = x1_pos * 3 + 1
+    print "x1 pos: "
+    print x1_pos
+    print ","
+    print pos
+    read m.a11 mem x1_pos
+    x1_pos++
+    read m.a21 mem x1_pos
+    x1_pos++
+    read m.a31 mem x1_pos
+    # X2
+    pos++
+    read x2_pos mem pos
+    x2_pos = x2_pos * 3 + 1
+    print "\nx2 pos: "
+    print x2_pos
+    print ","
+    print pos
+    read m.a12 mem x2_pos
+    x2_pos++
+    read m.a22 mem x2_pos
+    x2_pos++
+    read m.a32 mem x2_pos
+    # X3
+    pos++
+    read x3_pos mem pos
+    x3_pos = x3_pos * 3 + 1
+    print "\nx3 pos: "
+    print x3_pos
+    print ","
+    print pos
+    print "\n"
+    read m.a13 mem x3_pos
+    x3_pos++
+    read m.a23 mem x3_pos
+    x3_pos++
+    read m.a33 mem x3_pos
+}
+
+function print_triangle(display, Matrix3x3 m) {
+    # 1 - 2
+    x1 = m.a11 / m.a21
+    y1 = m.a31 #/ m.a21
+    x2 = m.a12 / m.a22
+    y2 = m.a32 #/ m.a22
+    x3 = m.a13 / m.a23
+    y3 = m.a33 #/ m.a23
+    print x1
+    print ","
+    print y1
+    print "\n"
+    print x2
+    print ","
+    print y2
+    print "\n"
+    print x3
+    print ","
+    print y3
+    print "\n"
+    draw line x1 y1 x2 y2 0 0
+    # 2 - 3
+    draw line x2 y2 x3 y3 0 0
+    # 3 - 1
+    draw line x3 y3 x1 x1 0 0
+    drawflush display
+}
+
+mem = cell1
+display = display1
+read amount_points mem 0
+tri_start = amount_points * 3 + 1
+read amount_triangles mem tri_start
+tri_end = tri_start + amount_triangles * 3
+i = tri_start + 1
+print "amount_points: "
+print amount_points
+print "\ntri_start: "
+print tri_start
+print "\ntri_end: "
+print tri_end
+print "\namount_triangles: "
+print amount_triangles
+print "\n"
+draw clear 0 0 0 0 0 0
+new scale = Matrix3x3(20, 0, 0, 0, 1, 0, 0, 0, 20)
+while i < tri_end {
+    exec read_triangle(mem, i, m)
+    exec Matrix3x3::mul_matrix3x3(scale, m, reduced)
+    printflush message1
+    exec print_triangle(display, reduced)
+    i += 3
+}
