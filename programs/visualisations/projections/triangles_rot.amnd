@@ -1,0 +1,180 @@
+import ../../../stdlib/math/vec4d/__struct__.amnd
+import ../../../stdlib/math/matrix4x4/__struct__.amnd
+import ../../../stdlib/math/matrix4x4/mul_matrix4x4.amnd
+import ../../../stdlib/math/matrix4x4/mul_vec4d.amnd
+import ../../../stdlib/math/matrix3x3/__struct__.amnd
+
+function read_triangle(mem, pos, Vec4D *x1, Vec4D *x2, Vec4D *x3, Vec4D *color) {
+    new x1 = Vec4D(0, 0, 0, 1)
+    new x2 = Vec4D(0, 0, 0, 1)
+    new x3 = Vec4D(0, 0, 0, 1)
+    new color = Vec4D(0, 0, 0, 0)
+    read x1_pos mem pos
+    x1_pos = x1_pos * 3 + 1
+    read x1.a1 mem x1_pos
+    x1_pos++
+    read x1.a2 mem x1_pos
+    x1_pos++
+    read x1.a3 mem x1_pos
+    # X2
+    pos++
+    read x2_pos mem pos
+    x2_pos = x2_pos * 3 + 1
+    read x2.a1 mem x2_pos
+    x2_pos++
+    read x2.a2 mem x2_pos
+    x2_pos++
+    read x2.a3 mem x2_pos
+    # X3
+    pos++
+    read x3_pos mem pos
+    x3_pos = x3_pos * 3 + 1
+    read x3.a1 mem x3_pos
+    x3_pos++
+    read x3.a2 mem x3_pos
+    x3_pos++
+    read x3.a3 mem x3_pos
+    # Color
+    pos++
+    read color_pos mem pos
+    color_pos = color_start + color_pos * 4 + 1
+    read color.a1 mem color_pos
+    color_pos++
+    read color.a2 mem color_pos
+    color_pos++
+    read color.a3 mem color_pos
+    color_pos++
+    read color.a4 mem color_pos
+}
+
+
+struct Pair(a1, a2)
+
+# Guide
+print "Press button to get next:\n"
+print "1: Isometric (Orthographic)\n"
+print "2: Dimetric (Orthographic)\n"
+print "3: Trimetric (Orthographic)\n"
+print "4: Military (Oblique)\n"
+print "5: Cavalier (Oblique)\n"
+print "6: Top-Down (Oblique)"
+printflush message2
+
+# Creates an orthographic projection matric
+function create_orthographic_projection(Pair angles, Matrix4x4 *out) {
+    cos_x = cos(angles.a1)
+    sin_x = sin(angles.a1)
+    cos_z = cos(angles.a2)
+    sin_z = sin(angles.a2)
+    new out = Matrix4x4(sin_x, 0, sin_z, 0,   cos_x, 1, cos_z, 0,   0, 0, 0, 0,   0, 0, 0, 1)
+}
+
+
+# Move and Scale Operation
+# new move = Matrix4x4(1, 0, 0, center, 0, 1, 0, center, 0, 0, 1, 0, 0, 0, 0, 1)
+# new scale = Matrix4x4(40, 0, 0, 0, 0, 40, 0, 0, 0, 0, 40, 0, 0, 0, 0, 1)
+center = 176 / 2
+new move_and_scale = Matrix4x4(40, 0, 0, center, 0, 40, 0, center, 0, 0, 40, 0, 0, 0, 0, 1)
+
+begin:
+# Orthographic Projections Angles
+if proj == 0 {
+    # Isometric (Orthographic)
+    new angles = Pair(120, -120)
+    proj_name = "1: Isometric (Orthographic)"
+} else {
+    if proj == 1 {
+        # Dimetric (Orthographic)
+        new angles = Pair(105, -105)
+        proj_name = "2: Dimetric (Orthographic)"
+    } else {
+        if proj == 2 {
+            # Trimetric (Orthographic)
+            new angles = Pair(155.1, -98.79)
+            proj_name = "3: Trimetric (Orthographic)"
+        } else {
+            if proj == 3 {
+                # Military (Oblique)
+                new angles = Pair(135, -135)
+                proj_name = "4: Military (Oblique)"
+            } else {
+                if proj == 4 {
+                    # Cavalier (Oblique)
+                    new angles = Pair(135, -90)
+                    proj_name = "5: Cavalier (Oblique)"
+                } else {
+                    # Top-Down (Oblique)
+                    new angles = Pair(180, -90)
+                    proj_name = "6: Top-Down (Oblique)"
+                }
+            }
+        }
+    }
+}
+max_proj = 5
+exec create_orthographic_projection(angles, orthographic_projection)
+exec Matrix4x4::mul_matrix4x4(move_and_scale, orthographic_projection, combined)
+
+middle:
+cosa = cos(alpha)
+sina = sin(alpha)
+alpha += 3
+nsina = -1 * sina
+new rot = Matrix4x4(cosa, 0, nsina, 0,   0, 1, 0, 0,   sina, 0, cosa, 0, 0, 0, 0, 1)
+
+# orthographic projection first, then move and scale
+exec Matrix4x4::mul_matrix4x4(combined, rot, projection_matrix)
+
+
+
+
+mem = cell1
+display = display1
+read amount_points mem 0
+color_start = amount_points * 3 + 1
+read amount_colors mem color_start
+color_end = color_start + amount_colors * 4
+tri_start = color_end + 1
+read amount_triangles mem tri_start
+tri_end = tri_start + amount_triangles * 3
+i = tri_start + 1
+print "Amount Points: "
+print amount_points
+print "\nAmount Triangles: "
+print amount_triangles
+print "\nAmount Colors: "
+print amount_colors
+print "\n"
+draw clear 0 0 0 0 0 0
+light = 255
+while i < tri_end {
+    exec read_triangle(mem, i, v1, v2, v3, color)
+    exec Matrix4x4::mul_vec4d(projection_matrix, v1, v1_)
+    exec Matrix4x4::mul_vec4d(projection_matrix, v2, v2_)
+    exec Matrix4x4::mul_vec4d(projection_matrix, v3, v3_)
+    draw color color.a1 color.a2 color.a3 color.a4 0 0
+    draw triangle v1_.a1 v1_.a2 v2_.a1 v2_.a2 v3_.a1 v3_.a2
+    i += 4
+}
+    drawflush display1
+
+print proj_name
+printflush message1
+
+# get flank of switch
+sensor switch_enabled switch1 @enabled
+if switch_enabled != last {
+    if switch_enabled {
+        control enabled switch1 0 0 0 0
+        proj++
+        last = switch_enabled
+        if max_proj < proj {
+            proj = 0
+        }
+        jump begin always 0 0
+    } else {
+        last = switch_enabled
+    }
+}
+
+jump middle always 0 0
