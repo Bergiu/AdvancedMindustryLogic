@@ -1,9 +1,15 @@
-sensor x arc1 @shootX
-sensor y arc1 @shootY
-write x cell1 0
-write y cell1 1
-
-
-176 / 6 = 29.33
-176 - 24*2 = 128
-128 / 4 = 32
+function get_mouse_pos(arc, display, *dposx, *dposy, *error) {
+    sensor x arc @shootX
+    sensor y arc @shootY
+    sensor dx display @x
+    sensor dy display @y
+    posx = x - dx + 2.75
+    posy = y - dy + 2.75
+    dposx = posx * 32
+    dposy = posy * 32
+    if dposx < 0 or dposx > 176 or dposy < 0 or dposy > 176 {
+        error = true
+    } else {
+        error = false
+    }
+}
