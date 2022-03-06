@@ -8,6 +8,12 @@ if display == null or arc == null {
     end
 }
 
+
+# TODO
+# - background color
+# - line with (stroke)
+# - extra display with toolbar
+
 print "How to:\n"
 print "- Join the arc with ctrl+left-click.\n"
 print "- Select color in the left toolbar.\n"
@@ -88,96 +94,95 @@ function activate_color(display, color_id) {
     if color_id == -2 {
         # black
         draw color 0 0 0 255 0 0
-    } else {
-        if color_id == -1 {
-            # gray
-            draw color 128 128 128 255 0 0
-        } else {
-            if color_id == 0 {
-                # white
-                draw color 255 255 255 255 0 0
-            } else {
-                if color_id == 1 {
-                    # red
-                    draw color 255 0 0 255 0 0
-                } else {
-                    if color_id == 2 {
-                        # green
-                        draw color 0 255 0 255 0 0
-                    } else {
-                        if color_id == 3 {
-                            # blue
-                            draw color 0 0 255 255 0 0
-                        } else {
-                            if color_id == 4 {
-                                # yellow
-                                draw color 255 255 0 255 0 0
-                            } else {
-                                if color_id == 5 {
-                                    # pink
-                                    draw color 255 0 255 255 0 0
-                                } else {
-                                    if color_id == 6 {
-                                        # cyan
-                                        draw color 0 255 255 255 0 0
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        jump activate_color_theend always 0 0
     }
+    if color_id == -1 {
+        # gray
+        draw color 128 128 128 255 0 0
+        jump activate_color_theend always 0 0
+    }
+    if color_id == 0 {
+        # white
+        draw color 255 255 255 255 0 0
+        jump activate_color_theend always 0 0
+    }
+    if color_id == 1 {
+        # red
+        draw color 255 0 0 255 0 0
+        jump activate_color_theend always 0 0
+    }
+    if color_id == 2 {
+        # green
+        draw color 0 255 0 255 0 0
+        jump activate_color_theend always 0 0
+    }
+    if color_id == 3 {
+        # blue
+        draw color 0 0 255 255 0 0
+        jump activate_color_theend always 0 0
+    }
+    if color_id == 4 {
+        # yellow
+        draw color 255 255 0 255 0 0
+        jump activate_color_theend always 0 0
+    }
+    if color_id == 5 {
+        # pink
+        draw color 255 0 255 255 0 0
+        jump activate_color_theend always 0 0
+    }
+    if color_id == 6 {
+        # cyan
+        draw color 0 255 255 255 0 0
+        jump activate_color_theend always 0 0
+    }
+    activate_color_theend:
+    noop
 }
 
 function select_color(display, posy) {
     # XXX: This can be optimized with direct counter jumps
     if posy > black_pos {
-        # black
         color = -2
-    } else {
-        if posy > gray_pos {
-            # gray
-            color = -1
-        } else {
-            if posy > white_pos {
-                # white
-                color = 0
-            } else {
-                if posy > red_pos {
-                    # red
-                    color = 1
-                } else {
-                    if posy > green_pos {
-                        # green
-                        color = 2
-                    } else {
-                        if posy > blue_pos {
-                            # blue
-                            color = 3
-                        } else {
-                            if posy > yellow_pos {
-                                color = 4
-                            } else {
-                                if posy > pink_pos {
-                                    color = 5
-                                } else {
-                                    if posy > cyan_pos {
-                                        color = 6
-                                    } else {
-                                        if posy > brown_pos {
-                                            color = 7
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        jump select_color_theend always 0 0
     }
+    if posy > gray_pos {
+        color = -1
+        jump select_color_theend always 0 0
+    }
+    if posy > white_pos {
+        color = 0
+        jump select_color_theend always 0 0
+    }
+    if posy > red_pos {
+        color = 1
+        jump select_color_theend always 0 0
+    }
+    if posy > green_pos {
+        color = 2
+        jump select_color_theend always 0 0
+    }
+    if posy > blue_pos {
+        color = 3
+        jump select_color_theend always 0 0
+    }
+    if posy > yellow_pos {
+        color = 4
+        jump select_color_theend always 0 0
+    }
+    if posy > pink_pos {
+        color = 5
+        jump select_color_theend always 0 0
+    }
+    if posy > cyan_pos {
+        color = 6
+        jump select_color_theend always 0 0
+    }
+    if posy > brown_pos {
+        color = 7
+        jump select_color_theend always 0 0
+    }
+    select_color_theend:
     exec activate_color(display, color)
 }
 
@@ -187,27 +192,34 @@ sensor shoot arc @shooting
 while not shoot {
     sensor shoot arc @shooting
 }
+# down
 last_dposx = null
 last_dposy = null
-# down
+# drawing is true if you have drawn something
+# needed to prevent changing the color if you cross the toolbar line
+drawing = false
 while shoot {
     exec get_mouse_pos(arc, display, dposx, dposy, error)
     if not error {
-        if dposx < tools_width {
-            # tool bar
-            exec select_color(display, dposy)
-        } else {
+        if dposx > tools_width {
+            drawing = true
             # draw field
             if last_dposx != null {
                 draw line dposx dposy last_dposx last_dposy 0 0
                 drawflush display
             }
-
             last_dposx = dposx
             last_dposy = dposy
         }
     }
     sensor shoot arc @shooting
+}
+exec get_mouse_pos(arc, display, dposx, dposy, error)
+if not error and not drawing {
+    if dposx < tools_width {
+        # tool bar
+        exec select_color(display, dposy)
+    }
 }
 # up
 click_time = @tick
