@@ -1,10 +1,13 @@
-import ./get_pos.amnd
+import ./lib/get_pos.amnd
+
+# MND Paint v1
 
 display = display1
 arc = arc1
 message = message1
+reset_switch = switch1
 
-if display == null or arc == null {
+if display == null or arc == null or reset_switch == null {
     end
 }
 
@@ -186,11 +189,23 @@ function select_color(display, posy) {
     exec activate_color(display, color)
 }
 
+main:
+noop
+
 exec init_mnd_paint(display)
 
 sensor shoot arc @shooting
 while not shoot {
     sensor shoot arc @shooting
+
+    sensor reset reset_switch @enabled
+    jump l_reset notEqual reset true
+        draw clear 0 0 0 0 0 0
+        drawflush display
+        control enabled reset_switch 0 0 0 0
+        jump main always 0 0
+    l_reset:
+
 }
 # down
 last_dposx = null
@@ -222,11 +237,5 @@ if not error and not drawing {
     }
 }
 # up
-click_time = @tick
-if old_click_time != null and click_time - old_click_time < 20 {
-    # double click
-    draw clear 0 0 0 0 0 0
-    drawflush display
-}
-old_click_time = @tick
 
+jump main always 0 0

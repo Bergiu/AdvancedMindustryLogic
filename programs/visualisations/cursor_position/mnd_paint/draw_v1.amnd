@@ -1,0 +1,234 @@
+import ./lib/get_pos.amnd
+
+# MND Paint v1
+
+display = display1
+arc = arc1
+message = message1
+
+if display == null or arc == null {
+    end
+}
+
+
+# TODO
+# - background color
+# - line with (stroke)
+# - extra display with toolbar
+
+print "How to:\n"
+print "- Join the arc with ctrl+left-click.\n"
+print "- Select color in the left toolbar.\n"
+print "  Last box: current color\n"
+print "- Select background color in the top toolbar.\n"
+print "- Draw by holding the mouse down.\n"
+print "- Double-click to delete all."
+printflush message
+
+
+tools_width = 16
+function init_mnd_paint(display) {
+    if color_id == null {
+        color_id = 0
+    }
+    draw color 128 128 128 255 0 0
+    tmp = tools_width + 1
+    draw line tmp 0 tmp 176 0 0
+    # black
+    draw color 0 0 0 255 0 0
+    y = 176 - tools_width
+    black_pos = y
+    draw rect 0 y tools_width tools_width 0 0
+    # gray
+    draw color 128 128 128 255 0 0
+    y -= tools_width
+    gray_pos = y
+    draw rect 0 y tools_width tools_width 0 0
+    # white
+    draw color 255 255 255 255 0 0
+    y -= tools_width
+    white_pos = y
+    draw rect 0 y tools_width tools_width 0 0
+    # red
+    draw color 255 0 0 255 0 0
+    y -= tools_width
+    red_pos = y
+    draw rect 0 y tools_width tools_width 0 0
+    # green
+    draw color 0 255 0 255 0 0
+    y -= tools_width
+    green_pos = y
+    draw rect 0 y tools_width tools_width 0 0
+    # blue
+    draw color 0 0 255 255 0 0
+    y -= tools_width
+    blue_pos = y
+    draw rect 0 y tools_width tools_width 0 0
+    # yellow
+    draw color 255 255 0 255 0 0
+    y -= tools_width
+    yellow_pos = y
+    draw rect 0 y tools_width tools_width 0 0
+    # pink
+    draw color 255 0 255 255 0 0
+    y -= tools_width
+    pink_pos = y
+    draw rect 0 y tools_width tools_width 0 0
+    # cyan
+    draw color 0 255 255 255 0 0
+    y -= tools_width
+    cyan_pos = y
+    draw rect 0 y tools_width tools_width 0 0
+    # brown
+    draw color 155 103 60 255 0 0
+    y -= tools_width
+    brown_pos = y
+    draw rect 0 y tools_width tools_width 0 0
+
+    # normal mode
+    exec activate_color(display, color_id)
+    draw rect 0 0 tools_width tools_width 0 0
+    drawflush display
+}
+
+function activate_color(display, color_id) {
+    # XXX: This can be optimized with direct counter jumps
+    if color_id == -2 {
+        # black
+        draw color 0 0 0 255 0 0
+        jump activate_color_theend always 0 0
+    }
+    if color_id == -1 {
+        # gray
+        draw color 128 128 128 255 0 0
+        jump activate_color_theend always 0 0
+    }
+    if color_id == 0 {
+        # white
+        draw color 255 255 255 255 0 0
+        jump activate_color_theend always 0 0
+    }
+    if color_id == 1 {
+        # red
+        draw color 255 0 0 255 0 0
+        jump activate_color_theend always 0 0
+    }
+    if color_id == 2 {
+        # green
+        draw color 0 255 0 255 0 0
+        jump activate_color_theend always 0 0
+    }
+    if color_id == 3 {
+        # blue
+        draw color 0 0 255 255 0 0
+        jump activate_color_theend always 0 0
+    }
+    if color_id == 4 {
+        # yellow
+        draw color 255 255 0 255 0 0
+        jump activate_color_theend always 0 0
+    }
+    if color_id == 5 {
+        # pink
+        draw color 255 0 255 255 0 0
+        jump activate_color_theend always 0 0
+    }
+    if color_id == 6 {
+        # cyan
+        draw color 0 255 255 255 0 0
+        jump activate_color_theend always 0 0
+    }
+    activate_color_theend:
+    noop
+}
+
+function select_color(display, posy) {
+    # XXX: This can be optimized with direct counter jumps
+    if posy > black_pos {
+        color = -2
+        jump select_color_theend always 0 0
+    }
+    if posy > gray_pos {
+        color = -1
+        jump select_color_theend always 0 0
+    }
+    if posy > white_pos {
+        color = 0
+        jump select_color_theend always 0 0
+    }
+    if posy > red_pos {
+        color = 1
+        jump select_color_theend always 0 0
+    }
+    if posy > green_pos {
+        color = 2
+        jump select_color_theend always 0 0
+    }
+    if posy > blue_pos {
+        color = 3
+        jump select_color_theend always 0 0
+    }
+    if posy > yellow_pos {
+        color = 4
+        jump select_color_theend always 0 0
+    }
+    if posy > pink_pos {
+        color = 5
+        jump select_color_theend always 0 0
+    }
+    if posy > cyan_pos {
+        color = 6
+        jump select_color_theend always 0 0
+    }
+    if posy > brown_pos {
+        color = 7
+        jump select_color_theend always 0 0
+    }
+    select_color_theend:
+    exec activate_color(display, color)
+}
+
+exec init_mnd_paint(display)
+
+sensor shoot arc @shooting
+while not shoot {
+    sensor shoot arc @shooting
+}
+# down
+last_dposx = null
+last_dposy = null
+# drawing is true if you have drawn something
+# needed to prevent changing the color if you cross the toolbar line
+drawing = false
+while shoot {
+    exec get_mouse_pos(arc, display, dposx, dposy, error)
+    if not error {
+        if dposx > tools_width {
+            drawing = true
+            # draw field
+            if last_dposx != null {
+                draw line dposx dposy last_dposx last_dposy 0 0
+                drawflush display
+            }
+            last_dposx = dposx
+            last_dposy = dposy
+        }
+    }
+    sensor shoot arc @shooting
+}
+exec get_mouse_pos(arc, display, dposx, dposy, error)
+if not error and not drawing {
+    if dposx < tools_width {
+        # tool bar
+        exec select_color(display, dposy)
+    }
+}
+# up
+click_time = @tick
+if old_click_time != null and click_time - old_click_time < 20 {
+    # double click
+    draw clear 0 0 0 0 0 0
+    drawflush display
+}
+old_click_time = @tick
+
