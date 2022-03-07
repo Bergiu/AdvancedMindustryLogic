@@ -1,3 +1,4 @@
+# only works for large displays
 function get_mouse_pos(arc, display, *dposx, *dposy, *error) {
     sensor x arc @shootX
     sensor y arc @shootY
