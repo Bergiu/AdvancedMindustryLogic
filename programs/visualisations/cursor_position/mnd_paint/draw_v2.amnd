@@ -1,0 +1,107 @@
+import ./lib/get_pos.amnd
+
+# MND Paint v1
+
+display = display1
+arc = arc1
+mem = cell1
+message = message1
+
+if display == null or arc == null or mem == null {
+    end
+}
+
+# Ideas:
+# - button for reset, toolbar for reset
+
+# BUGS:
+# - if you change the color or stroke this get applied after drawing a line and not before
+
+
+# memory:
+# 1. bg color r
+# 2. bg color g
+# 3. bg color b
+# 4. bg color t
+# 5. flush bg
+# 6. fg color r
+# 7. fg color g
+# 8. fg color b
+# 9. fg color t
+# 10. line width
+mem_pos_bg_color.r = 0
+mem_pos_bg_color.g = 1
+mem_pos_bg_color.b = 2
+mem_pos_bg_color.t = 3
+mem_pos_flush_bg = 4
+mem_pos_fg_color.r = 5
+mem_pos_fg_color.g = 6
+mem_pos_fg_color.b = 7
+mem_pos_fg_color.t = 8
+mem_pos_line_width = 9
+
+
+function init_mnd_paint(mem) {
+    read flush_bg mem mem_pos_flush_bg
+    read fg_color.r mem mem_pos_fg_color.r
+    read fg_color.g mem mem_pos_fg_color.g
+    read fg_color.b mem mem_pos_fg_color.b
+    read fg_color.t mem mem_pos_fg_color.t
+    read line_width mem mem_pos_line_width
+    # BACKGROUND
+    if flush_bg {
+        read bg_color.r mem mem_pos_bg_color.r
+        read bg_color.g mem mem_pos_bg_color.g
+        read bg_color.b mem mem_pos_bg_color.b
+        read bg_color.t mem mem_pos_bg_color.t
+        draw clear bg_color.r bg_color.g bg_color.b 0 0 0
+        write 0 mem mem_pos_flush_bg
+        counter = 0
+    }
+    # FOREGROUND
+    draw color fg_color.r fg_color.g fg_color.b fg_color.t 0 0
+    # LINE WIDTH
+    if line_width <= 0 {
+        line_width = 1
+        write 1 mem mem_pos_line_width
+    }
+    draw stroke line_width 0 0 0 0 0
+    drawflush display
+}
+
+# Static Setup
+setup_start:
+exec init_mnd_paint(mem)
+
+sensor shoot arc @shooting
+while not shoot {
+    sensor shoot arc @shooting
+    exec init_mnd_paint(mem)
+}
+# mouse is now down
+
+
+# position when the mouse was pressed
+# only draw if you started the click within the draw area
+exec get_mouse_pos(arc, display, dposx, dposy, error)
+# reset last draw pos
+last_dposx = dposx + 1
+last_dposy = dposy
+if not error {
+    while shoot {
+        if not error {
+            # draw field
+            counter++
+            draw line dposx dposy last_dposx last_dposy 0 0
+            drawflush display
+            last_dposx = dposx
+            last_dposy = dposy
+        }
+        exec get_mouse_pos(arc, display, dposx, dposy, error)
+        sensor shoot arc @shooting
+    }
+}
+print counter
+printflush message1
+
+jump setup_start always 0 0

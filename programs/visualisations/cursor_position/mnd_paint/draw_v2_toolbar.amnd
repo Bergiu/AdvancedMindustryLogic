@@ -1,0 +1,129 @@
+import ./lib/get_pos.amnd
+import ./lib/color4d.amnd
+import ./lib/color_toolbar.amnd
+import ./lib/stroke_toolbar.amnd
+import ./lib/tools_toolbar.amnd
+
+# MND Paint v1
+
+display = display1
+arc = arc1
+mem = cell1
+message = message1
+reset_switch = switch1
+
+if display == null or arc == null or mem == null or reset_switch == null {
+    end
+}
+
+print "How to:\n"
+print "- Join the arc with ctrl+left-click.\n"
+print "- Select color in the left toolbar.\n"
+print "  Last box: current color\n"
+print "- Select background color in the top toolbar.\n"
+print "- Draw by holding the mouse down.\n"
+print "- Double-click to delete all."
+printflush message
+
+# CONSTANTS
+mem_pos_bg_color.r = 0
+mem_pos_bg_color.g = 1
+mem_pos_bg_color.b = 2
+mem_pos_bg_color.t = 3
+mem_pos_flush_bg = 4
+mem_pos_fg_color.r = 5
+mem_pos_fg_color.g = 6
+mem_pos_fg_color.b = 7
+mem_pos_fg_color.t = 8
+mem_pos_line_width = 9
+mem_pos_changed_config = 10
+mem_pos_changed_line_width = 11
+mem_pos_changed_fg = 12
+mem_pos_changed_bg = 13
+
+# GLOBAL SETTINGS
+tools_width = 16
+
+
+function init_mnd_paint_toolbar(display, mem) {
+    draw stroke 1 0 0 0 0 0
+    draw clear 0 0 0 0 0 0
+    # fg
+    x = 0
+    fg_bar_x_end = x + tools_width
+    exec draw_color_toolbar(mem, x, mem_pos_fg_color)
+    drawflush display
+    # bg
+    x = tools_width + 1
+    bg_bar_x_end = x + tools_width
+    exec draw_color_toolbar(mem, x, mem_pos_bg_color)
+    drawflush display
+    # stroke
+    x = x + tools_width + 1
+    stroke_bar_x_end = x + tools_width
+    exec draw_line_width_toolbar(mem, x, tools_width)
+    drawflush display
+    x = x + tools_width + 1
+    tools_bar_x_end = x + tools_width
+    exec draw_tools_toolbar(mem, x, tools_width)
+    drawflush display
+}
+
+# Static Setup
+setup_start:
+exec init_mnd_paint_toolbar(display, mem)
+
+# MAIN
+program_start:
+
+
+sensor shoot arc @shooting
+while not shoot {
+    sensor shoot arc @shooting
+
+    sensor reset reset_switch @enabled
+    jump l_reset notEqual reset true
+        draw clear 0 0 0 0 0 0
+        drawflush display
+        control enabled reset_switch 0 0 0 0
+        jump setup_start always 0 0
+    l_reset:
+}
+# mouse is now down
+
+# position when the mouse was pressed
+exec get_mouse_pos(arc, display, start_pos_x, start_pos_y, start_pos_error)
+
+while shoot {
+    sensor shoot arc @shooting
+}
+# mouse is now up
+exec get_mouse_pos(arc, display, dposx, dposy, error)
+if not error and not start_pos_error {
+    if dposx < fg_bar_x_end {
+        exec select_color(dposy, mem, mem_pos_fg_color)
+        exec update_selected_color(mem, 0, mem_pos_fg_color)
+        drawflush display
+        jump shoot_loop_theend always 0 0
+    }
+    if dposx < bg_bar_x_end {
+        exec select_color(dposy, mem, mem_pos_bg_color)
+        tmp = 1 + tools_width
+        exec update_selected_color(mem, tmp, mem_pos_bg_color)
+        drawflush display
+        jump shoot_loop_theend always 0 0
+    }
+    if dposx < stroke_bar_x_end {
+        exec select_stroke(dposy, mem, mem_pos_line_width)
+        jump shoot_loop_theend always 0 0
+    }
+    if dposx < tools_bar_x_end {
+        exec select_tool(dposy, mem, mem_pos_flush_bg)
+        jump shoot_loop_theend always 0 0
+    }
+    shoot_loop_theend:
+    noop
+}
+
+# if not, just cycle main
+jump program_start always 0 0

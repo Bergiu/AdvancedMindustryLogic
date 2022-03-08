@@ -1,0 +1,33 @@
+import ../../../../../stdlib/display/font/font_small_minified_14_segment.amnd
+
+# Strokes:
+#  1, 2, 4, 6, 8, 10, 12, 15, 20, 25
+
+function draw_tools_toolbar(draw_tools_toolbar::mem, draw_tools_toolbar::x_start, draw_tools_toolbar::tools_width) {
+    # border
+    draw color 128 128 128 255 0 0
+    draw_tools_toolbar::tmp = draw_tools_toolbar::x_start + draw_tools_toolbar::tools_width + 1
+    draw line draw_tools_toolbar::tmp 0 draw_tools_toolbar::tmp 176 0 0
+    # 1em: 20x10px
+    # 0.5em: 10x5px
+    draw_tools_toolbar::x_one_letter = draw_tools_toolbar::x_start + 5
+    # 1 px
+    draw_tools_toolbar::y = 176 - draw_tools_toolbar::tools_width
+    g::tools_toolbar::flush_bg_pos = draw_tools_toolbar::y
+    draw_tools_toolbar::y_letter = draw_tools_toolbar::y + 3
+    draw color 255 255 255 255 0 0
+    exec write_letter(33, 0.5, draw_tools_toolbar::x_one_letter, draw_tools_toolbar::y_letter)
+    draw color 128 128 128 255 0 0
+    draw line draw_tools_toolbar::x_start draw_tools_toolbar::y draw_tools_toolbar::tmp draw_tools_toolbar::y 0 0
+}
+
+
+function select_tool(select_tool::posy, select_tool::mem, select_tool::mem_pos_flush_bg) {
+    if select_tool::posy > g::tools_toolbar::flush_bg_pos {
+        write 1 select_tool::mem select_tool::mem_pos_flush_bg
+        jump select_tool::select_stroke_theend always 0 0
+    }
+    select_tool::select_stroke_theend:
+    noop
+}
+
