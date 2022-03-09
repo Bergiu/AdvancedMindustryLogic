@@ -9,26 +9,33 @@ import ./lib/tools_toolbar.amnd
 display = display1
 arc = arc1
 mem = cell1
-message = message1
+message_doc1 = message1
+message_doc2 = message2
+debug_msg = message3
 reset_switch = switch1
 
 if display == null or arc == null or mem == null or reset_switch == null {
     print "Not all connected. Rebooting."
-    printflush message2
+    printflush debug_msg
     end
 }
 
 print "Starting MND Paint."
-printflush message2
+printflush debug_msg
 
-print "How to:\n"
+print "How to use:\n"
 print "- Join the arc with ctrl+left-click.\n"
-print "- Select color in the left toolbar.\n"
-print "  Last box: current color\n"
-print "- Select background color in the top toolbar.\n"
-print "- Draw by holding the mouse down.\n"
-print "- Double-click to delete all."
-printflush message
+print "- Draw by holding the mouse down on the right display."
+printflush message_doc1
+
+print "The left display contains the tools:\n"
+print "- Foreground Color (FG)\n"
+print "- Background Color (BG)\n"
+print "- Line Width\n"
+print "- Special Tools\n"
+print "  1. Clear display (apply BG)"
+print "\nThe bottom box always contains the current config.\n"
+printflush message_doc2
 
 # CONSTANTS
 mem_pos_bg_color.r = 0
@@ -83,6 +90,9 @@ function init_mnd_paint_toolbar(display, mem) {
 # Static Setup
 setup_start:
 exec init_mnd_paint_toolbar(display, mem)
+
+print "Starting MND Paint finished."
+printflush debug_msg
 
 # MAIN
 program_start:
