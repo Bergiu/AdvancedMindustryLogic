@@ -1,170 +1,173 @@
 import ./color4d.amnd
 
 
+struct SelectColorToolbar(mem, x_start, tools_width)
+
+
 # Functions:
 # draw_color_toolbar:
 #   draws the color toolbar
 # select_color:
 #   saves the selected color into the memory
 
-function update_selected_color(mem, x_start, Color4D mem_pos_color) {
+function update_selected_color(SelectColorToolbar update_selected_color::config, Color4D update_selected_color::mem_pos_color) {
     # selected color
-    read color.r mem mem_pos_color.r
-    read color.g mem mem_pos_color.g
-    read color.b mem mem_pos_color.b
-    read color.t mem mem_pos_color.t
-    draw color color.r color.g color.b color.t 0 0
-    draw rect x_start 0 tools_width tools_width 0 0
+    read update_selected_color::color.r update_selected_color::config.mem update_selected_color::mem_pos_color.r
+    read update_selected_color::color.g update_selected_color::config.mem update_selected_color::mem_pos_color.g
+    read update_selected_color::color.b update_selected_color::config.mem update_selected_color::mem_pos_color.b
+    read update_selected_color::color.t update_selected_color::config.mem update_selected_color::mem_pos_color.t
+    draw color update_selected_color::color.r update_selected_color::color.g update_selected_color::color.b update_selected_color::color.t 0 0
+    draw rect update_selected_color::config.x_start 0 update_selected_color::config.tools_width update_selected_color::config.tools_width 0 0
 }
 
-function draw_color_toolbar(mem, x_start, Color4D mem_pos_color) {
+function draw_color_toolbar(SelectColorToolbar draw_color_toolbar::config, Color4D draw_color_toolbar::mem_pos_color) {
     # border
     draw color 128 128 128 255 0 0
-    tmp = x_start + tools_width + 1
-    draw line tmp 0 tmp 176 0 0
+    draw_color_toolbar::end_x = draw_color_toolbar::config.x_start + draw_color_toolbar::config.tools_width + 1
+    draw line draw_color_toolbar::end_x 0 draw_color_toolbar::end_x 176 0 0
     # black
     draw color 0 0 0 255 0 0
-    y = 176 - tools_width
-    black_pos = y
-    draw rect x_start y tools_width tools_width 0 0
+    draw_color_toolbar::y = 176 - draw_color_toolbar::config.tools_width
+    g::color_toolbar::black_pos = draw_color_toolbar::y
+    draw rect draw_color_toolbar::config.x_start draw_color_toolbar::y draw_color_toolbar::config.tools_width draw_color_toolbar::config.tools_width 0 0
     # gray
     draw color 128 128 128 255 0 0
-    y -= tools_width
-    gray_pos = y
-    draw rect x_start y tools_width tools_width 0 0
+    draw_color_toolbar::y -= draw_color_toolbar::config.tools_width
+    g::color_toolbar::gray_pos = draw_color_toolbar::y
+    draw rect draw_color_toolbar::config.x_start draw_color_toolbar::y draw_color_toolbar::config.tools_width draw_color_toolbar::config.tools_width 0 0
     # white
     draw color 255 255 255 255 0 0
-    y -= tools_width
-    white_pos = y
-    draw rect x_start y tools_width tools_width 0 0
+    draw_color_toolbar::y -= draw_color_toolbar::config.tools_width
+    g::color_toolbar::white_pos = draw_color_toolbar::y
+    draw rect draw_color_toolbar::config.x_start draw_color_toolbar::y draw_color_toolbar::config.tools_width draw_color_toolbar::config.tools_width 0 0
     # red
     draw color 255 0 0 255 0 0
-    y -= tools_width
-    red_pos = y
-    draw rect x_start y tools_width tools_width 0 0
+    draw_color_toolbar::y -= draw_color_toolbar::config.tools_width
+    g::color_toolbar::red_pos = draw_color_toolbar::y
+    draw rect draw_color_toolbar::config.x_start draw_color_toolbar::y draw_color_toolbar::config.tools_width draw_color_toolbar::config.tools_width 0 0
     # green
     draw color 0 255 0 255 0 0
-    y -= tools_width
-    green_pos = y
-    draw rect x_start y tools_width tools_width 0 0
+    draw_color_toolbar::y -= draw_color_toolbar::config.tools_width
+    g::color_toolbar::green_pos = draw_color_toolbar::y
+    draw rect draw_color_toolbar::config.x_start draw_color_toolbar::y draw_color_toolbar::config.tools_width draw_color_toolbar::config.tools_width 0 0
     # blue
     draw color 0 0 255 255 0 0
-    y -= tools_width
-    blue_pos = y
-    draw rect x_start y tools_width tools_width 0 0
+    draw_color_toolbar::y -= draw_color_toolbar::config.tools_width
+    g::color_toolbar::blue_pos = draw_color_toolbar::y
+    draw rect draw_color_toolbar::config.x_start draw_color_toolbar::y draw_color_toolbar::config.tools_width draw_color_toolbar::config.tools_width 0 0
     # yellow
     draw color 255 255 0 255 0 0
-    y -= tools_width
-    yellow_pos = y
-    draw rect x_start y tools_width tools_width 0 0
+    draw_color_toolbar::y -= draw_color_toolbar::config.tools_width
+    g::color_toolbar::yellow_pos = draw_color_toolbar::y
+    draw rect draw_color_toolbar::config.x_start draw_color_toolbar::y draw_color_toolbar::config.tools_width draw_color_toolbar::config.tools_width 0 0
     # pink
     draw color 255 0 255 255 0 0
-    y -= tools_width
-    pink_pos = y
-    draw rect x_start y tools_width tools_width 0 0
+    draw_color_toolbar::y -= draw_color_toolbar::config.tools_width
+    g::color_toolbar::pink_pos = draw_color_toolbar::y
+    draw rect draw_color_toolbar::config.x_start draw_color_toolbar::y draw_color_toolbar::config.tools_width draw_color_toolbar::config.tools_width 0 0
     # cyan
     draw color 0 255 255 255 0 0
-    y -= tools_width
-    cyan_pos = y
-    draw rect x_start y tools_width tools_width 0 0
+    draw_color_toolbar::y -= draw_color_toolbar::config.tools_width
+    g::color_toolbar::cyan_pos = draw_color_toolbar::y
+    draw rect draw_color_toolbar::config.x_start draw_color_toolbar::y draw_color_toolbar::config.tools_width draw_color_toolbar::config.tools_width 0 0
     # brown
     draw color 155 103 60 255 0 0
-    y -= tools_width
-    brown_pos = y
-    draw rect x_start y tools_width tools_width 0 0
+    draw_color_toolbar::y -= draw_color_toolbar::config.tools_width
+    g::color_toolbar::brown_pos = draw_color_toolbar::y
+    draw rect draw_color_toolbar::config.x_start draw_color_toolbar::y draw_color_toolbar::config.tools_width draw_color_toolbar::config.tools_width 0 0
 
     # copy pasted code to increase speed
-    read color.r mem mem_pos_color.r
-    read color.g mem mem_pos_color.g
-    read color.b mem mem_pos_color.b
-    read color.t mem mem_pos_color.t
-    draw color color.r color.g color.b color.t 0 0
-    draw rect x_start 0 tools_width tools_width 0 0
+    read draw_color_toolbar::color.r draw_color_toolbar::config.mem draw_color_toolbar::mem_pos_color.r
+    read draw_color_toolbar::color.g draw_color_toolbar::config.mem draw_color_toolbar::mem_pos_color.g
+    read draw_color_toolbar::color.b draw_color_toolbar::config.mem draw_color_toolbar::mem_pos_color.b
+    read draw_color_toolbar::color.t draw_color_toolbar::config.mem draw_color_toolbar::mem_pos_color.t
+    draw color draw_color_toolbar::color.r draw_color_toolbar::color.g draw_color_toolbar::color.b draw_color_toolbar::color.t 0 0
+    draw rect draw_color_toolbar::config.x_start 0 draw_color_toolbar::config.tools_width draw_color_toolbar::config.tools_width 0 0
 }
 
 
-function select_color(posy, mem, Color4D mem_pos) {
+function select_color(select_color::posy, select_color::mem, Color4D select_color::mem_pos) {
     # XXX: This can be optimized with direct counter jumps
-    if posy > black_pos {
+    if select_color::posy > g::color_toolbar::black_pos {
         # black
-        write 0 mem mem_pos.r
-        write 0 mem mem_pos.g
-        write 0 mem mem_pos.b
-        write 255 mem mem_pos.t
-        jump select_color_theend always 0 0
+        write 0 select_color::mem select_color::mem_pos.r
+        write 0 select_color::mem select_color::mem_pos.g
+        write 0 select_color::mem select_color::mem_pos.b
+        write 255 select_color::mem select_color::mem_pos.t
+        jump select_color::select_color_theend always 0 0
     }
-    if posy > gray_pos {
+    if select_color::posy > g::color_toolbar::gray_pos {
         # gray
-        write 128 mem mem_pos.r
-        write 128 mem mem_pos.g
-        write 128 mem mem_pos.b
-        write 255 mem mem_pos.t
-        jump select_color_theend always 0 0
+        write 128 select_color::mem select_color::mem_pos.r
+        write 128 select_color::mem select_color::mem_pos.g
+        write 128 select_color::mem select_color::mem_pos.b
+        write 255 select_color::mem select_color::mem_pos.t
+        jump select_color::select_color_theend always 0 0
     }
-    if posy > white_pos {
+    if select_color::posy > g::color_toolbar::white_pos {
         # white
-        write 255 mem mem_pos.r
-        write 255 mem mem_pos.g
-        write 255 mem mem_pos.b
-        write 255 mem mem_pos.t
-        jump select_color_theend always 0 0
+        write 255 select_color::mem select_color::mem_pos.r
+        write 255 select_color::mem select_color::mem_pos.g
+        write 255 select_color::mem select_color::mem_pos.b
+        write 255 select_color::mem select_color::mem_pos.t
+        jump select_color::select_color_theend always 0 0
     }
-    if posy > red_pos {
+    if select_color::posy > g::color_toolbar::red_pos {
         # red
-        write 255 mem mem_pos.r
-        write 0 mem mem_pos.g
-        write 0 mem mem_pos.b
-        write 255 mem mem_pos.t
-        jump select_color_theend always 0 0
+        write 255 select_color::mem select_color::mem_pos.r
+        write 0 select_color::mem select_color::mem_pos.g
+        write 0 select_color::mem select_color::mem_pos.b
+        write 255 select_color::mem select_color::mem_pos.t
+        jump select_color::select_color_theend always 0 0
     }
-    if posy > green_pos {
+    if select_color::posy > g::color_toolbar::green_pos {
         # green
-        write 0 mem mem_pos.r
-        write 255 mem mem_pos.g
-        write 0 mem mem_pos.b
-        write 255 mem mem_pos.t
-        jump select_color_theend always 0 0
+        write 0 select_color::mem select_color::mem_pos.r
+        write 255 select_color::mem select_color::mem_pos.g
+        write 0 select_color::mem select_color::mem_pos.b
+        write 255 select_color::mem select_color::mem_pos.t
+        jump select_color::select_color_theend always 0 0
     }
-    if posy > blue_pos {
+    if select_color::posy > g::color_toolbar::blue_pos {
         # blue
-        write 0 mem mem_pos.r
-        write 0 mem mem_pos.g
-        write 255 mem mem_pos.b
-        write 255 mem mem_pos.t
-        jump select_color_theend always 0 0
+        write 0 select_color::mem select_color::mem_pos.r
+        write 0 select_color::mem select_color::mem_pos.g
+        write 255 select_color::mem select_color::mem_pos.b
+        write 255 select_color::mem select_color::mem_pos.t
+        jump select_color::select_color_theend always 0 0
     }
-    if posy > yellow_pos {
+    if select_color::posy > g::color_toolbar::yellow_pos {
         # yellow
-        write 255 mem mem_pos.r
-        write 255 mem mem_pos.g
-        write 0 mem mem_pos.b
-        write 255 mem mem_pos.t
-        jump select_color_theend always 0 0
+        write 255 select_color::mem select_color::mem_pos.r
+        write 255 select_color::mem select_color::mem_pos.g
+        write 0 select_color::mem select_color::mem_pos.b
+        write 255 select_color::mem select_color::mem_pos.t
+        jump select_color::select_color_theend always 0 0
     }
-    if posy > pink_pos {
+    if select_color::posy > g::color_toolbar::pink_pos {
         # pink
-        write 255 mem mem_pos.r
-        write 0 mem mem_pos.g
-        write 255 mem mem_pos.b
-        write 255 mem mem_pos.t
-        jump select_color_theend always 0 0
+        write 255 select_color::mem select_color::mem_pos.r
+        write 0 select_color::mem select_color::mem_pos.g
+        write 255 select_color::mem select_color::mem_pos.b
+        write 255 select_color::mem select_color::mem_pos.t
+        jump select_color::select_color_theend always 0 0
     }
-    if posy > cyan_pos {
+    if select_color::posy > g::color_toolbar::cyan_pos {
         # cyan
-        write 0 mem mem_pos.r
-        write 255 mem mem_pos.g
-        write 255 mem mem_pos.b
-        write 255 mem mem_pos.t
-        jump select_color_theend always 0 0
+        write 0 select_color::mem select_color::mem_pos.r
+        write 255 select_color::mem select_color::mem_pos.g
+        write 255 select_color::mem select_color::mem_pos.b
+        write 255 select_color::mem select_color::mem_pos.t
+        jump select_color::select_color_theend always 0 0
     }
-    if posy > brown_pos {
+    if select_color::posy > g::color_toolbar::brown_pos {
         # brown
-        write 155 mem mem_pos.r
-        write 103 mem mem_pos.g
-        write 60 mem mem_pos.b
-        write 255 mem mem_pos.t
-        jump select_color_theend always 0 0
+        write 155 select_color::mem select_color::mem_pos.r
+        write 103 select_color::mem select_color::mem_pos.g
+        write 60 select_color::mem select_color::mem_pos.b
+        write 255 select_color::mem select_color::mem_pos.t
+        jump select_color::select_color_theend always 0 0
     }
-    select_color_theend:
+    select_color::select_color_theend:
     noop
 }

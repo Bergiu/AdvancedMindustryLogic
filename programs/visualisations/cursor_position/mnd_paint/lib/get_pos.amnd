@@ -1,16 +1,16 @@
 # only works for large displays
-function get_mouse_pos(arc, display, *dposx, *dposy, *error) {
-    sensor x arc @shootX
-    sensor y arc @shootY
-    sensor dx display @x
-    sensor dy display @y
-    posx = x - dx + 2.75
-    posy = y - dy + 2.75
-    dposx = posx * 32
-    dposy = posy * 32
-    if dposx < 0 or dposx > 176 or dposy < 0 or dposy > 176 {
-        error = true
+function get_mouse_pos(get_mouse_pos::arc, get_mouse_pos::display, *get_mouse_pos::dposx, *get_mouse_pos::dposy, *get_mouse_pos::error) {
+    sensor get_mouse_pos::x get_mouse_pos::arc @shootX
+    sensor get_mouse_pos::y get_mouse_pos::arc @shootY
+    sensor get_mouse_pos::dx get_mouse_pos::display @x
+    sensor get_mouse_pos::dy get_mouse_pos::display @y
+    get_mouse_pos::posx = get_mouse_pos::x - get_mouse_pos::dx + 2.75
+    get_mouse_pos::posy = get_mouse_pos::y - get_mouse_pos::dy + 2.75
+    get_mouse_pos::dposx = get_mouse_pos::posx * 32
+    get_mouse_pos::dposy = get_mouse_pos::posy * 32
+    if get_mouse_pos::dposx < 0 or get_mouse_pos::dposx > 176 or get_mouse_pos::dposy < 0 or get_mouse_pos::dposy > 176 {
+        get_mouse_pos::error = true
     } else {
-        error = false
+        get_mouse_pos::error = false
     }
 }
