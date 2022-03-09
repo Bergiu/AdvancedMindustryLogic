@@ -1,0 +1,3 @@
+struct ToolbarConfig(mem, x_start, x_end, tools_width)
+# x_start - x_end: the space where you can draw (it's as long as tools_width)
+# x_end + 1: the border is drawn

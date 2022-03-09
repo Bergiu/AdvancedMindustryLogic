@@ -1,7 +1,8 @@
+import ../../../../../stdlib/display/font/font_small_minified_14_segment.amnd
 import ./color4d.amnd
+import ./toolbar_struct.amnd
 
-
-struct SelectColorToolbar(mem, x_start, tools_width)
+struct ColorbarConfig(mem, x_start, x_end, tools_width, char_number)
 
 
 # Functions:
@@ -10,7 +11,7 @@ struct SelectColorToolbar(mem, x_start, tools_width)
 # select_color:
 #   saves the selected color into the memory
 
-function update_selected_color(SelectColorToolbar update_selected_color::config, Color4D update_selected_color::mem_pos_color) {
+function update_selected_color(ColorbarConfig update_selected_color::config, Color4D update_selected_color::mem_pos_color) {
     # selected color
     read update_selected_color::color.r update_selected_color::config.mem update_selected_color::mem_pos_color.r
     read update_selected_color::color.g update_selected_color::config.mem update_selected_color::mem_pos_color.g
@@ -18,13 +19,28 @@ function update_selected_color(SelectColorToolbar update_selected_color::config,
     read update_selected_color::color.t update_selected_color::config.mem update_selected_color::mem_pos_color.t
     draw color update_selected_color::color.r update_selected_color::color.g update_selected_color::color.b update_selected_color::color.t 0 0
     draw rect update_selected_color::config.x_start 0 update_selected_color::config.tools_width update_selected_color::config.tools_width 0 0
+    # TEXT
+    update_selected_color::x_two_letter1 = update_selected_color::config.x_start + 9
+    update_selected_color::x_two_letter2 = update_selected_color::config.x_start + 2
+    update_selected_color::y_letter = 3
+
+    update_selected_color::sum = update_selected_color::color.r + update_selected_color::color.g + update_selected_color::color.b
+    if update_selected_color::sum > 500 or update_selected_color::color.g > 100 {
+        # black
+        draw color 0 0 0 255 0 0
+    } else {
+        # white
+        draw color 255 255 255 255 0 0
+    }
+    exec write_letter(update_selected_color::config.char_number, 0.5, update_selected_color::x_two_letter2, update_selected_color::y_letter)
+    exec write_letter(16, 0.5, update_selected_color::x_two_letter1, update_selected_color::y_letter)
 }
 
-function draw_color_toolbar(SelectColorToolbar draw_color_toolbar::config, Color4D draw_color_toolbar::mem_pos_color) {
+function draw_color_toolbar(ColorbarConfig draw_color_toolbar::config, Color4D draw_color_toolbar::mem_pos_color) {
     # border
     draw color 128 128 128 255 0 0
-    draw_color_toolbar::end_x = draw_color_toolbar::config.x_start + draw_color_toolbar::config.tools_width + 1
-    draw line draw_color_toolbar::end_x 0 draw_color_toolbar::end_x 176 0 0
+    draw_color_toolbar::border_x = draw_color_toolbar::config.x_end + 1
+    draw line draw_color_toolbar::border_x 0 draw_color_toolbar::border_x 176 0 0
     # black
     draw color 0 0 0 255 0 0
     draw_color_toolbar::y = 176 - draw_color_toolbar::config.tools_width
@@ -75,14 +91,7 @@ function draw_color_toolbar(SelectColorToolbar draw_color_toolbar::config, Color
     draw_color_toolbar::y -= draw_color_toolbar::config.tools_width
     g::color_toolbar::brown_pos = draw_color_toolbar::y
     draw rect draw_color_toolbar::config.x_start draw_color_toolbar::y draw_color_toolbar::config.tools_width draw_color_toolbar::config.tools_width 0 0
-
-    # copy pasted code to increase speed
-    read draw_color_toolbar::color.r draw_color_toolbar::config.mem draw_color_toolbar::mem_pos_color.r
-    read draw_color_toolbar::color.g draw_color_toolbar::config.mem draw_color_toolbar::mem_pos_color.g
-    read draw_color_toolbar::color.b draw_color_toolbar::config.mem draw_color_toolbar::mem_pos_color.b
-    read draw_color_toolbar::color.t draw_color_toolbar::config.mem draw_color_toolbar::mem_pos_color.t
-    draw color draw_color_toolbar::color.r draw_color_toolbar::color.g draw_color_toolbar::color.b draw_color_toolbar::color.t 0 0
-    draw rect draw_color_toolbar::config.x_start 0 draw_color_toolbar::config.tools_width draw_color_toolbar::config.tools_width 0 0
+    exec update_selected_color(draw_color_toolbar::config, draw_color_toolbar::mem_pos_color)
 }
 
 

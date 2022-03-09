@@ -1,72 +1,73 @@
 import ../../../../../stdlib/display/font/font_small_minified_14_segment.amnd
+import ./toolbar_struct.amnd
 
 # Strokes:
 #  1, 2, 4, 6, 8, 10, 12, 15, 20, 25
 
-function draw_line_width_toolbar(draw_line_width_toolbar::mem, draw_line_width_toolbar::x_start, draw_line_width_toolbar::tools_width) {
+function draw_line_width_toolbar(draw_line_width_toolbar::mem_pos_line_width) {
     # border
     draw color 128 128 128 255 0 0
-    draw_line_width_toolbar::x_end = draw_line_width_toolbar::x_start + draw_line_width_toolbar::tools_width + 1
-    draw line draw_line_width_toolbar::x_end 0 draw_line_width_toolbar::x_end 176 0 0
+    draw_line_width_toolbar::border_x = g::toolbar::stroke.x_end + 1
+    draw line draw_line_width_toolbar::border_x 0 draw_line_width_toolbar::border_x 176 0 0
     # 1em: 20x10px
     # 0.5em: 10x5px
-    draw_line_width_toolbar::x_two_letter1 = draw_line_width_toolbar::x_start + 2
-    draw_line_width_toolbar::x_two_letter2 = draw_line_width_toolbar::x_start + 9
+    draw_line_width_toolbar::x_two_letter1 = g::toolbar::stroke.x_start + 2
+    draw_line_width_toolbar::x_two_letter2 = g::toolbar::stroke.x_start + 9
     # borders
     draw color 128 128 128 255 0 0
-    draw_line_width_toolbar::y = 176 - draw_line_width_toolbar::tools_width
+    draw_line_width_toolbar::y = 176 - g::toolbar::stroke.tools_width
     draw_line_width_toolbar::i = 0
     while draw_line_width_toolbar::i < 10 {
-        draw line draw_line_width_toolbar::x_start draw_line_width_toolbar::y draw_line_width_toolbar::x_end draw_line_width_toolbar::y 0 0
-        draw_line_width_toolbar::y -= draw_line_width_toolbar::tools_width
+        draw line g::toolbar::stroke.x_start draw_line_width_toolbar::y g::toolbar::stroke.x_end draw_line_width_toolbar::y 0 0
+        draw_line_width_toolbar::y -= g::toolbar::stroke.tools_width
         draw_line_width_toolbar::i++
     }
     # 1 px
-    draw_line_width_toolbar::y = 176 - draw_line_width_toolbar::tools_width
+    draw_line_width_toolbar::y = 176 - g::toolbar::stroke.tools_width
     g::stroke_toolbar::px1 = draw_line_width_toolbar::y
     draw_line_width_toolbar::y_letter = draw_line_width_toolbar::y + 3
     draw color 255 255 255 255 0 0
     exec write_letter(1, 0.5, draw_line_width_toolbar::x_two_letter2, draw_line_width_toolbar::y_letter)
     # 2 px
-    draw_line_width_toolbar::y -= draw_line_width_toolbar::tools_width
+    draw_line_width_toolbar::y -= g::toolbar::stroke.tools_width
     g::stroke_toolbar::px2 = draw_line_width_toolbar::y
     draw_line_width_toolbar::y_letter = draw_line_width_toolbar::y + 3
     exec write_letter(2, 0.5, draw_line_width_toolbar::x_two_letter2, draw_line_width_toolbar::y_letter)
     # 4 px
-    draw_line_width_toolbar::y -= draw_line_width_toolbar::tools_width
+    draw_line_width_toolbar::y -= g::toolbar::stroke.tools_width
     g::stroke_toolbar::px4 = draw_line_width_toolbar::y
     draw_line_width_toolbar::y_letter = draw_line_width_toolbar::y + 3
     exec write_letter(4, 0.5, draw_line_width_toolbar::x_two_letter2, draw_line_width_toolbar::y_letter)
     # 6 px
-    draw_line_width_toolbar::y -= draw_line_width_toolbar::tools_width
+    draw_line_width_toolbar::y -= g::toolbar::stroke.tools_width
     g::stroke_toolbar::px6 = draw_line_width_toolbar::y
     draw_line_width_toolbar::y_letter = draw_line_width_toolbar::y + 3
     exec write_letter(6, 0.5, draw_line_width_toolbar::x_two_letter2, draw_line_width_toolbar::y_letter)
     # 8 px
-    draw_line_width_toolbar::y -= draw_line_width_toolbar::tools_width
+    draw_line_width_toolbar::y -= g::toolbar::stroke.tools_width
     g::stroke_toolbar::px8 = draw_line_width_toolbar::y
     draw_line_width_toolbar::y_letter = draw_line_width_toolbar::y + 3
     exec write_letter(8, 0.5, draw_line_width_toolbar::x_two_letter2, draw_line_width_toolbar::y_letter)
     # 10 px
-    draw_line_width_toolbar::y -= draw_line_width_toolbar::tools_width
+    draw_line_width_toolbar::y -= g::toolbar::stroke.tools_width
     g::stroke_toolbar::px10 = draw_line_width_toolbar::y
     draw_line_width_toolbar::y_letter = draw_line_width_toolbar::y + 3
     exec write_letter(1, 0.5, draw_line_width_toolbar::x_two_letter1, draw_line_width_toolbar::y_letter)
     exec write_letter(0, 0.5, draw_line_width_toolbar::x_two_letter2, draw_line_width_toolbar::y_letter)
     # 12 px
-    draw_line_width_toolbar::y -= draw_line_width_toolbar::tools_width
+    draw_line_width_toolbar::y -= g::toolbar::stroke.tools_width
     g::stroke_toolbar::px12 = draw_line_width_toolbar::y
     draw_line_width_toolbar::y_letter = draw_line_width_toolbar::y + 3
     exec write_letter(1, 0.5, draw_line_width_toolbar::x_two_letter1, draw_line_width_toolbar::y_letter)
     exec write_letter(2, 0.5, draw_line_width_toolbar::x_two_letter2, draw_line_width_toolbar::y_letter)
     # 15 px
-    draw_line_width_toolbar::y -= draw_line_width_toolbar::tools_width
+    draw_line_width_toolbar::y -= g::toolbar::stroke.tools_width
     g::stroke_toolbar::px15 = draw_line_width_toolbar::y
     draw_line_width_toolbar::y_letter = draw_line_width_toolbar::y + 3
     exec write_letter(1, 0.5, draw_line_width_toolbar::x_two_letter1, draw_line_width_toolbar::y_letter)
     exec write_letter(5, 0.5, draw_line_width_toolbar::x_two_letter2, draw_line_width_toolbar::y_letter)
     # 20 px
-    draw_line_width_toolbar::y -= draw_line_width_toolbar::tools_width
+    draw_line_width_toolbar::y -= g::toolbar::stroke.tools_width
     g::stroke_toolbar::px20 = draw_line_width_toolbar::y
     draw_line_width_toolbar::y_letter = draw_line_width_toolbar::y + 3
     exec write_letter(2, 0.5, draw_line_width_toolbar::x_two_letter1, draw_line_width_toolbar::y_letter)
