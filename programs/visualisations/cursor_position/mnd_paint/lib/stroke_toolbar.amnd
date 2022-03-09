@@ -4,7 +4,23 @@ import ./toolbar_struct.amnd
 # Strokes:
 #  1, 2, 4, 6, 8, 10, 12, 15, 20, 25
 
-function draw_line_width_toolbar(draw_line_width_toolbar::mem_pos_line_width) {
+
+function update_stroke_toolbar() {
+    # CONFIG
+    read stroke g::toolbar::stroke.mem mem_pos_line_width
+    last_char = stroke % 10
+    first_char = stroke // 10
+    x_two_letter1 = g::toolbar::stroke.x_start + 2
+    x_two_letter2 = g::toolbar::stroke.x_start + 9
+    draw color 0 0 0 255 0 0
+    draw rect g::toolbar::stroke.x_start 0 g::toolbar::stroke.tools_width g::toolbar::stroke.tools_width 0 0
+    draw color 255 255 255 255 0 0
+    exec write_letter(first_char, 0.5, x_two_letter1, 3)
+    exec write_letter(last_char, 0.5, x_two_letter2, 3)
+}
+
+
+function draw_line_width_toolbar(draw_line_width_toolbar::mem, draw_line_width_toolbar::mem_pos_line_width) {
     # border
     draw color 128 128 128 255 0 0
     draw_line_width_toolbar::border_x = g::toolbar::stroke.x_end + 1
@@ -72,6 +88,14 @@ function draw_line_width_toolbar(draw_line_width_toolbar::mem_pos_line_width) {
     draw_line_width_toolbar::y_letter = draw_line_width_toolbar::y + 3
     exec write_letter(2, 0.5, draw_line_width_toolbar::x_two_letter1, draw_line_width_toolbar::y_letter)
     exec write_letter(0, 0.5, draw_line_width_toolbar::x_two_letter2, draw_line_width_toolbar::y_letter)
+    # 25 px
+    draw_line_width_toolbar::y -= g::toolbar::stroke.tools_width
+    g::stroke_toolbar::px25 = draw_line_width_toolbar::y
+    draw_line_width_toolbar::y_letter = draw_line_width_toolbar::y + 3
+    exec write_letter(2, 0.5, draw_line_width_toolbar::x_two_letter1, draw_line_width_toolbar::y_letter)
+    exec write_letter(5, 0.5, draw_line_width_toolbar::x_two_letter2, draw_line_width_toolbar::y_letter)
+    # CONFIG
+    exec update_stroke_toolbar()
 }
 
 
@@ -113,7 +137,13 @@ function select_stroke(select_stroke::posy, select_stroke::mem, select_stroke::m
         write 20 select_stroke::mem select_stroke::mem_pos
         jump select_stroke::select_stroke_theend always 0 0
     }
+    if select_stroke::posy > g::stroke_toolbar::px25 {
+        write 25 select_stroke::mem select_stroke::mem_pos
+        jump select_stroke::select_stroke_theend always 0 0
+    }
     select_stroke::select_stroke_theend:
     noop
+    # CONFIG
+    exec update_stroke_toolbar()
 }
 

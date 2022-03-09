@@ -67,7 +67,7 @@ function init_mnd_paint_toolbar(display, mem) {
     draw stroke 1 0 0 0 0 0
     draw clear 0 0 0 0 0 0
     # stroke
-    exec draw_line_width_toolbar(mem_pos_line_width)
+    exec draw_line_width_toolbar(mem, mem_pos_line_width)
     drawflush display
     # fg
     exec draw_color_toolbar(g::toolbar::fg_color, mem_pos_fg_color)
@@ -125,6 +125,7 @@ if not error and not start_pos_error {
     }
     if dposx > g::toolbar::stroke.x_start and dposx < g::toolbar::stroke.x_end {
         exec select_stroke(dposy, mem, mem_pos_line_width)
+        drawflush display
         jump shoot_loop_theend always 0 0
     }
     if dposx > g::toolbar::tools.x_start and dposx < g::toolbar::tools.x_end {
