@@ -1,0 +1,21 @@
+half_display = 176 / 2
+
+
+# only works for large displays
+# return the position in relation to the center of the display
+function get_mouse_pos_center(get_mouse_pos::arc, get_mouse_pos::display, *get_mouse_pos::dposx, *get_mouse_pos::dposy, *get_mouse_pos::error) {
+    sensor get_mouse_pos::x get_mouse_pos::arc @shootX
+    sensor get_mouse_pos::y get_mouse_pos::arc @shootY
+    sensor get_mouse_pos::dx get_mouse_pos::display @x
+    sensor get_mouse_pos::dy get_mouse_pos::display @y
+    get_mouse_pos::posx = get_mouse_pos::x - get_mouse_pos::dx + 2.75
+    get_mouse_pos::posy = get_mouse_pos::y - get_mouse_pos::dy + 2.75
+    get_mouse_pos::dposx = get_mouse_pos::posx * 32 - half_display
+    get_mouse_pos::dposy = get_mouse_pos::posy * 32 - half_display
+    if get_mouse_pos::dposx < half_display or get_mouse_pos::dposx > half_display or get_mouse_pos::dposy < half_display or get_mouse_pos::dposy > half_display {
+        get_mouse_pos::error = true
+    } else {
+        get_mouse_pos::error = false
+    }
+}
+

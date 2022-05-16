@@ -1,0 +1,222 @@
+import ./get_pos.amnd
+
+# snake:
+# - playground:
+#   - length and width
+#   - snake
+#   - fruits
+
+# 1. create a fruit on a random position, after startup and after one fruit is eaten
+# 2. a field in the playground can be filled by nothing, fruit or snake
+# 3. snake moves in a direction
+
+# devices
+mem = bank1
+mem_size = 512
+
+if ! mem {
+    end
+}
+
+# graphics
+display_size_x = 176
+display_size_y = 176
+amount_fields_x = 20
+amount_fields_y = amount_fields_x * (display_size_y / display_size_x )
+size_per_field = display_size_x / amount_fields_x
+snake_width = ceil(size_per_field)
+half_snake_width = snake_width / 2
+
+# game
+points = 0
+sleep_default = 100
+sleep = sleep_default
+
+# startup
+snake_head_x = 0
+snake_head_y = 1
+dir_north = 0
+dir_east = 1
+dir_south = 2
+dir_west = 3
+dir = dir_east
+
+# the memory is a cyclic list
+# and contains one field for each snake part.
+# the last element in the list is the part that
+# is removed after each step
+
+# snake
+snake_mem_start = 1
+snake_mem_length = 2
+
+# clear memory
+write 0 mem 0 # removed field
+snake_pos = snake_head_x * amount_fields_y + snake_head_y
+write snake_pos mem 1 # snake head
+
+# clear display
+draw clear 255 255 255 0 0 0  # white
+
+function field_coord(x, y, *field_coord::x_from, *field_coord::y_from) {
+    field_coord::x_from = floor(x * size_per_field)
+    field_coord::y_from = floor(y * size_per_field)
+}
+
+function fruit_coord(x, y, *field_coord::x_from, *field_coord::y_from) {
+    field_coord::x_from = floor(x * size_per_field) + half_snake_width
+    field_coord::y_from = floor(y * size_per_field) + half_snake_width
+}
+
+function random_fruit(*random_fruit::x_out, *random_fruit::y_out) {
+    # repeat if position is on the snake
+    random_fruit::max_x = amount_fields_x
+    random_fruit::x_out = floor(rand(random_fruit::max_x))
+    random_fruit::max_y = amount_fields_y
+    random_fruit::y_out = floor(rand(random_fruit::max_y))
+}
+
+function next_pos() {
+    exec get_mouse_pos_center(arc1, display1, dposx, dposy, error)
+    if abs(dposx) > abs(dposy) {
+        if dposx > 0 {
+            dir = dir_east
+        } else {
+            dir = dir_west
+        }
+    } else {
+        if dposy > 0 {
+            dir = dir_north
+        } else {
+            dir = dir_south
+        }
+    }
+    if dir == dir_north {
+        snake_head_y += 1
+    }
+    if dir == dir_south {
+        snake_head_y -= 1
+    }
+    if dir == dir_east {
+        snake_head_x += 1
+    }
+    if dir == dir_west {
+        snake_head_x -= 1
+    }
+    if snake_head_x < 0 {
+        snake_head_x = amount_fields_x - 1
+    }
+    if snake_head_y < 0 {
+        snake_head_y = amount_fields_y - 1
+    }
+    if snake_head_x >= amount_fields_x {
+        snake_head_x = 0
+    }
+    if snake_head_y >= amount_fields_y {
+        snake_head_y = 0
+    }
+}
+
+function collect_fruit() {
+    points += 1
+    exec random_fruit(fruit_x, fruit_y)
+}
+
+
+function next_snake(collected) {
+    snake_mem_end = (snake_mem_start + snake_mem_length) % mem_size
+    snake_pos = snake_head_x * amount_fields_y + snake_head_y
+    # expand by one
+    write snake_pos mem snake_mem_end
+    if not collected {
+        # reduce one field
+        snake_mem_start = (snake_mem_start + 1) % mem_size
+    } else {
+        if mem_size <= snake_mem_length {
+            print "Won!"
+            printflush message1
+            end
+        }
+        snake_mem_length += 1
+    }
+}
+
+function draw_snake() {
+    # dynamic draw
+    mem_pos = snake_mem_start
+    read snake_part mem mem_pos
+    snake_part_x = snake_part // amount_fields_y
+    snake_part_y = snake_part % amount_fields_y
+    exec field_coord(snake_part_x, snake_part_y, x_from, y_from)
+    # draw white
+    draw color 255 255 255 255 0 0
+    draw rect x_from y_from snake_width snake_width 0 0
+    mem_pos = snake_mem_start + snake_mem_length - 1
+    read snake_part mem mem_pos
+    snake_part_x = snake_part // amount_fields_y
+    snake_part_y = snake_part % amount_fields_y
+    exec field_coord(snake_part_x, snake_part_y, x_from, y_from)
+    # draw white
+    draw color 0 0 0 255 0 0
+    draw rect x_from y_from snake_width snake_width 0 0
+    # static draw
+    # i = 0
+    # while i < snake_mem_length {
+    #     # draw snake
+    #     mem_pos = snake_mem_start + i
+    #     read snake_part mem mem_pos
+    #     snake_part_x = snake_part // amount_fields_y
+    #     snake_part_y = snake_part % amount_fields_y
+    #     exec field_coord(snake_part_x, snake_part_y, x_from, y_from)
+    #     draw color 0 0 0 255 0 0
+    #     draw rect x_from y_from snake_width snake_width 0 0
+    #     i++
+    # }
+    # print snake_mem_start
+}
+
+
+function next() {
+    exec next_pos()
+    collected = false
+    if snake_head_x == fruit_x and snake_head_y == fruit_y {
+        exec collect_fruit()
+        collected = true
+    }
+    exec next_snake(collected)
+    print "Points: "
+    print points
+}
+
+function draw_all() {
+    exec draw_snake()
+
+    # draw middle
+    draw color 255 255 0 255 0 0
+    draw line 0 0 display_size_x display_size_y 0 0
+    draw line display_size_x 0 0 display_size_y 0 0
+    # draw linePoly 88 88 10 3 10 0
+
+    # draw fruit
+    exec fruit_coord(fruit_x, fruit_y, fruit_x_coord, fruit_y_coord)
+    draw color 255 255 255 255 0 0
+    # draw rect fruit_x_coord fruit_y_coord snake_width snake_width 0 0
+    draw image fruit_x_coord fruit_y_coord @lead snake_width 0 0
+
+    drawflush display1
+    printflush message1
+}
+
+
+exec random_fruit(fruit_x, fruit_y)
+exec draw_all()
+
+while true {
+    exec next()
+    exec draw_all()
+    i = 0
+    while i < sleep {
+        i++
+    }
+}
+
