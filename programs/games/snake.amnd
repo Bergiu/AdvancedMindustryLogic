@@ -13,8 +13,13 @@ import ./get_pos.amnd
 # devices
 snake_mem = bank1
 snake_mem_size = 512
+pixel_mem = bank2
+pixel_mem_size = 512
 
 if ! snake_mem {
+    end
+}
+if ! pixel_mem {
     end
 }
 
@@ -41,7 +46,7 @@ dir_south = 2
 dir_west = 3
 dir = dir_east
 
-# the memory is a cyclic list
+# the snake memory is a cyclic list
 # and contains one field for each snake part.
 # the last element in the list is the part that
 # is removed after each step
@@ -54,6 +59,21 @@ snake_mem_length = 2
 write 0 snake_mem 0 # removed field
 snake_pos = snake_head_x * amount_fields_y + snake_head_y
 write snake_pos snake_mem 1 # snake head
+
+# the pixel mem is a list that maps a value to each pixel
+pixel_free = 0
+pixel_body = 1
+
+# clear memory
+print "Cleanup Game."
+printflush message1
+i = 0
+while i < pixel_mem_size {
+    write 0 pixel_mem i
+    i++
+}
+print "Game starts."
+printflush message1
 
 # clear display
 draw clear 255 255 255 0 0 0  # white
@@ -74,6 +94,32 @@ function random_fruit(*random_fruit::x_out, *random_fruit::y_out) {
     random_fruit::x_out = floor(rand(random_fruit::max_x))
     random_fruit::max_y = amount_fields_y
     random_fruit::y_out = floor(rand(random_fruit::max_y))
+}
+
+function end_game(lost) {
+    if lost {
+        # draw middle
+        draw color 255 0 0 255 0 0
+        draw line 0 0 display_size_x display_size_y 0 0
+        draw line display_size_x 0 0 display_size_y 0 0
+        drawflush display1
+        print "Lost the game.\n"
+        print "Your score is: "
+        print points
+        printflush message1
+    } else {
+        print "You won!\n"
+        print "Your score is: "
+        print points
+        printflush message1
+    }
+    control enabled switch1 false 0 0 0
+    sensor reset switch1 @enabled
+    while not reset {
+        sensor reset switch1 @enabled
+    }
+    control enabled switch1 false 0 0 0
+    end
 }
 
 function next_pos() {
@@ -130,8 +176,8 @@ function collect_fruit() {
     exec random_fruit(fruit_x, fruit_y)
 }
 
-
 function next_snake(collected) {
+    # snake
     snake_mem_end = (snake_mem_start + snake_mem_length) % snake_mem_size
     snake_pos = snake_head_x * amount_fields_y + snake_head_y
     # expand by one
@@ -141,12 +187,14 @@ function next_snake(collected) {
         snake_mem_start = (snake_mem_start + 1) % snake_mem_size
     } else {
         if snake_mem_size <= snake_mem_length {
-            print "Won!"
-            printflush message1
-            end
+            exec end_game(false)
         }
         snake_mem_length += 1
     }
+    # pixel
+    read snake_tail snake_mem snake_mem_start
+    write pixel_body pixel_mem snake_pos
+    write pixel_free pixel_mem snake_tail
 }
 
 function draw_snake() {
@@ -159,7 +207,9 @@ function draw_snake() {
     # draw white
     draw color 255 255 255 255 0 0
     draw rect x_from y_from snake_width snake_width 0 0
-    snake_mem_pos = snake_mem_start + snake_mem_length - 1
+    snake_mem_pos = (snake_mem_start + snake_mem_length - 1) % snake_mem_size
+    print "\n"
+    print snake_mem_pos
     read snake_part snake_mem snake_mem_pos
     snake_part_x = snake_part // amount_fields_y
     snake_part_y = snake_part % amount_fields_y
@@ -167,30 +217,31 @@ function draw_snake() {
     # draw white
     draw color 0 0 0 255 0 0
     draw rect x_from y_from snake_width snake_width 0 0
-    # static draw
-    # i = 0
-    # while i < snake_mem_length {
-    #     # draw snake
-    #     mem_pos = snake_mem_start + i
-    #     read snake_part mem mem_pos
-    #     snake_part_x = snake_part // amount_fields_y
-    #     snake_part_y = snake_part % amount_fields_y
-    #     exec field_coord(snake_part_x, snake_part_y, x_from, y_from)
-    #     draw color 0 0 0 255 0 0
-    #     draw rect x_from y_from snake_width snake_width 0 0
-    #     i++
-    # }
-    # print snake_mem_start
 }
 
 
-function next() {
-    exec next_pos()
+function collision_detection(*collected) {
+    # snake collision detection
+    snake_pos = snake_head_x * amount_fields_y + snake_head_y
+    read pixel_status pixel_mem snake_pos
+    read snake_tail snake_mem snake_mem_start
+    snake_tail_x = snake_tail // amount_fields_y
+    snake_tail_y = snake_tail % amount_fields_y
+    if (not (snake_head_x == snake_tail_x and snake_head_y == snake_tail_y)) and pixel_status != pixel_free {
+        exec end_game(true)
+    }
+    # fruit detection
     collected = false
     if snake_head_x == fruit_x and snake_head_y == fruit_y {
         exec collect_fruit()
         collected = true
     }
+}
+
+
+function next() {
+    exec next_pos()
+    exec collision_detection(collected)
     exec next_snake(collected)
     print "Points: "
     print points
