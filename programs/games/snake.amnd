@@ -32,9 +32,17 @@ size_per_field = display_size_x / amount_fields_x
 snake_width = ceil(size_per_field)
 half_snake_width = snake_width / 2
 
+control enabled switch1 false 0 0 0
+sensor reset switch1 @enabled
+while not reset {
+    sensor reset switch1 @enabled
+}
+label_reset_game:
+control enabled switch1 false 0 0 0
+
 # game
 points = 0
-sleep_default = 100
+sleep_default = 50
 sleep = sleep_default
 
 # startup
@@ -78,6 +86,9 @@ printflush message1
 # clear display
 draw clear 255 255 255 0 0 0  # white
 
+# skin support
+sensor skin_support switch2 @enabled
+
 function field_coord(x, y, *field_coord::x_from, *field_coord::y_from) {
     field_coord::x_from = floor(x * size_per_field)
     field_coord::y_from = floor(y * size_per_field)
@@ -113,12 +124,6 @@ function end_game(lost) {
         print points
         printflush message1
     }
-    control enabled switch1 false 0 0 0
-    sensor reset switch1 @enabled
-    while not reset {
-        sensor reset switch1 @enabled
-    }
-    control enabled switch1 false 0 0 0
     end
 }
 
@@ -208,15 +213,36 @@ function draw_snake() {
     draw color 255 255 255 255 0 0
     draw rect x_from y_from snake_width snake_width 0 0
     snake_mem_pos = (snake_mem_start + snake_mem_length - 1) % snake_mem_size
-    print "\n"
-    print snake_mem_pos
     read snake_part snake_mem snake_mem_pos
     snake_part_x = snake_part // amount_fields_y
     snake_part_y = snake_part % amount_fields_y
-    exec field_coord(snake_part_x, snake_part_y, x_from, y_from)
     # draw white
-    draw color 0 0 0 255 0 0
-    draw rect x_from y_from snake_width snake_width 0 0
+    if not skin_support {
+        exec field_coord(snake_part_x, snake_part_y, x_from, y_from)
+        draw color 0 0 0 255 0 0
+        draw rect x_from y_from snake_width snake_width 0 0
+    } else {
+        exec field_coord(snake_part_x, snake_part_y, x_from, y_from)
+        draw color 255 255 255 255 0 0
+        draw rect x_from y_from snake_width snake_width 0 0
+        exec fruit_coord(snake_part_x, snake_part_y, x_from, y_from)
+        draw color 255 255 255 255 0 0
+        # remove 1 because image is too big
+        tmp = snake_width - 1
+        if dir == dir_north {
+            rot = 0
+        }
+        if dir == dir_east {
+            rot = -90
+        }
+        if dir == dir_south {
+            rot = 180
+        }
+        if dir == dir_west {
+            rot = 90
+        }
+        draw image x_from y_from @dagger tmp rot 0
+    }
 }
 
 
@@ -266,6 +292,14 @@ function draw_all() {
     printflush message1
 }
 
+function check_buttons() {
+    sensor reset switch1 @enabled
+    if reset {
+        jump label_reset_game always 0 0
+    }
+    sensor skin_support switch2 @enabled
+}
+
 
 exec random_fruit(fruit_x, fruit_y)
 exec draw_all()
@@ -275,6 +309,7 @@ while true {
     exec draw_all()
     i = 0
     while i < sleep {
+        exec check_buttons()
         i++
     }
 }
