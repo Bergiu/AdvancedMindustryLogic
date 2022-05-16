@@ -42,7 +42,7 @@ control enabled switch1 false 0 0 0
 
 # game
 points = 0
-sleep_default = 50
+sleep_default = 30
 sleep = sleep_default
 
 # startup
@@ -298,6 +298,10 @@ function check_buttons() {
         jump label_reset_game always 0 0
     }
     sensor skin_support switch2 @enabled
+    sensor pause switch3 @enabled
+    while pause {
+        sensor pause switch3 @enabled
+    }
 }
 
 
