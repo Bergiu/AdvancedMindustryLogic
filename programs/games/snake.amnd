@@ -11,10 +11,10 @@ import ./get_pos.amnd
 # 3. snake moves in a direction
 
 # devices
-mem = bank1
-mem_size = 512
+snake_mem = bank1
+snake_mem_size = 512
 
-if ! mem {
+if ! snake_mem {
     end
 }
 
@@ -51,9 +51,9 @@ snake_mem_start = 1
 snake_mem_length = 2
 
 # clear memory
-write 0 mem 0 # removed field
+write 0 snake_mem 0 # removed field
 snake_pos = snake_head_x * amount_fields_y + snake_head_y
-write snake_pos mem 1 # snake head
+write snake_pos snake_mem 1 # snake head
 
 # clear display
 draw clear 255 255 255 0 0 0  # white
@@ -80,15 +80,23 @@ function next_pos() {
     exec get_mouse_pos_center(arc1, display1, dposx, dposy, error)
     if abs(dposx) > abs(dposy) {
         if dposx > 0 {
-            dir = dir_east
+            if dir != dir_west {
+                dir = dir_east
+            }
         } else {
-            dir = dir_west
+            if dir != dir_east {
+                dir = dir_west
+            }
         }
     } else {
         if dposy > 0 {
-            dir = dir_north
+            if dir != dir_south {
+                dir = dir_north
+            }
         } else {
-            dir = dir_south
+            if dir != dir_north {
+                dir = dir_south
+            }
         }
     }
     if dir == dir_north {
@@ -124,15 +132,15 @@ function collect_fruit() {
 
 
 function next_snake(collected) {
-    snake_mem_end = (snake_mem_start + snake_mem_length) % mem_size
+    snake_mem_end = (snake_mem_start + snake_mem_length) % snake_mem_size
     snake_pos = snake_head_x * amount_fields_y + snake_head_y
     # expand by one
-    write snake_pos mem snake_mem_end
+    write snake_pos snake_mem snake_mem_end
     if not collected {
         # reduce one field
-        snake_mem_start = (snake_mem_start + 1) % mem_size
+        snake_mem_start = (snake_mem_start + 1) % snake_mem_size
     } else {
-        if mem_size <= snake_mem_length {
+        if snake_mem_size <= snake_mem_length {
             print "Won!"
             printflush message1
             end
@@ -143,16 +151,16 @@ function next_snake(collected) {
 
 function draw_snake() {
     # dynamic draw
-    mem_pos = snake_mem_start
-    read snake_part mem mem_pos
+    snake_mem_pos = snake_mem_start
+    read snake_part snake_mem snake_mem_pos
     snake_part_x = snake_part // amount_fields_y
     snake_part_y = snake_part % amount_fields_y
     exec field_coord(snake_part_x, snake_part_y, x_from, y_from)
     # draw white
     draw color 255 255 255 255 0 0
     draw rect x_from y_from snake_width snake_width 0 0
-    mem_pos = snake_mem_start + snake_mem_length - 1
-    read snake_part mem mem_pos
+    snake_mem_pos = snake_mem_start + snake_mem_length - 1
+    read snake_part snake_mem snake_mem_pos
     snake_part_x = snake_part // amount_fields_y
     snake_part_y = snake_part % amount_fields_y
     exec field_coord(snake_part_x, snake_part_y, x_from, y_from)
