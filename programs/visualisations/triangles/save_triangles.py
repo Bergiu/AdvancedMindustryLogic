@@ -1,3 +1,4 @@
+# Pyramide
 A = [1, 1, 1]
 B = [6, 1, 1]
 E = [1, 6, 1]
@@ -12,34 +13,59 @@ polygon = [
     [E, D, C]
 ]
 
+# Pyramide um 0 Punkt
+A = [-1, -1, -1]
+B = [1, -1, -1]
+C = [1, -1, 1]
+D = [-1, -1, 1]
+E = [0, 1, 0]
+polygon = [
+    [A, B, C],
+    [A, C, D],
+    [A, B, E],
+    [B, C, E],
+    [C, D, E],
+    [D, A, E],
+]
+
+
+# Pyramide um 0 Punkt
+points = [
+    ('A', [-1, -1, -1]),
+    ('B', [1, -1, -1]),
+    ('C', [1, -1, 1]),
+    ('D', [-1, -1, 1]),
+    ('E', [0, 1, 0]),
+]
+polygon = [
+    ['A', 'B', 'C'],
+    ['A', 'C', 'D'],
+    ['A', 'B', 'E'],
+    ['B', 'C', 'E'],
+    ['C', 'D', 'E'],
+    ['D', 'A', 'E'],
+]
+
+
 # Memory:
 # [amount points, size per point, ...points..., amount triangles, ...triangles...]
 out_a = []
-out_a.append(A)
-out_a.append(B)
-out_a.append(C)
-out_a.append(D)
-out_a.append(E)
+for name, point in points:
+    out_a.append(point)
 
 out_b = []
 for triangle in polygon:
     pointers = []
-    for point in triangle:
-        if point == A:
-            pointers.append(0)
-        if point == B:
-            pointers.append(1)
-        if point == C:
-            pointers.append(2)
-        if point == D:
-            pointers.append(3)
-        if point == E:
-            pointers.append(4)
+    for p_name in triangle:
+        for i, tpl in enumerate(points):
+            name, _ = tpl
+            if name == p_name:
+                pointers.append(i)
     out_b.append(pointers)
 
 
 print("set cell cell1")
-print("write 5 cell 0")
+print(f"write {len(out_a)} cell 0")
 i = 1
 for pp in out_a:
     for p in pp:
