@@ -1,81 +1,79 @@
 import segment_display_14.amnd
 
 # 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
-function write_letter(number, size, x, y) {
-    print number
-    printflush message1
-    @counter = @counter + (number * 2)
-    code = 0b000110000111111
-    jump the_end always 0 0
-    code = 0b000010000000110
-    jump the_end always 0 0
-    code = 0b000000011011011
-    jump the_end always 0 0
-    code = 0b000000010001111
-    jump the_end always 0 0
-    code = 0b000000011100110
-    jump the_end always 0 0
-    code = 0b010000001101001
-    jump the_end always 0 0
-    code = 0b000000011111101
-    jump the_end always 0 0
-    code = 0b000000000000111
-    jump the_end always 0 0
-    code = 0b000000011111111
-    jump the_end always 0 0
-    code = 0b000000011101111
-    jump the_end always 0 0
-    code = 0b000000011110111
-    jump the_end always 0 0
-    code = 0b001001010001111
-    jump the_end always 0 0
-    code = 0b000000000111001
-    jump the_end always 0 0
-    code = 0b001001000001111
-    jump the_end always 0 0
-    code = 0b000000001111001
-    jump the_end always 0 0
-    code = 0b000000001110001
-    jump the_end always 0 0
-    code = 0b000000010111101
-    jump the_end always 0 0
-    code = 0b000000011110110
-    jump the_end always 0 0
-    code = 0b001001000001001
-    jump the_end always 0 0
-    code = 0b000000000011110
-    jump the_end always 0 0
-    code = 0b010010001110000
-    jump the_end always 0 0
-    code = 0b000000000111000
-    jump the_end always 0 0
-    code = 0b000010100110110
-    jump the_end always 0 0
-    code = 0b010000100110110
-    jump the_end always 0 0
-    code = 0b000000000111111
-    jump the_end always 0 0
-    code = 0b000000011110011
-    jump the_end always 0 0
-    code = 0b010000000111111
-    jump the_end always 0 0
-    code = 0b010000011110011
-    jump the_end always 0 0
-    code = 0b000000011101101
-    jump the_end always 0 0
-    code = 0b001001000000001
-    jump the_end always 0 0
-    code = 0b000000000111110
-    jump the_end always 0 0
-    code = 0b000110000110000
-    jump the_end always 0 0
-    code = 0b010100000110110
-    jump the_end always 0 0
-    code = 0b010110100000000
-    jump the_end always 0 0
-    code = 0b000000011101110
-    jump the_end always 0 0
-    code = 0b000110000001001
-    the_end:
-    exec segment_display_14(code)
+function write_letter(write_letter::number, write_letter::size, write_letter::x, write_letter::y) {
+    @counter = @counter + (write_letter::number * 2)
+    write_letter::code = 0b000110000111111
+    jump write_letter::the_end always 0 0
+    write_letter::code = 0b000010000000110
+    jump write_letter::the_end always 0 0
+    write_letter::code = 0b000000011011011
+    jump write_letter::the_end always 0 0
+    write_letter::code = 0b000000010001111
+    jump write_letter::the_end always 0 0
+    write_letter::code = 0b000000011100110
+    jump write_letter::the_end always 0 0
+    write_letter::code = 0b010000001101001
+    jump write_letter::the_end always 0 0
+    write_letter::code = 0b000000011111101
+    jump write_letter::the_end always 0 0
+    write_letter::code = 0b000000000000111
+    jump write_letter::the_end always 0 0
+    write_letter::code = 0b000000011111111
+    jump write_letter::the_end always 0 0
+    write_letter::code = 0b000000011101111
+    jump write_letter::the_end always 0 0
+    write_letter::code = 0b000000011110111
+    jump write_letter::the_end always 0 0
+    write_letter::code = 0b001001010001111
+    jump write_letter::the_end always 0 0
+    write_letter::code = 0b000000000111001
+    jump write_letter::the_end always 0 0
+    write_letter::code = 0b001001000001111
+    jump write_letter::the_end always 0 0
+    write_letter::code = 0b000000001111001
+    jump write_letter::the_end always 0 0
+    write_letter::code = 0b000000001110001
+    jump write_letter::the_end always 0 0
+    write_letter::code = 0b000000010111101
+    jump write_letter::the_end always 0 0
+    write_letter::code = 0b000000011110110
+    jump write_letter::the_end always 0 0
+    write_letter::code = 0b001001000001001
+    jump write_letter::the_end always 0 0
+    write_letter::code = 0b000000000011110
+    jump write_letter::the_end always 0 0
+    write_letter::code = 0b010010001110000
+    jump write_letter::the_end always 0 0
+    write_letter::code = 0b000000000111000
+    jump write_letter::the_end always 0 0
+    write_letter::code = 0b000010100110110
+    jump write_letter::the_end always 0 0
+    write_letter::code = 0b010000100110110
+    jump write_letter::the_end always 0 0
+    write_letter::code = 0b000000000111111
+    jump write_letter::the_end always 0 0
+    write_letter::code = 0b000000011110011
+    jump write_letter::the_end always 0 0
+    write_letter::code = 0b010000000111111
+    jump write_letter::the_end always 0 0
+    write_letter::code = 0b010000011110011
+    jump write_letter::the_end always 0 0
+    write_letter::code = 0b000000011101101
+    jump write_letter::the_end always 0 0
+    write_letter::code = 0b001001000000001
+    jump write_letter::the_end always 0 0
+    write_letter::code = 0b000000000111110
+    jump write_letter::the_end always 0 0
+    write_letter::code = 0b000110000110000
+    jump write_letter::the_end always 0 0
+    write_letter::code = 0b010100000110110
+    jump write_letter::the_end always 0 0
+    write_letter::code = 0b010110100000000
+    jump write_letter::the_end always 0 0
+    write_letter::code = 0b000000011101110
+    jump write_letter::the_end always 0 0
+    write_letter::code = 0b000110000001001
+    write_letter::the_end:
+    exec segment_display_14(write_letter::code)
 }
