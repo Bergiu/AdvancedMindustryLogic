@@ -1,0 +1,138 @@
+unittype = @poly
+
+function bind_unit() {
+    myflag = @thix * @maph + @thisy
+    sensor flag @unit @flag
+    # if unit has my flag, its my unit
+    if flag != myflag {
+        # if unit is controlled by me, its my unit
+        sensor controller @unit @controller
+        if controller != @this {
+            print "Binding Unit"
+            printflush message1
+            # should search if a unit has my flag
+            controlled = true
+            free_space = true
+            while (controlled or (flag != 0 and flag != myflag)) and free_space {
+                print "xyz"
+                printflush message1
+                ubind unittype
+                sensor controlled @unit @controlled
+                sensor flag @unit @flag
+                print "xyza: "
+                print free_space
+                printflush message1
+                exec is_there_a_free_space_left()
+            }
+            if not free_space {
+                print "no space left"
+                printflush message1
+                @counter -= 1
+            }
+        }
+        ucontrol flag myflag 0 0 0 0
+    }
+    print "Bound Unit"
+    printflush message1
+}
+
+exec bind_unit()
+
+function move(x, y) {
+    ucontrol move x y 0 0 0
+    ucontrol within x y 1 iswithin 0
+    while not iswithin {
+        ucontrol within x y 1 iswithin 0
+    }
+}
+
+exec move(@thisx, @thisy)
+print "moved"
+printflush message1
+
+ucontrol getBlock @thisx @thisy type building 0
+
+function is_there_a_free_space_left() {
+    print "free space?"
+    printflush message1
+    free_space = false
+    i = -1
+    while i <=1  and not free_space {
+        j = -1
+        while j <= 1  and not free_space {
+            pos_x = @thisx + i
+            pos_y = @thisy + j
+            ucontrol getBlock pos_x pos_y new_t new_b 0
+            print i
+            print ","
+            print j
+            print ": "
+            print new_t
+            print ";"
+            print new_b
+            printflush message1
+            if new_t == @air or new_t == null {
+                free_space = true
+            }
+            j++
+        }
+        i++
+    }
+    print "free space!"
+    printflush message1
+}
+
+function find_free_space() {
+    continue = true
+    c = 0
+    while continue {
+        print "search free random"
+        printflush message1
+        op rand rx 2 0
+        op rand ry 2 0
+        rx -= 1
+        ry -= 1
+        new_x = @thisx + rx
+        new_y = @thisy + ry
+
+        ucontrol getBlock new_x new_y new_t new_b 0
+        if new_t == @air or new_t == null {
+            continue = false
+        }
+        c += 1
+        if c >= 10 {
+            exec is_there_a_free_space_left()
+            if not free_space {
+                continue = false
+            }
+            new_x = pos_x
+            new_y = pos_y
+            ucontrol getBlock new_x new_y new_t new_b 0
+            if new_t == @air or new_t == null {
+                continue = false
+            }
+        }
+    }
+}
+
+exec is_there_a_free_space_left()
+print "free space: "
+print free_space
+printflush message1
+while free_space {
+    exec find_free_space()
+    exec move(new_x, new_y)
+    ucontrol build new_x new_y type 0 building
+    exec is_there_a_free_space_left()
+    print "free space: "
+    print free_space
+    print "\nmove: "
+    print new_x
+    print ","
+    print new_y
+    printflush message1
+}
+
+ucontrol flag 0 0 0 0 0
+
+@counter -=1
