@@ -1,4 +1,4 @@
-import ./lib/get_pos.amnd
+import ../../../../stdlib/display/get_pos.amnd
 import ./lib/color4d.amnd
 import ./lib/color_toolbar.amnd
 import ./lib/stroke_toolbar.amnd
