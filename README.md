@@ -2,6 +2,8 @@
 
 ## TODO:
 - HEX numbers
+- BUG: `a = -0.5`: negative floating points don't work
+    - this may be a bug of mindustry
 
 
 ## Additions
