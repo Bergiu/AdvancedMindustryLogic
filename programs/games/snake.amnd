@@ -1,4 +1,4 @@
-import ./get_pos.amnd
+import ../../stdlib/display/get_pos_center.amnd
 
 # snake:
 # - playground:
