@@ -278,7 +278,7 @@ def p_ucontrol_instruction(p):
                             | PAYTAKE var_bool null null null null
                             | MINE var_number var_number null null null
                             | FLAG var_number null null null null
-                            | BUILD var_number var_number fakeid var_int fakeid
+                            | BUILD var_number var_number fakeid var_int value
                             | GETBLOCK var_number var_number fakeid fakeid null
                             | WITHIN var_number var_number var_number var_bool null
     '''

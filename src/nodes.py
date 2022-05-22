@@ -335,7 +335,9 @@ class ExecNode(Node):
                 self.call_exception(TokenException("error", f"TypeError: {function_name} missing {x} positional argument: {param_names}", self.fnptr.token, self.p))
                 return
         if x < 0:
-            param = self.params[len(self.params) + x][1].token
+            # bug?
+            # param = self.params[len(self.params) + x][1].token
+            param = self.params[len(self.params) + x].token
             self.call_exception(TokenException("error", f"TypeError: {function_name} takes {len(function.params)} but {len(self.params)} were given", param, self.p))
             return
         return functions[0]
