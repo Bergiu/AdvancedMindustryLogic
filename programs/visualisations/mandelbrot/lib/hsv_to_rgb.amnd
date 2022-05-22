@@ -1,0 +1,50 @@
+function hsv_to_rgb(H, S, V, *R, *G, *B) {
+    # H: 0-360
+    # S: 0-100
+    # V: 0-100
+    C = (V / 100) * (S / 100)
+    m = (V / 100) - 1 * C
+    X = C * (1 - abs(((H / 60) % 2) - 1))
+
+    if 0 <= H and H < 60 {
+        r = C
+        g = X
+        b = 0
+    }
+    if 60 <= H and H < 120 {
+        r = X
+        g = C
+        b = 0
+    }
+    if 120 <= H and H < 180 {
+        r = 0
+        g = C
+        b = X
+    }
+    if 180 <= H and H < 240 {
+        r = 0
+        g = X
+        b = C
+    }
+    if 240 <= H and H < 300 {
+        r = X
+        g = 0
+        b = C
+    }
+    if 300 <= H and H < 360 {
+        r = C
+        g = 0
+        b = X
+    }
+    R = (r + m) * 255
+    G = (g + m) * 255
+    B = (b + m) * 255
+}
+
+
+# is not complete but looks nice
+function nyscersul(out, max_iter) {
+    R = (cos(out / max_iter * 360) + 1) * 128
+    G = (cos(((out / max_iter * 360) + 120)) + 1) * 128
+    B = (cos(out / max_iter * 360 + 240) + 1) * 128
+}

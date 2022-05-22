@@ -1,0 +1,34 @@
+real_center = -1 * 0.5
+imag_center = 1 * 0
+horizontal_diameter = 3
+max_iter = 16
+
+mem = bank1
+if not mem {
+    end
+}
+
+sensor start switch1 @enabled
+if not start {
+    draw clear 0 0 0 255 0 0
+    drawflush display1
+}
+
+write start mem 0
+
+# step 1
+# real_center = -1 * 0.87591
+# imag_center = 0.20464
+# horizontal_diameter = 0.53184
+# max_iter = 32
+
+# step 2
+# real_center = -1 * 0.759856
+# imag_center = 0.125547
+# horizontal_diameter = 0.051579
+# max_iter = 200
+
+write real_center mem 1
+write imag_center mem 2
+write horizontal_diameter mem 3
+write max_iter mem 4

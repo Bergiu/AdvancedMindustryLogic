@@ -1,0 +1,129 @@
+import ./bind_unit.amnd
+
+# Schematic:
+# [button, button, proc, message]
+# after the first button is pressed
+# this program copies the linked processor
+# 11x8 times
+# this is used to simplify the parallelisation
+
+sensor enabled switch1 @enabled
+if not enabled {
+    end
+}
+control enabled switch1 0 0 0 0
+control enabled switch2 1 0 0 0
+
+unittype = @poly
+copy_proc = processor1
+
+sensor opx copy_proc @x
+sensor opy copy_proc @y
+
+exec bind_unit()
+exec move(opx, opy, 3)
+
+# only works if unit is in range
+ucontrol getBlock opx opy type building 0
+
+function wait_until_building(x, y, b) {
+    ucontrol getBlock x y t b2 0
+    while t != b {
+        ucontrol getBlock x y t b2 0
+    }
+}
+
+function build_procs() {
+    # right under the proc
+    new_y = opy - 3
+    # only works if unit is in range except you're in sandbox
+    # exec move(px, new_y)
+    ucontrol move opx new_y 0 0 0
+    ucontrol build opx new_y type 0 building
+    py = new_y - 7
+    # lines
+    per_line = 11
+    per_row = 8
+    j = 1
+    while j <= per_row {
+        i = 1
+        while i <= per_line {
+            new_x = opx + (3 * i)
+            # one extra line every 2 proc-lines for cryo input
+            new_y = py + (3 * j) + (1 * j // 2)
+            # exec move(new_x, new_y)
+            ucontrol move new_x new_y 0 0 0
+            if (j == 1 and i == 6) or (j == 8 and i == 6){
+                # overdrive dome
+                ucontrol build new_x new_y @overdrive-dome 0 @enabled
+                exec wait_until_building(new_x, new_y, @overdrive-dome)
+                if (j == 1 and i == 6) {
+                    isy = new_y + 2
+                    cx = new_x + 1
+                    psx = new_x - 2
+                    ucontrol build new_x isy @item-source 0 @phase-fabric
+                    exec wait_until_building(new_x, isy, @item-source)
+                    ucontrol build cx isy @item-source 0 @silicon
+                    exec wait_until_building(cx, isy, @item-source)
+                    ucontrol build psx isy @power-source 0 @enabled
+                    exec wait_until_building(psx, isy, @power-source)
+                } else {
+                    isy = new_y - 2
+                    cx = new_x + 1
+                    psx = new_x - 2
+                    ucontrol build new_x isy @item-source 0 @phase-fabric
+                    exec wait_until_building(new_x, isy, @item-source)
+                    ucontrol build cx isy @item-source 0 @silicon
+                    exec wait_until_building(cx, isy, @item-source)
+                    ucontrol build psx isy @power-source 0 @enabled
+                    exec wait_until_building(psx, isy, @power-source)
+                }
+            } else {
+                ucontrol build new_x new_y type 0 building
+                exec wait_until_building(new_x, new_y, type)
+            }
+            i++
+        }
+        j++
+    }
+    exec build_cryo()
+}
+
+function build_cryo() {
+    cy = opy - 5
+    cx = opx + 2
+
+    scx = cx - 1
+    ucontrol move scx cy 0 0 0
+    ucontrol build scx cy @liquid-source 0 @cryofluid
+    exec wait_until_building(scx, cy, @liquid-source)
+
+    j = 0
+    while j < 4 {
+        i = 0
+        while i < 11 {
+            new_cx = cx + i * 3
+            new_cy = cy + j * 7
+            # build cryo
+            ucontrol move new_cx new_cy 0 0 0
+            ucontrol build new_cx new_cy @liquid-source 0 @cryofluid
+            exec wait_until_building(new_cx, new_cy, @liquid-source)
+            i++
+        }
+        j++
+    }
+}
+
+function build_display() {
+    y = opy + 5
+    x = opx - 2
+    ucontrol build x y @large-logic-display 0 @enabled
+}
+
+exec build_procs()
+exec build_display()
+
+print "finished"
+printflush message1
+ucontrol flag 0 0 0 0 0
+control enabled switch2 0 0 0 0

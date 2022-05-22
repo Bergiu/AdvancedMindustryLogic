@@ -1,0 +1,32 @@
+function bind_unit() {
+    myflag = @thix * @maph + @thisy
+    sensor flag @unit @flag
+    # if unit has my flag, its my unit
+    if flag != myflag {
+        # if unit is controlled by me, its my unit
+        sensor controller @unit @controller
+        if controller != @this {
+            print "Binding Unit"
+            printflush message1
+            # should search if a unit has my flag
+            controlled = true
+            while controlled or (flag != 0 and flag != myflag) {
+                ubind unittype
+                sensor controlled @unit @controlled
+                sensor flag @unit @flag
+            }
+        }
+        ucontrol flag myflag 0 0 0 0
+    }
+    print "Bound Unit"
+    printflush message1
+}
+
+function move(x, y, d) {
+    ucontrol move x y 0 0 0
+    ucontrol within x y d iswithin 0
+    while not iswithin {
+        ucontrol within x y d iswithin 0
+    }
+}
+

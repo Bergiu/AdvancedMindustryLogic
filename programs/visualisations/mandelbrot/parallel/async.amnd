@@ -1,0 +1,217 @@
+# 176 * 176 pixel
+# 16 * 11 * 16 * 11 pixel
+# 256 * 11 * 11 pixel
+
+# 512 cells
+# 1. real_center = -1 * 0.5
+# 2. imag_center = 0
+# 3. horizontal_diameter = 3
+# 4. max_iter = 16
+# 5. task_site_len = 8
+# Tasks
+# 1. field_number
+# 2. claimed
+
+# wir teilen den bildschirm in 8x8 pixel teile
+# 8x8 * 4 * 11 * 11
+# 8x8 * 484
+# about 4 read / write operations when i have 100 procs
+# each needs to calculate 64 mandelbrot numbers
+
+# wir teilen den bildschirm in 4x4 pixel teile
+# 4x4 * 16 * 11 * 11
+# 4x4 * 1936
+# about 20 read / write operations when i have 100 procs
+# each needs to calculate 16 mandelbrot numbers
+
+
+# new idea
+# procs have an ID
+# memory:
+# [proc (ID=1) ready?, proc (ID=2) ready?, ...] len=len(workers)
+# [pointer to next task für proc 1, ...] len=len(workers)
+# [(field, finished, printed, [results]), ...]
+
+# 1. main creates new tasks for every ready proc and saves it into the second list
+# 2. printer can iterate over third list and mark them as printed
+# 3. workers add results to third list and mark them as finished
+#   then, they mark themself as ready in the first list
+# 4. main checks which is ready and gives it the next field
+
+
+# new idea
+# procs: [
+#   Proc(1),
+#   Proc(2),
+#   ...
+# ]
+# Proc(id): {
+#   ready?,
+#   new_task?,
+#   task_ptr,
+# }
+# If the proc is ready
+#   writes 1 to ready
+# The main searches for ready procs and if he finds one:
+#   it creates a task
+#   writes the task pointer
+#   writes 1 to new_task
+#   writes 0 to ready
+# The proc waits until new_task is enabled
+#   writes 0 to new_task
+# The proc finishes the calculation
+#   writes 1 to ready
+
+# Result: Main
+#   loops over the 64 cells that contains the ready state of the procs
+#   creates new tasks
+
+# New Idea
+# What do I need to not loop over all procs?
+# A stack where a proc adds its ready status after finishing a task
+# I don't think this is possible, because of race conditions
+# If he finishes, he reads the list and adds its id which leads to race conditions
+
+# No tasks idea
+# import ../../../parallel_processing/auto_index.amnd
+import ../lib/mandelbrot.amnd
+import ../lib/hsv_to_rgb.amnd
+# all linked cpus are used
+
+
+function get_cpu_amount(*cpus) {
+    cpus = 0
+    i = 0
+    while i < @links {
+        getlink link i
+        sensor name link @type
+        if name == @hyper-processor {
+            cpus += 1
+        }
+        i++
+    }
+}
+
+function get_cpu_id(*cpu_id) {
+    myflag = @thisx * @mapw + @thisy
+    cpu_id = 0
+    i = 0
+    while i < @links {
+        getlink link i
+        sensor name link @type
+        if name == @hyper-processor {
+            sensor x link @x
+            sensor y link @y
+            theirflag = x * @mapw + y
+            # biggest flag: cpu_id = 0
+            if myflag < theirflag {
+                cpu_id += 1
+            }
+        }
+        i++
+    }
+}
+
+function get_mem(*mem) {
+    i = 0
+    continue = true
+    while i < @links and continue {
+        getlink link i
+        sensor name link @type
+        if name == @memory-bank {
+            mem = link
+            continue = false
+        }
+        i++
+    }
+    if continue {
+        end
+    }
+}
+
+function get_display(*display) {
+    i = 0
+    continue = true
+    while i < @links and continue {
+        getlink link i
+        sensor name link @type
+        if name == @large-logic-display {
+            display = link
+            continue = false
+        }
+        i++
+    }
+    if continue {
+        end
+    }
+}
+
+exec get_mem(mem)
+read start mem 0
+
+if not start {
+    end
+}
+
+read real_center mem 1
+read imag_center mem 2
+read horizontal_diameter mem 3
+read max_iter mem 4
+
+# 0, 1, 2, 3
+# 4, 5, 6, 7
+# ...
+
+# 11 procs => 176 * 176 / 11 = 2816 pixel pro proc
+# draw on every 11th pixel
+
+exec get_cpu_amount(cpus)
+exec get_cpu_id(cpu_id)
+exec get_display(display)
+
+# step 1
+# real_center = -1 * 0.5
+# imag_center = 0
+# horizontal_diameter = 3
+# max_iter = 16
+
+real_i_start = real_center - (horizontal_diameter / 2)
+real_i_end = real_center + (horizontal_diameter / 2)
+imag_i_start = imag_center - (horizontal_diameter / 2)
+imag_i_end = imag_center + (horizontal_diameter / 2)
+
+real_i_step = 1/176 * (real_i_end - real_i_start)
+imag_i_step = 1/176 * (imag_i_end - imag_i_start)
+
+
+i = cpu_id
+while i <= 176*176 {
+    x = i // 176
+    y = i % 176
+    # convert x / y to re, im
+    re = real_i_start + real_i_step * x
+    im = imag_i_start + imag_i_step * y
+    exec mandelbrot_smooth(re, im, max_iter, out)
+    if out < max_iter {
+        V = 100
+    } else {
+        V = 0
+    }
+    S = 100
+    H = out / max_iter * 100
+    exec hsv_to_rgb(H, S, V, R, G, B)
+    # r = 255 / cpus * cpu_id
+    draw color R G B 255 0 0
+    draw rect x y 1 1 0 0
+    drawflush display
+    i += cpus
+
+    read start_new mem 0
+    read real_center_new mem 1
+    read imag_center_new mem 2
+    read horizontal_diameter_new mem 3
+    read max_iter_new mem 4
+    if start_new != start or real_center_new != real_center or imag_center_new != imag_center or horizontal_diameter_new != horizontal_diameter or max_iter_new != max_iter {
+        end
+    }
+}

@@ -1,0 +1,61 @@
+import complex.amnd
+
+function mandelbrot(mandelbrot::re, mandelbrot::im, mandelbrot::max_iter, *mandelbrot::out) {
+    new mandelbrot::z = Complex(0, 0)
+    mandelbrot::i = 0
+    mandelbrot::continue = true
+    mandelbrot::out = max_iter
+    while (mandelbrot::i < mandelbrot::max_iter) and mandelbrot::continue {
+        mandelbrot::z2.real = mandelbrot::z.real * mandelbrot::z.real - mandelbrot::z.imag * mandelbrot::z.imag + mandelbrot::re
+        mandelbrot::z2.imag = 2 * mandelbrot::z.real * mandelbrot::z.imag + mandelbrot::im
+        # distance: sqrt(re^2 + im^2)
+        # if distance > 2: it will explode
+        if (mandelbrot::z2.real * mandelbrot::z2.real + mandelbrot::z2.imag * mandelbrot::z2.imag) >= 4 {
+            mandelbrot::continue = false
+            mandelbrot::out = mandelbrot::i
+        }
+        mandelbrot::z.real = mandelbrot::z2.real
+        mandelbrot::z.imag = mandelbrot::z2.imag
+        mandelbrot::i++
+    }
+}
+
+
+function mandelbrot_opti(mandelbrot_opti::re, mandelbrot_opti::im, mandelbrot_opti::max_iter, *mandelbrot_opti::out) {
+    # optimized version that needs less calculations per iteration (~10 vs ~15)
+    mandelbrot_opti::x = 0
+    mandelbrot_opti::y = 0
+    mandelbrot_opti::x2 = 0
+    mandelbrot_opti::y2 = 0
+    mandelbrot_opti::out = 0
+    while (mandelbrot_opti::x2 + mandelbrot_opti::y2 <= 4 and mandelbrot_opti::out < mandelbrot_opti::max_iter) {
+        mandelbrot_opti::y = 2 * mandelbrot_opti::x * mandelbrot_opti::y + mandelbrot_opti::im
+        mandelbrot_opti::x = mandelbrot_opti::x2 - mandelbrot_opti::y2 + mandelbrot_opti::re
+        mandelbrot_opti::x2 = mandelbrot_opti::x * mandelbrot_opti::x
+        mandelbrot_opti::y2 = mandelbrot_opti::y * mandelbrot_opti::y
+        mandelbrot_opti::out++
+    }
+}
+
+
+mandelbrot_smooth::__MAX_DIST = 1 << 16
+function mandelbrot_smooth(mandelbrot_smooth::re, mandelbrot_smooth::im, mandelbrot_smooth::max_iter, *mandelbrot_smooth::out) {
+    # optimized version that needs less calculations per iteration (~10 vs ~15)
+    mandelbrot_smooth::x = 0
+    mandelbrot_smooth::y = 0
+    mandelbrot_smooth::out = 0
+
+    while (mandelbrot_smooth::x * mandelbrot_smooth::x + mandelbrot_smooth::y * mandelbrot_smooth::y <= mandelbrot_smooth::__MAX_DIST) and (mandelbrot_smooth::out < mandelbrot_smooth::max_iter) {
+        mandelbrot_smooth::xtemp = mandelbrot_smooth::x * mandelbrot_smooth::x - mandelbrot_smooth::y * mandelbrot_smooth::y + mandelbrot_smooth::re
+        mandelbrot_smooth::y = 2 * mandelbrot_smooth::x * mandelbrot_smooth::y + mandelbrot_smooth::im
+        mandelbrot_smooth::x = mandelbrot_smooth::xtemp
+        mandelbrot_smooth::out++
+    }
+
+    if mandelbrot_smooth::out < mandelbrot_smooth::max_iter {
+        mandelbrot_smooth::log_zn = log(mandelbrot_smooth::x * mandelbrot_smooth::x + mandelbrot_smooth::y * mandelbrot_smooth::y) / 2
+        mandelbrot_smooth::nu = log(mandelbrot_smooth::log_zn / log(2)) / log(2)
+        mandelbrot_smooth::out = mandelbrot_smooth::out + 1 - mandelbrot_smooth::nu
+    }
+}
+

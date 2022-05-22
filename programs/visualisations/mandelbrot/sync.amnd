@@ -1,0 +1,99 @@
+import ./lib/hsv_to_rgb.amnd
+import ./lib/mandelbrot.amnd
+
+display_size = 176
+
+# full mandelbrot
+real_center = -1 * 0.5
+imag_center = 0
+horizontal_diameter = 3
+max_iter = 16
+
+# step 1
+# real_center = -1 * 0.87591
+# imag_center = 0.20464
+# horizontal_diameter = 0.53184
+# max_iter = 64
+
+# step 2
+# real_center = -1 * 0.759856
+# imag_center = 0.125547
+# horizontal_diameter = 0.051579
+# max_iter = 200
+# max_iter = 1000
+
+
+real_i_start = real_center - (horizontal_diameter / 2)
+real_i_end = real_center + (horizontal_diameter / 2)
+imag_i_start = imag_center - (horizontal_diameter / 2)
+imag_i_end = imag_center + (horizontal_diameter / 2)
+
+real_i_step = 1/176 * (real_i_end - real_i_start)
+imag_i_step = 1/176 * (imag_i_end - imag_i_start)
+
+draw clear 0 0 0 0 0 0
+drawflush display1
+
+print "X: "
+print real_i_start
+print ", "
+print real_i_end
+print "\nY: "
+print imag_i_start
+print ", "
+print imag_i_end
+print "\nReal step: "
+print real_i_step
+print "\nImag step: "
+print imag_i_step
+printflush message2
+real_i = real_i_start
+i = 0
+start = @tick
+while real_i <= real_i_end {
+    imag_i = imag_i_start
+    j = 0
+    while imag_i <= imag_i_end {
+        exec mandelbrot_smooth(real_i, imag_i, max_iter, out)
+        j += 1
+        imag_i = imag_i_step * j + imag_i_start
+
+        # My colors
+            normalized_out = out / max_iter
+            # logarithmic_out = log(out) / log(max_iter)
+            if out < max_iter {
+                V = 100
+            } else {
+                V = 0
+            }
+            S = 100
+            H = normalized_out * 100
+            # H = logarithmic_out * 100
+            exec hsv_to_rgb(H, S, V, R, G, B)
+
+        # Nyscersul colors
+            # exec nyscersul(out, max_iter)
+
+        p = 0
+        while p < 200 {
+            p+=1
+        }
+        draw color R G B 255 0 0
+        draw rect i j 1 1 0 0
+        drawflush display1
+    }
+    i += 1
+    real_i = real_i_step * i + real_i_start
+    print i
+    print " / 176"
+    printflush message1
+}
+print "Finished"
+printflush message1
+stop = @tick
+d = stop - start
+print "Time: "
+print d
+printflush message1
+
+@counter -= 1
