@@ -1,0 +1,55 @@
+# all linked cpus are used
+
+cpu_type::micro = 1
+cpu_type::logic = 2
+cpu_type::hyper = 4
+cpu_type::all = cpu_type::micro | cpu_type::logic | cpu_type::hyper
+
+
+function get_cpu_amount(types, *cpus) {
+    selected_micro = types & cpu_type::micro
+    selected_logic = types & cpu_type::logic
+    selected_hyper = types & cpu_type::hyper
+
+    sensor this_name @this @type
+    cpus = selected_micro and this_name == @micro-processor
+    cpus = cpus + (selected_logic and this_name == @logic-processor)
+    cpus = cpus + (selected_hyper and this_name == @hyper-processor)
+    # cpus = 1 if this cpu is included in types
+
+    i = 0
+    while i < @links {
+        getlink link i
+        sensor name link @type
+        cpus = cpus + (selected_micro and name == @micro-processor)
+        cpus = cpus + (selected_logic and name == @logic-processor)
+        cpus = cpus + (selected_hyper and name == @hyper-processor)
+        i++
+    }
+}
+
+function get_cpu_id(types, *cpu_id) {
+    myflag = @thisx * @mapw + @thisy
+    cpu_id = 0
+    i = 0
+    selected_micro = types & cpu_type::micro
+    selected_logic = types & cpu_type::logic
+    selected_hyper = types & cpu_type::hyper
+    while i < @links {
+        getlink link i
+        sensor name link @type
+        condition = (selected_micro and name == @micro-processor)
+        condition = (selected_logic and name == @logic-processor) or condition
+        condition = (selected_hyper and name == @hyper-processor) or condition
+        if condition {
+            sensor x link @x
+            sensor y link @y
+            theirflag = x * @mapw + y
+            # biggest flag: cpu_id = 0
+            if myflag < theirflag {
+                cpu_id += 1
+            }
+        }
+        i++
+    }
+}

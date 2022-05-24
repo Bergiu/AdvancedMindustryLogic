@@ -1,0 +1,16 @@
+function get_link(get_link::type, *get_link::out) {
+    get_link::i = 0
+    get_link::continue = true
+    while get_link::i < @links and get_link::continue {
+        getlink get_link::link get_link::i
+        sensor get_link::name get_link::link @type
+        if get_link::name == get_link::type {
+            get_link::out = get_link::link
+            get_link::continue = false
+        }
+        get_link::i++
+    }
+    if get_link::continue {
+        end
+    }
+}
