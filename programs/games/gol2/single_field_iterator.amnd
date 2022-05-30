@@ -1,0 +1,46 @@
+# first: 1372 ticks
+function iterate_field(this_i, fx, fy) {
+    # inplace method:
+    #   two iterations
+    # first:
+    #   0 -> live -> 2
+    #   1 -> dies -> -1
+    #   lived before: abs(active) == 1
+    #   lived before: active % 2 == 1
+    #   dead before: active % 2 == 0
+    # second:
+    #   living now: active > 0
+    #   dead now: active <= 0
+
+    read this_active mem this_i
+    active_neighbors = 0
+    dx = -1
+    while dx <= 1 {
+        dy = -1
+        while dy <= 1 {
+            nx = (fx + dx)  # 4
+            ny = (fy + dy)  # 7
+            if (0 <= nx and nx < amount_fields_per_line) and (0 <= ny and ny < amount_fields_per_line) and (dx != 0 or dy != 0) {
+                next_i = nx * amount_fields_per_line + ny
+                read active mem next_i
+                active_neighbors = active_neighbors + (abs(active) == 1)
+            }
+            dy++
+        }
+        dx++
+    }
+    if this_active and (active_neighbors < 2 or active_neighbors > 3){
+        # die
+        write -1 mem this_i
+    }
+    if not this_active and active_neighbors == 3 {
+        # live
+        write 2 mem this_i
+    }
+}
+
+function iterate_field_after(i) {
+    read active mem i
+    new_active = active > 0
+    write new_active mem i
+}

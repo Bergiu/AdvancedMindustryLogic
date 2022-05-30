@@ -1,0 +1,35 @@
+import ../../../stdlib/display/get_pos.amnd
+import ./gol_settings_read.amnd
+import ./fields.amnd
+import ./single_field_iterator.amnd
+
+
+exec all_gray()
+
+while true {
+    sensor next switch1 @enabled
+    while not next {
+        sensor next switch1 @enabled
+    }
+    time = @tick
+    i = 0
+    while i < amount_fields {
+        fx = i // amount_fields_per_line
+        fy = i % amount_fields_per_line
+        exec iterate_field(fx, fy)
+        i++
+    }
+    i = 0
+    while i < amount_fields {
+        fx = i // amount_fields_per_line
+        fy = i % amount_fields_per_line
+        exec iterate_field_after(fx, fy)
+        read active mem i
+        exec write_field(fx, fy, active)
+        i++
+    }
+    control enabled switch1 0 0 0 0
+    deltatime = @tick - time
+    print deltatime
+    printflush message1
+}

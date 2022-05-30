@@ -1,0 +1,51 @@
+function all_gray() {
+    i = 0
+    while i < amount_fields {
+        fx = i // amount_fields_per_line
+        fy = i % amount_fields_per_line
+        px = fx * pixel_per_field + border
+        py = fy * pixel_per_field + border
+        draw color 100 100 100 255 0 0
+        draw rect px py field_width field_width 0 0
+        drawflush display
+        i++
+    }
+}
+
+function activate_field_pixel(px, py) {
+    px = ((px - border) // pixel_per_field) * pixel_per_field + border
+    py = ((py - border) // pixel_per_field) * pixel_per_field + border
+    draw color 0 255 0 255 0 0
+    draw color 230 230 250 255 0 0
+    draw rect px py field_width field_width 0 0
+    drawflush display
+}
+
+
+function write_field(fx, fy, active) {
+    px = fx * pixel_per_field + border
+    py = fy * pixel_per_field + border
+    if active {
+        draw color 0 255 0 255 0 0
+    } else {
+        draw color 100 100 100 255 0 0
+    }
+    draw rect px py field_width field_width 0 0
+    drawflush display
+}
+
+
+function write_field_i(i, active) {
+    fx = i // amount_fields_per_line
+    fy = i % amount_fields_per_line
+    px = fx * pixel_per_field + border
+    py = fy * pixel_per_field + border
+    if active {
+        draw color 0 255 0 255 0 0
+    } else {
+        draw color 100 100 100 255 0 0
+    }
+    draw rect px py field_width field_width 0 0
+    drawflush display
+}
+

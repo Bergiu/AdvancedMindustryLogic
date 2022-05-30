@@ -1,0 +1,28 @@
+import ../../../stdlib/links/get_link.amnd
+
+stderr = message1
+
+exec get_link(@memory-cell, true, settings, _)
+exec get_link(@memory-bank, true, mem, _)
+exec get_link(@large-logic-display, true, display, _)
+exec get_link(@arc, false, arc, found_arc)
+
+read start settings 0
+if not start {
+    print "Not started."
+    printflush message1
+    end
+}
+
+print "Started."
+printflush message1
+
+read play settings 1
+read border settings 2
+read pixel_per_field settings 3
+read padding settings 4
+
+upper_display_pixel_limit = 176 - border
+field_width = pixel_per_field - padding
+amount_fields_per_line = floor((176 - border) / pixel_per_field)
+amount_fields = amount_fields_per_line * amount_fields_per_line

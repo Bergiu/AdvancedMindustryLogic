@@ -1,0 +1,29 @@
+# mode 1
+border = 1
+pixel_per_field = 5
+padding = 1
+
+# mode 2
+border = 4
+pixel_per_field = 13
+padding = 1
+
+mem = cell1
+if not mem {
+    end
+}
+
+sensor start switch1 @enabled
+if not start {
+    draw clear 0 0 0 255 0 0
+    drawflush display1
+}
+
+
+sensor play switch2 @enabled
+
+write start mem 0
+write play mem 1
+write border mem 2
+write pixel_per_field mem 3
+write padding mem 4

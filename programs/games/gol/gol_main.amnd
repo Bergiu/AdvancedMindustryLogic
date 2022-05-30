@@ -1,0 +1,31 @@
+import ../../../stdlib/display/get_pos.amnd
+import ./gol_settings_read.amnd
+import ./fields.amnd
+
+if not found_arc {
+    print "Missing arc."
+    printflush message1
+    end
+}
+
+while start {
+    sensor shooting arc @shooting
+    while not shooting {
+        sensor shooting arc @shooting
+    }
+    while shooting {
+        sensor shooting arc @shooting
+    }
+    # button released
+    exec get_mouse_pos(arc, display, dposx, dposy, error)
+    if not error {
+        fx = (dposx - border) // pixel_per_field
+        fy = (dposy - border) // pixel_per_field
+        i = fx * amount_fields_per_line + fy
+        read active mem i
+        active = not active
+        write active mem i
+        exec write_field(fx, fy, active)
+    }
+    read start settings 0
+}

@@ -1,0 +1,185 @@
+import ../../../stdlib/display/get_pos.amnd
+import ./gol_settings_read.amnd
+import ./fields.amnd
+import ./single_field_iterator.amnd
+
+
+function iterate_after() {
+    # draw clear 0 0 0 0 0 0
+    tmp = -1 * pixel_per_field + border
+    fx = 1
+    f_end = amount_fields_per_line + 1
+    while fx < f_end {
+        fy = 1
+        while fy < f_end {
+            px = fx * pixel_per_field + tmp
+            py = fy * pixel_per_field + tmp
+            i = fx * amount_fields_per_line_bordered + fy
+            read active mem i
+            active = active > 0
+            write active mem i
+            if active {
+                draw color 0 255 0 255 0 0
+            } else {
+                draw color 100 100 100 255 0 0
+            }
+            draw rect px py field_width field_width 0 0
+            fy += 1
+        }
+        drawflush display
+        fx += 1
+    }
+}
+
+
+function iterate() {
+    fx = 1
+    f_end = amount_fields_per_line + 1
+    while fx < f_end {
+        fy = 1
+        while fy < f_end {
+            i = fx * amount_fields_per_line_bordered + fy  # 16; 17
+            read active mem i
+            active_neighbors = 0
+
+            dytmp = fy - 1  # 0; 1
+            next_i = (fx - 1) * amount_fields_per_line_bordered + dytmp  # 0; 1
+            read next_active mem next_i
+            active_neighbors = active_neighbors + (abs(next_active) == 1)
+            next_i_part = next_i + 1 # 1; 2
+            read next_active mem next_i_part
+            active_neighbors = active_neighbors + (abs(next_active) == 1)
+            next_i_part += 1 # 2; 3
+            read next_active mem next_i_part
+            active_neighbors = active_neighbors + (abs(next_active) == 1)
+
+            next_i += amount_fields_per_line_bordered # 15
+            read next_active mem next_i
+            active_neighbors = active_neighbors + (abs(next_active) == 1)
+            next_i_part = next_i + 2 # 17
+            read next_active mem next_i_part
+            active_neighbors = active_neighbors + (abs(next_active) == 1)
+
+            next_i += amount_fields_per_line_bordered # 30
+            read next_active mem next_i
+            active_neighbors = active_neighbors + (abs(next_active) == 1)
+            next_i_part = next_i + 1 # 31
+            read next_active mem next_i_part
+            active_neighbors = active_neighbors + (abs(next_active) == 1)
+            next_i_part += 1 # 32
+            read next_active mem next_i_part
+            active_neighbors = active_neighbors + (abs(next_active) == 1)
+
+            if active and (active_neighbors < 2 or active_neighbors > 3){
+                # die
+                write -1 mem i
+            }
+            if not active and active_neighbors == 3 {
+                # live
+                write 2 mem i
+            }
+            fy += 1
+        }
+        fx += 1
+    }
+}
+
+function iterate_columns() {
+    fx = 1
+    f_end = amount_fields_per_line + 1
+    while fx < f_end {
+        # column 1
+        next_i = (fx - 1) * amount_fields_per_line_bordered
+        read next_active mem next_i
+        active_neighbors_1 = abs(next_active) == 1
+        next_i_part = next_i + amount_fields_per_line_bordered
+        read next_active mem next_i_part
+        active_neighbors_1 = active_neighbors_1 + (abs(next_active) == 1)
+        next_i_part += amount_fields_per_line_bordered
+        read next_active mem next_i_part
+        active_neighbors_1 = active_neighbors_1 + (abs(next_active) == 1)
+
+        # column 2
+        next_i += 1
+        read next_active mem next_i
+        active_neighbors_2 = abs(next_active) == 1
+        next_i_part = next_i + amount_fields_per_line_bordered
+        read next_active mem next_i_part
+        active_neighbors_2 = active_neighbors_2 + (abs(next_active) == 1)
+        next_i_part += amount_fields_per_line_bordered
+        read next_active mem next_i_part
+        active_neighbors_2 = active_neighbors_2 + (abs(next_active) == 1)
+
+        i = fx * amount_fields_per_line_bordered
+        fy = 1
+        while fy < f_end {
+            i += 1
+            read active mem i
+            # column 3
+            next_i += 1
+            read next_active mem next_i
+            active_neighbors_3 = abs(next_active) == 1
+            next_i_part = next_i + amount_fields_per_line_bordered
+            read next_active mem next_i_part
+            active_neighbors_3 = active_neighbors_3 + (abs(next_active) == 1)
+            next_i_part += amount_fields_per_line_bordered
+            read next_active mem next_i_part
+            active_neighbors_3 = active_neighbors_3 + (abs(next_active) == 1)
+
+            active_neighbors = active_neighbors_1 + active_neighbors_2 + active_neighbors_3 - active
+            active_neighbors_1 = active_neighbors_2
+            active_neighbors_2 = active_neighbors_3
+
+            if active {
+                # die
+                if (active_neighbors < 2 or active_neighbors > 3) {
+                    write -1 mem i
+                }
+            } else {
+                if active_neighbors == 3 {
+                    # live
+                    write 2 mem i
+                }
+            }
+            fy += 1
+        }
+        fx += 1
+    }
+}
+
+# old
+# 17.53 - 1032
+# with border
+# 12.78 - 740
+# without loops for neighbour
+# 5.16 - 300
+# with less calculations
+#      - 265
+#      - 246
+# with column method
+#      - 159
+
+exec iterate_after()
+while true {
+    # await button
+    sensor next switch1 @enabled
+    while not next {
+        sensor next switch1 @enabled
+    }
+    time = @tick
+    exec iterate_columns()
+    deltatime = @tick - time
+    print deltatime
+    print "\n"
+    atime = time
+    time = @tick
+    exec iterate_after()
+    # set button
+    deltatime = @tick - time
+    print deltatime
+    print "\n"
+    deltatime = @tick - atime
+    print deltatime
+    printflush message1
+    control enabled switch1 0 0 0 0
+}
