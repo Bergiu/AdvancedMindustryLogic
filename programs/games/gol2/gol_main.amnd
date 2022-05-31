@@ -2,6 +2,7 @@ import ../../../stdlib/display/get_pos.amnd
 import ./gol_settings_read.amnd
 import ./fields.amnd
 
+exec init()
 if not found_arc {
     print "Missing arc."
     printflush message1
@@ -36,4 +37,5 @@ while start {
         drawflush display
     }
     read start settings 0
+    exec init()
 }

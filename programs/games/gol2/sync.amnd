@@ -1,7 +1,6 @@
 import ../../../stdlib/display/get_pos.amnd
 import ./gol_settings_read.amnd
 import ./fields.amnd
-import ./single_field_iterator.amnd
 
 
 function iterate_after() {
@@ -70,13 +69,16 @@ function iterate() {
             read next_active mem next_i_part
             active_neighbors = active_neighbors + (abs(next_active) == 1)
 
-            if active and (active_neighbors < 2 or active_neighbors > 3){
+            if active {
                 # die
-                write -1 mem i
-            }
-            if not active and active_neighbors == 3 {
-                # live
-                write 2 mem i
+                if (active_neighbors < 2 or active_neighbors > 3) {
+                    write -1 mem i
+                }
+            } else {
+                if active_neighbors == 3 {
+                    # live
+                    write 2 mem i
+                }
             }
             fy += 1
         }
@@ -159,6 +161,7 @@ function iterate_columns() {
 # with column method
 #      - 159
 
+exec init()
 exec iterate_after()
 while true {
     # await button
@@ -182,4 +185,5 @@ while true {
     print deltatime
     printflush message1
     control enabled switch1 0 0 0 0
+    exec init()
 }
