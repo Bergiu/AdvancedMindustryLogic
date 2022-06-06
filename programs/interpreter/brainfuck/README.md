@@ -12,4 +12,5 @@ I've added a command `:` to this brainfuck implementation. This command will exe
 
 
 
-https://user-images.githubusercontent.com/13796963/172228028-42ad9a6b-6fe4-423a-9d3c-9b3c410e338c.mp4
+https://user-images.githubusercontent.com/13796963/172228764-03f8d93e-26bc-45c2-b18c-25d92669c413.mp4
+
