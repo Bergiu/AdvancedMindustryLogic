@@ -1,0 +1,216 @@
+# Converts a 7 bit number to a character.
+# number range: 0-127
+# Maps to: ASCII
+# 0-31,127: Ignored (error)
+# Input:
+#   number: Number between 0-128.
+# Output:
+#   char: Character of the number.
+#   error: boolean, true if error
+function number_to_char_ascii(number_to_char::__number) {
+    char = ""
+    if number_to_char::__number > 126 or number_to_char::__number < 32 {
+        if number_to_char::__number == 10 {
+            error = false
+            char = "\n"
+        } else {
+            error = true
+        }
+    } else {
+        error = false
+        # begin at 32 (SPACE)
+        number_to_char::__inc = (number_to_char::__number - 32) * 2
+        @counter += number_to_char::__inc
+        char = " "  # 32
+        jump number_to_char::__the_end always 0 0
+        char = "!"  # 33
+        jump number_to_char::__the_end always 0 0
+        char = "''"  # 34
+        jump number_to_char::__the_end always 0 0
+        char = "#"  # 35
+        jump number_to_char::__the_end always 0 0
+        char = "$"  # 36
+        jump number_to_char::__the_end always 0 0
+        char = "%"  # 37
+        jump number_to_char::__the_end always 0 0
+        char = "&"  # 38
+        jump number_to_char::__the_end always 0 0
+        char = "'"  # 39
+        jump number_to_char::__the_end always 0 0
+        char = "("  # 40
+        jump number_to_char::__the_end always 0 0
+        char = ")"  # 41
+        jump number_to_char::__the_end always 0 0
+        char = "*"  # 42
+        jump number_to_char::__the_end always 0 0
+        char = "+"  # 43
+        jump number_to_char::__the_end always 0 0
+        char = ","  # 44
+        jump number_to_char::__the_end always 0 0
+        char = "-"  # 45
+        jump number_to_char::__the_end always 0 0
+        char = "."  # 46
+        jump number_to_char::__the_end always 0 0
+        char = "/"  # 47
+        jump number_to_char::__the_end always 0 0
+        char = "0"  # 48
+        jump number_to_char::__the_end always 0 0
+        char = "1"  # 49
+        jump number_to_char::__the_end always 0 0
+        char = "2"  # 50
+        jump number_to_char::__the_end always 0 0
+        char = "3"  # 51
+        jump number_to_char::__the_end always 0 0
+        char = "4"  # 52
+        jump number_to_char::__the_end always 0 0
+        char = "5"  # 53
+        jump number_to_char::__the_end always 0 0
+        char = "6"  # 54
+        jump number_to_char::__the_end always 0 0
+        char = "7"  # 55
+        jump number_to_char::__the_end always 0 0
+        char = "8"  # 56
+        jump number_to_char::__the_end always 0 0
+        char = "9"  # 57
+        jump number_to_char::__the_end always 0 0
+        char = ":"  # 58
+        jump number_to_char::__the_end always 0 0
+        char = ";"  # 59
+        jump number_to_char::__the_end always 0 0
+        char = "<"  # 60
+        jump number_to_char::__the_end always 0 0
+        char = "="  # 61
+        jump number_to_char::__the_end always 0 0
+        char = ">"  # 62
+        jump number_to_char::__the_end always 0 0
+        char = "?"  # 63
+        jump number_to_char::__the_end always 0 0
+        char = "@"  # 64
+        jump number_to_char::__the_end always 0 0
+        char = "A"  # 65
+        jump number_to_char::__the_end always 0 0
+        char = "B"  # 66
+        jump number_to_char::__the_end always 0 0
+        char = "C"  # 67
+        jump number_to_char::__the_end always 0 0
+        char = "D"  # 68
+        jump number_to_char::__the_end always 0 0
+        char = "E"  # 69
+        jump number_to_char::__the_end always 0 0
+        char = "F"  # 70
+        jump number_to_char::__the_end always 0 0
+        char = "G"  # 71
+        jump number_to_char::__the_end always 0 0
+        char = "H"  # 72
+        jump number_to_char::__the_end always 0 0
+        char = "I"  # 73
+        jump number_to_char::__the_end always 0 0
+        char = "J"  # 74
+        jump number_to_char::__the_end always 0 0
+        char = "K"  # 75
+        jump number_to_char::__the_end always 0 0
+        char = "L"  # 76
+        jump number_to_char::__the_end always 0 0
+        char = "M"  # 77
+        jump number_to_char::__the_end always 0 0
+        char = "N"  # 78
+        jump number_to_char::__the_end always 0 0
+        char = "O"  # 79
+        jump number_to_char::__the_end always 0 0
+        char = "P"  # 80
+        jump number_to_char::__the_end always 0 0
+        char = "Q"  # 81
+        jump number_to_char::__the_end always 0 0
+        char = "R"  # 82
+        jump number_to_char::__the_end always 0 0
+        char = "S"  # 83
+        jump number_to_char::__the_end always 0 0
+        char = "T"  # 84
+        jump number_to_char::__the_end always 0 0
+        char = "U"  # 85
+        jump number_to_char::__the_end always 0 0
+        char = "V"  # 86
+        jump number_to_char::__the_end always 0 0
+        char = "W"  # 87
+        jump number_to_char::__the_end always 0 0
+        char = "X"  # 88
+        jump number_to_char::__the_end always 0 0
+        char = "Y"  # 89
+        jump number_to_char::__the_end always 0 0
+        char = "Z"  # 90
+        jump number_to_char::__the_end always 0 0
+        char = "["  # 91
+        jump number_to_char::__the_end always 0 0
+        char = "\"  # 92
+        jump number_to_char::__the_end always 0 0
+        char = "]"  # 93
+        jump number_to_char::__the_end always 0 0
+        char = "^"  # 94
+        jump number_to_char::__the_end always 0 0
+        char = "_"  # 95
+        jump number_to_char::__the_end always 0 0
+        char = "`"  # 96
+        jump number_to_char::__the_end always 0 0
+        char = "a"  # 97
+        jump number_to_char::__the_end always 0 0
+        char = "b"  # 98
+        jump number_to_char::__the_end always 0 0
+        char = "c"  # 99
+        jump number_to_char::__the_end always 0 0
+        char = "d"  # 100
+        jump number_to_char::__the_end always 0 0
+        char = "e"  # 101
+        jump number_to_char::__the_end always 0 0
+        char = "f"  # 102
+        jump number_to_char::__the_end always 0 0
+        char = "g"  # 103
+        jump number_to_char::__the_end always 0 0
+        char = "h"  # 104
+        jump number_to_char::__the_end always 0 0
+        char = "i"  # 105
+        jump number_to_char::__the_end always 0 0
+        char = "j"  # 106
+        jump number_to_char::__the_end always 0 0
+        char = "k"  # 107
+        jump number_to_char::__the_end always 0 0
+        char = "l"  # 108
+        jump number_to_char::__the_end always 0 0
+        char = "m"  # 109
+        jump number_to_char::__the_end always 0 0
+        char = "n"  # 110
+        jump number_to_char::__the_end always 0 0
+        char = "o"  # 111
+        jump number_to_char::__the_end always 0 0
+        char = "p"  # 112
+        jump number_to_char::__the_end always 0 0
+        char = "q"  # 113
+        jump number_to_char::__the_end always 0 0
+        char = "r"  # 114
+        jump number_to_char::__the_end always 0 0
+        char = "s"  # 115
+        jump number_to_char::__the_end always 0 0
+        char = "t"  # 116
+        jump number_to_char::__the_end always 0 0
+        char = "u"  # 117
+        jump number_to_char::__the_end always 0 0
+        char = "v"  # 118
+        jump number_to_char::__the_end always 0 0
+        char = "w"  # 119
+        jump number_to_char::__the_end always 0 0
+        char = "x"  # 120
+        jump number_to_char::__the_end always 0 0
+        char = "y"  # 121
+        jump number_to_char::__the_end always 0 0
+        char = "z"  # 122
+        jump number_to_char::__the_end always 0 0
+        char = "{"  # 123
+        jump number_to_char::__the_end always 0 0
+        char = "|"  # 124
+        jump number_to_char::__the_end always 0 0
+        char = "}"  # 125
+        jump number_to_char::__the_end always 0 0
+        char = "~"  # 126
+        number_to_char::__the_end:
+        noop
+    }
+}

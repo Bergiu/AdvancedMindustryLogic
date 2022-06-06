@@ -1,0 +1,212 @@
+import ../../../stdlib/io/number_to_char_7bit_ascii.amnd
+
+# One Memory for Code
+code_mem = bank1
+
+# One Memory for Brainfuck-Array (should be at least 30.000 bytes)
+data_mem = bank2
+
+# Active
+active_sw = switch1
+
+# Extended Mode
+extended_mode_sw = switch2
+
+# Extended Mode
+# The extended mode adds one more command to brainfuck (:) for printflush. If this mode is enabled, the print results aren't flushed directly and needs manual flushing.
+
+if code_mem == null {
+    print "Code Memory not connected."
+    printflush message2
+    end
+}
+if data_mem == null {
+    print "Data Memory not connected."
+    printflush message2
+    end
+}
+if active_sw == null {
+    print "Active Switch not connected."
+    printflush message2
+    end
+}
+if extended_mode_sw == null {
+    extended_mode = true
+} else {
+    sensor extended_mode extended_mode_sw @enabled
+}
+
+sensor active active_sw @enabled
+if not active {
+    print "Press button to start."
+    printflush message2
+    end
+}
+print "Started."
+printflush message2
+
+# Code
+# > increment data pointer
+# < decrement data pointer
+# + increment the byte
+# - decrement the byte
+# . output the byte
+# , accept one byte of input
+# [ if byte == 0 then jump to ]
+# ] if byte != 0 then jump to [
+
+# Extended Mode (better mindustry compatibility)
+# : printflush
+
+# Representation (ASCII)
+BF_CP::inc_code_ptr = 62  # >
+BF_CP::dec_code_ptr = 60  # <
+BF_CP::inc_byte     = 43  # +
+BF_CP::dec_byte     = 45  # -
+BF_CP::output       = 46  # .
+BF_CP::input        = 44  # ,
+BF_CP::loop_s       = 91  # [
+BF_CP::loop_e       = 93  # ]
+BF_CP::flush        = 58  # :
+
+
+# init
+data_ptr = 0
+data_mem_len = 512
+code_ptr = 0
+code_mem_len = 512
+max_data_mem = 0
+
+parse_start:
+    if code_ptr >= code_mem_len {
+        jump end_program always 0 0
+    }
+
+    max_data_mem = max(data_ptr, max_data_mem)
+    # read current code point
+    read code_point code_mem code_ptr
+
+    # jump to the method behind the code point
+    jump inc_dp    equal code_point BF_CP::inc_code_ptr
+    jump dec_dp    equal code_point BF_CP::dec_code_ptr
+    jump inc_byte  equal code_point BF_CP::inc_byte
+    jump dec_byte  equal code_point BF_CP::dec_byte
+    jump outp      equal code_point BF_CP::output
+    jump inp       equal code_point BF_CP::input
+    jump loop_s    equal code_point BF_CP::loop_s
+    jump loop_e    equal code_point BF_CP::loop_e
+    jump ext_flush equal code_point BF_CP::flush
+    # else ignore code point
+    jump inc_code_ptr always 0 0
+
+        inc_dp:
+            # > increment data pointer
+            data_ptr++
+            if data_ptr >= data_mem_len {
+                data_ptr = 0
+            }
+            jump inc_code_ptr always 0 0
+        dec_dp:
+            # < decrement data pointer
+            data_ptr--
+            if data_ptr < 0 {
+                data_ptr = data_mem_len
+            }
+            jump inc_code_ptr always 0 0
+        inc_byte:
+            # + increment the byte
+            read data data_mem data_ptr
+            data++
+            write data data_mem data_ptr
+            jump inc_code_ptr always 0 0
+        dec_byte:
+            # - decrement the byte
+            read data data_mem data_ptr
+            data--
+            write data data_mem data_ptr
+            jump inc_code_ptr always 0 0
+        outp:
+            # . output the byte
+            read data data_mem data_ptr
+            exec number_to_char_ascii(data)
+            print char
+            if not extended_mode {
+                printflush message1
+            }
+            jump inc_code_ptr always 0 0
+        inp:
+            # , accept one byte of input
+            jump inc_code_ptr always 0 0
+        loop_s:
+            # [ if byte == 0 then jump to ]
+            read data data_mem data_ptr
+            jump inc_code_ptr notEqual data 0  # if data != 0 continue
+            # else find closing ]
+            open_cnt = 0
+            not_found = true
+            tmp_code_ptr = code_ptr
+            while not_found and not (tmp_code_ptr >= code_mem_len - 1) {
+                tmp_code_ptr++  # begin with the next pos after current
+                read tmp_code code_mem tmp_code_ptr
+                if tmp_code == BF_CP::loop_s {
+                    open_cnt++
+                }
+                if tmp_code == BF_CP::loop_e {
+                    if open_cnt > 0 {
+                        open_cnt--
+                    } else {
+                        not_found = false
+                    }
+                }
+            }
+            code_ptr = tmp_code_ptr + 1
+            jump end_parse always 0 0
+        loop_e:
+            # ] if byte != 0 then jump to [
+            read data data_mem data_ptr
+            jump inc_code_ptr equal data 0  # if data == 0 continue
+            # else find opening [
+            close_cnt = 0
+            not_found = true
+            tmp_code_ptr = code_ptr
+            while not_found and not (tmp_code_ptr <= 0) {
+                tmp_code_ptr--
+                read tmp_code code_mem tmp_code_ptr
+                if tmp_code == BF_CP::loop_e {
+                    close_cnt++
+                }
+                if tmp_code == BF_CP::loop_s {
+                    if close_cnt > 0 {
+                        close_cnt--
+                    } else {
+                        not_found = false
+                    }
+                }
+            }
+            code_ptr = tmp_code_ptr + 1
+            jump end_parse always 0 0
+        ext_flush:
+            printflush message1
+            jump inc_code_ptr always 0 0
+
+    # label: jump to this if code pointer should be incremented automatically
+    inc_code_ptr:
+        code_ptr++
+    # label: jump to this only if code pointer is changed manually
+    end_parse:
+
+jump parse_start always 0 0
+
+
+end_program:
+    print "clearing up"
+    printflush message2
+    # clear memory
+    i = 0
+    while i <= max_data_mem {
+        write 0 data_mem i
+        i++
+    }
+    print "stopped"
+    printflush message2
+    control enabled active_sw 0 0 0 0
