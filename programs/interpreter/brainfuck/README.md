@@ -9,3 +9,7 @@ Now press the start switch to start the brainfuck interpreter.
 ## Extended Mode
 
 I've added a command `:` to this brainfuck implementation. This command will execute the `printflush` command. If you enable the extended mode, you need to manually flush the output after writing text with `.`. If you disable extended mode flush will be executed after every `.` output.
+
+
+
+https://user-images.githubusercontent.com/13796963/172228028-42ad9a6b-6fe4-423a-9d3c-9b3c410e338c.mp4
